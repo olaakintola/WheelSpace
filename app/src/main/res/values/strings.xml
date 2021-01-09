@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">WheelSpace</string>
+    <string name="activity_forum">Forum</string>
+    <string name="activity_my_status">My Status</string>
+    <string name="activity_plan_my_journey">Plan My Journey</string>
+    <string name="activity_realtime_access">Real-time Access</string>
 </resources>
