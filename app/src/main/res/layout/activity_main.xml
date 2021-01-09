@@ -7,12 +7,67 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/txtAppName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="100dp"
+        android:fontFamily="@font/lemon"
+        android:text="WheelSpace"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/btnMyStatus"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="My Status"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtAppName" />
+
+    <Button
+        android:id="@+id/btnRealtimeAccess"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Real-time Access"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="@+id/btnMyStatus"
+        app:layout_constraintStart_toStartOf="@+id/btnMyStatus"
+        app:layout_constraintTop_toBottomOf="@+id/btnMyStatus" />
+
+    <Button
+        android:id="@+id/btnPlanMyJourney"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Plan My Journey"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="@+id/btnRealtimeAccess"
+        app:layout_constraintStart_toStartOf="@+id/btnRealtimeAccess"
+        app:layout_constraintTop_toBottomOf="@+id/btnRealtimeAccess" />
+
+    <Button
+        android:id="@+id/btnForum"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Forum"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="@+id/btnPlanMyJourney"
+        app:layout_constraintStart_toStartOf="@+id/btnPlanMyJourney"
+        app:layout_constraintTop_toBottomOf="@+id/btnPlanMyJourney" />
+
+    <Button
+        android:id="@+id/btnAbout"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="About"
+        app:layout_constraintEnd_toEndOf="@+id/btnForum"
+        app:layout_constraintStart_toStartOf="@+id/btnForum"
+        app:layout_constraintTop_toBottomOf="@+id/btnForum" />
 </androidx.constraintlayout.widget.ConstraintLayout>
