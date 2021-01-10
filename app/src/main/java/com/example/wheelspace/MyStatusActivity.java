@@ -1,18 +1,33 @@
 package com.example.wheelspace;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Calendar;
 
 public class MyStatusActivity extends AppCompatActivity {
 
-    EditText edtTxtTimePicker;
+    private EditText edtTxtTimePicker;
+    private TextView txtRoute, txtDepature, txtDestination, txtStatus;
+    private Spinner spinnerRoute, spinnerDepature, spinnerDestination;
+    private Button btnSend;
+    private RadioGroup rgStatus;
+    private RadioButton rbOnBoard, rbGotOff;
+    private ConstraintLayout parent;
     TimePickerDialog timePickerDialog;
     Calendar calendar;
     int currentHour;
@@ -24,7 +39,8 @@ public class MyStatusActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_status);
 
-        edtTxtTimePicker = findViewById(R.id.edtTxtTimePicker);
+        initViews();
+
         edtTxtTimePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -46,5 +62,53 @@ public class MyStatusActivity extends AppCompatActivity {
                 timePickerDialog.show();
             }
         });
+
+        btnSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initSend();
+            }
+        });
+    }
+
+    private void initSend() {
+        if(validateData() ){
+            Toast.makeText(this, "Status Sent", Toast.LENGTH_SHORT).show();
+        }else{
+            showSnackBar();
+        }
+    }
+
+    private void showSnackBar() {
+        Snackbar.make(parent, "Status Not Sent: Complete All Fields", Snackbar.LENGTH_INDEFINITE)
+                .setAction("Dismiss", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                }).show();
+    }
+
+    private boolean validateData() {
+        if(edtTxtTimePicker.getText().toString().equals("")){
+            return false;
+        }
+        return true;
+    }
+
+    private void initViews() {
+        edtTxtTimePicker = findViewById(R.id.edtTxtTimePicker);
+        txtDepature = findViewById(R.id.txtDepature);
+        txtDestination = findViewById(R.id.txtDestination);
+        txtRoute = findViewById(R.id.txtRoute);
+        txtStatus = findViewById(R.id.txtStatus);
+        spinnerDepature = findViewById(R.id.spinnerDepature);
+        spinnerDestination = findViewById(R.id.spinnerDestination);
+        spinnerRoute = findViewById(R.id.spinnerRoute);
+        parent = findViewById(R.id.parent);
+        rgStatus = findViewById(R.id.rgStatus);
+        rbOnBoard = findViewById(R.id.rbOnBoard);
+        rbGotOff = findViewById(R.id.rbGotOff);
+        btnSend = findViewById(R.id.btnSend);
     }
 }
