@@ -9,10 +9,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WheelSpace">
-        <activity android:name=".ForumActivity" android:label="@string/activity_forum"/>
-        <activity android:name=".PlanMyJourneyActivity" android:label="@string/activity_plan_my_journey"/>
-        <activity android:name=".RealtimeAccessActivity" android:label="@string/activity_realtime_access"/>
-        <activity android:name=".MyStatusActivity" android:label="@string/activity_my_status"/>
+        <activity android:name=".RealtimeResultActivity"></activity>
+        <activity
+            android:name=".ForumActivity"
+            android:label="@string/activity_forum" />
+        <activity
+            android:name=".PlanMyJourneyActivity"
+            android:label="@string/activity_plan_my_journey" />
+        <activity
+            android:name=".RealtimeAccessActivity"
+            android:label="@string/activity_realtime_access" />
+        <activity
+            android:name=".MyStatusActivity"
+            android:label="@string/activity_my_status" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

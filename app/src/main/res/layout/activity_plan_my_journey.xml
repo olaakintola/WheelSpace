@@ -2,9 +2,95 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parentPlanMyJourney"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PlanMyJourneyActivity"
-    android:background="@color/red">
+    tools:context=".PlanMyJourneyActivity">
 
+    <TextView
+        android:id="@+id/txtDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Date"
+        app:layout_constraintStart_toStartOf="@+id/guideline6"
+        app:layout_constraintTop_toTopOf="@+id/guideline7" />
+
+    <TextView
+        android:id="@+id/txtLeavingFrom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="Departure"
+        app:layout_constraintStart_toStartOf="@+id/guideline6"
+        app:layout_constraintTop_toBottomOf="@+id/txtDate" />
+
+    <TextView
+        android:id="@+id/txtArrivingAt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="Destination"
+        app:layout_constraintStart_toStartOf="@+id/guideline6"
+        app:layout_constraintTop_toBottomOf="@+id/txtLeavingFrom" />
+
+    <EditText
+        android:id="@+id/edtTxtDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="90dp"
+        android:ems="10"
+        android:hint="Choose Date in Future"
+        app:layout_constraintBottom_toBottomOf="@+id/txtDate"
+        app:layout_constraintStart_toEndOf="@+id/txtDate"
+        app:layout_constraintTop_toTopOf="@+id/txtDate" />
+
+    <EditText
+        android:id="@+id/edtTxtFutureDeparture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="55dp"
+        android:ems="10"
+        android:hint="Leaving From ..."
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="@+id/txtLeavingFrom"
+        app:layout_constraintStart_toEndOf="@+id/txtLeavingFrom"
+        app:layout_constraintTop_toTopOf="@+id/txtLeavingFrom" />
+
+    <EditText
+        android:id="@+id/edtTxtFutureDestination"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="45dp"
+        android:ems="10"
+        android:hint="Going To ..."
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="@+id/txtArrivingAt"
+        app:layout_constraintStart_toEndOf="@+id/txtArrivingAt"
+        app:layout_constraintTop_toTopOf="@+id/txtArrivingAt" />
+
+    <Button
+        android:id="@+id/btnFindOffPeak"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Find Off-Peak Period"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.67"
+        app:layout_constraintStart_toStartOf="@+id/guideline6"
+        app:layout_constraintTop_toBottomOf="@+id/edtTxtFutureDestination" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="30dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="125dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
