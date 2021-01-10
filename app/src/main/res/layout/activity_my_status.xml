@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MyStatusActivity">
+    tools:context=".MyStatusActivity"
+    android:id="@+id/parent">
 
     <TextView
         android:id="@+id/txtRoute"
@@ -102,8 +103,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Boarded bus when?"
+        android:hint="Enter the time..."
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/txtDestination" />
 
