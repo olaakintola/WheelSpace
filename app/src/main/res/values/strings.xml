@@ -1,3 +1,36 @@
 <resources>
     <string name="app_name">WheelSpace</string>
+    <string name="activity_forum">Forum</string>
+    <string name="activity_my_status">My Status</string>
+    <string name="activity_plan_my_journey">Plan My Journey</string>
+    <string name="activity_realtime_access">Real-time Access</string>
+
+    <string-array name="bus_routes">
+        <item>39a</item>
+        <item>46a</item>
+        <item>151</item>
+        <item>40</item>
+        <item>13</item>
+        <item>155</item>
+    </string-array>
+
+    <string-array name="departure_stops">
+        <item>Leaving from...</item>
+        <item>UCD</item>
+        <item>Dame Street</item>
+        <item>Hawkins Street</item>
+        <item>Moyle Park</item>
+        <item>Mills Shopping Centre</item>
+        <item>Nangor Road</item>
+    </string-array>
+
+    <string-array name="destination_stops">
+        <item>Going to...</item>
+        <item>UCD</item>
+        <item>Dame Street</item>
+        <item>Hawkins Street</item>
+        <item>Moyle Park</item>
+        <item>Mills Shopping Centre</item>
+        <item>Nangor Road</item>
+    </string-array>
 </resources>
