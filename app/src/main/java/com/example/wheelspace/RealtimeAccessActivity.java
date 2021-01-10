@@ -3,6 +3,7 @@ package com.example.wheelspace;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -37,6 +38,8 @@ public class RealtimeAccessActivity extends AppCompatActivity {
     private void initSearch() {
         if(validateData() ){
             Toast.makeText(this, "Processing", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(RealtimeAccessActivity.this, RealtimeResultActivity.class);
+            startActivity(intent);
         }else{
             showSnackBar();
         }
