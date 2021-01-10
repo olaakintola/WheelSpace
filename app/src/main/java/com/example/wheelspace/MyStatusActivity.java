@@ -84,7 +84,7 @@ public class MyStatusActivity extends AppCompatActivity {
                 .setAction("Dismiss", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        edtTxtTimePicker.setText("");
                     }
                 }).show();
     }
