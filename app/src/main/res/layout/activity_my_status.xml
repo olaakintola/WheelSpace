@@ -102,8 +102,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Boarded bus when?"
+        android:hint="Boarded bus when?"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/txtDestination" />
 
