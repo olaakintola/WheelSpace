@@ -38,6 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
+        android:entries="@array/bus_routes"
         app:layout_constraintBottom_toBottomOf="@+id/txtRoute"
         app:layout_constraintStart_toEndOf="@+id/txtRoute"
         app:layout_constraintTop_toTopOf="@+id/txtRoute" />
@@ -47,6 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="45dp"
+        android:entries="@array/departure_stops"
         app:layout_constraintBottom_toBottomOf="@+id/txtDepature"
         app:layout_constraintStart_toEndOf="@+id/txtDepature"
         app:layout_constraintTop_toTopOf="@+id/txtDepature" />
@@ -56,6 +58,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
+        android:entries="@array/destination_stops"
         app:layout_constraintBottom_toBottomOf="@+id/txtDestination"
         app:layout_constraintStart_toEndOf="@+id/txtDestination"
         app:layout_constraintTop_toTopOf="@+id/txtDestination" />
