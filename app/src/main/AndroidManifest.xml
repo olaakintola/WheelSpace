@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WheelSpace">
-        <activity android:name=".RealtimeResultActivity"></activity>
+        <activity android:name=".OffPeakResultActivity"></activity>
+        <activity android:name=".RealtimeResultActivity" />
         <activity
             android:name=".ForumActivity"
             android:label="@string/activity_forum" />

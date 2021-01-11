@@ -4,12 +4,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Calendar;
 
@@ -48,6 +52,49 @@ public class PlanMyJourneyActivity extends AppCompatActivity {
                 datePickerDialog.show();
             }
         });
+
+        btnFindOffPeak.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initFindOffPeak();
+            }
+        });
+
+    }
+
+    private void initFindOffPeak() {
+        if(validateData() ){
+            Toast.makeText(this, "Processing", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(PlanMyJourneyActivity.this, OffPeakResultActivity.class);
+            startActivity(intent);
+        }else{
+            showSnackBar();
+        }
+    }
+
+    private void showSnackBar() {
+        Snackbar.make(parentPlanMyJourney,"Error: Complete All Fields", Snackbar.LENGTH_INDEFINITE)
+                .setAction("Dismiss", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        edtTxtFutureDestination.setText("");
+                        edtTxtFutureDeparture.setText("");
+                        edtTxtDate.setText("");
+                    }
+                }).show();
+    }
+
+    private boolean validateData() {
+        if(edtTxtFutureDeparture.getText().toString().equals("")){
+            return false;
+        }
+        if(edtTxtFutureDestination.getText().toString().equals("")){
+            return false;
+        }
+        if(edtTxtDate.getText().toString().equals("")){
+            return false;
+        }
+        return true;
     }
 
     private void initViews() {
@@ -58,5 +105,6 @@ public class PlanMyJourneyActivity extends AppCompatActivity {
         edtTxtFutureDeparture = findViewById(R.id.edtTxtFutureDeparture);
         edtTxtFutureDestination = findViewById(R.id.edtTxtFutureDestination);
         parentPlanMyJourney = findViewById(R.id.parentPlanMyJourney);
+        btnFindOffPeak = findViewById(R.id.btnFindOffPeak);
     }
 }
