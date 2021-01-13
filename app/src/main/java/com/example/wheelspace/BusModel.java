@@ -1,9 +1,10 @@
 package com.example.wheelspace;
 
+// This class will be as a template for the data that we are going to parse
 public class BusModel {
-    // This class will be as a template for the data that we are going to parse
     // making object of class header
     private HeaderDetails headerDetails;
+    // making object of class entities
     private BusEntities busEntities;
 
     public BusModel(HeaderDetails headerDetails, BusEntities busEntities) {
