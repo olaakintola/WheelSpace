@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.wheelspace">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WheelSpace">
-        <activity android:name=".OffPeakResultActivity"></activity>
+        <activity android:name=".PopulateSpinnerTestActivity"></activity>
+        <activity android:name=".OffPeakResultActivity" />
         <activity android:name=".RealtimeResultActivity" />
         <activity
             android:name=".ForumActivity"

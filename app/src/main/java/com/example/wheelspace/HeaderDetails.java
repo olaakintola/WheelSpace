@@ -1,7 +1,14 @@
 package com.example.wheelspace;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class HeaderDetails {
+    @SerializedName("gtfs_realtime_version")
+    @Expose
     private String gtfs_realtime_version;
+    @SerializedName("timestamp")
+    @Expose
     private Long timestamp;
 
     public HeaderDetails(String gtfs_realtime_version, Long timestamp) {
