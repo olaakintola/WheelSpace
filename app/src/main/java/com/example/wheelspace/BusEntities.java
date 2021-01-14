@@ -1,5 +1,5 @@
 package com.example.wheelspace;
-
+// This class is not in use
 public class BusEntities {
 
     private BusTrip[] entity;

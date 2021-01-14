@@ -1,10 +1,20 @@
 package com.example.wheelspace;
 
-public class TripUpdateDetails {
-    private TripDetails tripDetails;
-    private StopSequenceDetails[] stop_time_update;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
-    public TripUpdateDetails(TripDetails tripDetails, StopSequenceDetails[] stop_time_update) {
+import java.util.List;
+
+public class TripUpdateDetails {
+
+    @SerializedName("trip")
+    @Expose
+    private TripDetails tripDetails;
+    @SerializedName("stop_time_update")
+    @Expose
+    private List<StopSequenceDetails> stop_time_update = null;
+
+    public TripUpdateDetails(TripDetails tripDetails, List<StopSequenceDetails> stop_time_update) {
         this.tripDetails = tripDetails;
         this.stop_time_update = stop_time_update;
     }
@@ -17,11 +27,11 @@ public class TripUpdateDetails {
         this.tripDetails = tripDetails;
     }
 
-    public StopSequenceDetails[] getStop_time_update() {
+    public List<StopSequenceDetails> getStop_time_update() {
         return stop_time_update;
     }
 
-    public void setStop_time_update(StopSequenceDetails[] stop_time_update) {
+    public void setStop_time_update(List<StopSequenceDetails> stop_time_update) {
         this.stop_time_update = stop_time_update;
     }
 }

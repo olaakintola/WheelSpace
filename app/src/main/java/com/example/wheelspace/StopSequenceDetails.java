@@ -1,10 +1,23 @@
 package com.example.wheelspace;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class StopSequenceDetails {
+    @SerializedName("stop_sequence")
+    @Expose
     private int stop_sequence;
+    @SerializedName("departure")
+    @Expose
     private DepartureDetails departureDetails;
+    @SerializedName("arrival")
+    @Expose
     private ArrivalDetails arrivalDetails;
+    @SerializedName("stop_id")
+    @Expose
     private String stop_id;
+    @SerializedName("schedule_relationship")
+    @Expose
     private String schedule_relationship;
 
     public StopSequenceDetails(int stop_sequence, DepartureDetails departureDetails, ArrivalDetails arrivalDetails, String stop_id, String schedule_relationship) {

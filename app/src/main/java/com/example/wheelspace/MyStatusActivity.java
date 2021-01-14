@@ -41,6 +41,8 @@ public class MyStatusActivity extends AppCompatActivity {
 
         initViews();
 
+        populateSpinner();
+
         edtTxtTimePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,7 +71,10 @@ public class MyStatusActivity extends AppCompatActivity {
                 initSend();
             }
         });
+
+
     }
+
 
     private void initSend() {
         if(validateData() ){
@@ -110,5 +115,8 @@ public class MyStatusActivity extends AppCompatActivity {
         rbOnBoard = findViewById(R.id.rbOnBoard);
         rbGotOff = findViewById(R.id.rbGotOff);
         btnSend = findViewById(R.id.btnSend);
+    }
+
+    private void populateSpinner() {
     }
 }

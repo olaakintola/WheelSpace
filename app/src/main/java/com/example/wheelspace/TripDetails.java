@@ -1,10 +1,23 @@
 package com.example.wheelspace;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class TripDetails {
+    @SerializedName("trip_id")
+    @Expose
     private String trip_id;
+    @SerializedName("start_time")
+    @Expose
     private String start_time;
+    @SerializedName("start_date")
+    @Expose
     private String start_date;
+    @SerializedName("schedule_relationship")
+    @Expose
     private String schedule_relationship;
+    @SerializedName("route_id")
+    @Expose
     private String route_id;
 
     public TripDetails(String trip_id, String start_time, String start_date, String schedule_relationship, String route_id) {
