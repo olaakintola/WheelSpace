@@ -20,13 +20,13 @@ public class StopSequenceDetails {
     @Expose
     private String schedule_relationship;
 
-    public StopSequenceDetails(int stop_sequence, DepartureDetails departureDetails, ArrivalDetails arrivalDetails, String stop_id, String schedule_relationship) {
-        this.stop_sequence = stop_sequence;
-        this.departureDetails = departureDetails;
-        this.arrivalDetails = arrivalDetails;
-        this.stop_id = stop_id;
-        this.schedule_relationship = schedule_relationship;
-    }
+//    public StopSequenceDetails(int stop_sequence, DepartureDetails departureDetails, ArrivalDetails arrivalDetails, String stop_id, String schedule_relationship) {
+//        this.stop_sequence = stop_sequence;
+//        this.departureDetails = departureDetails;
+//        this.arrivalDetails = arrivalDetails;
+//        this.stop_id = stop_id;
+//        this.schedule_relationship = schedule_relationship;
+//    }
 
     public int getStop_sequence() {
         return stop_sequence;

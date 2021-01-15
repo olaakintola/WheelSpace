@@ -8,9 +8,9 @@ public class DepartureDetails {
     @Expose
     private int delay;
 
-    public DepartureDetails(int delay) {
-        this.delay = delay;
-    }
+//    public DepartureDetails(int delay) {
+//        this.delay = delay;
+//    }
 
     public int getDelay() {
         return delay;

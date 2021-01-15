@@ -6,10 +6,10 @@ android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
 
-//    you might need to change the minimum sdk to 26
+//    you might need to change the minimum sdk to 26 from 19
     defaultConfig {
         applicationId "com.example.wheelspace"
-        minSdkVersion 19
+        minSdkVersion 26
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"

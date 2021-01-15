@@ -3,21 +3,23 @@ package com.example.wheelspace;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class TripUpdateDetails {
+public class
+TripUpdateDetails {
 
     @SerializedName("trip")
     @Expose
     private TripDetails tripDetails;
     @SerializedName("stop_time_update")
     @Expose
-    private List<StopSequenceDetails> stop_time_update = null;
+    private List<StopSequenceDetails> stop_time_update = new ArrayList<>();
 
-    public TripUpdateDetails(TripDetails tripDetails, List<StopSequenceDetails> stop_time_update) {
-        this.tripDetails = tripDetails;
-        this.stop_time_update = stop_time_update;
-    }
+//    public TripUpdateDetails(TripDetails tripDetails, List<StopSequenceDetails> stop_time_update) {
+//        this.tripDetails = tripDetails;
+//        this.stop_time_update = stop_time_update;
+//    }
 
     public TripDetails getTripDetails() {
         return tripDetails;

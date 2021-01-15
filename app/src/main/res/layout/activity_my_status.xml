@@ -39,7 +39,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
-        android:entries="@array/bus_routes"
         app:layout_constraintBottom_toBottomOf="@+id/txtRoute"
         app:layout_constraintStart_toEndOf="@+id/txtRoute"
         app:layout_constraintTop_toTopOf="@+id/txtRoute" />
