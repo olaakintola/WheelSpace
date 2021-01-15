@@ -49,7 +49,8 @@ public class MainActivity extends AppCompatActivity {
         btnForum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ForumActivity.class);
+//                Intent intent = new Intent(MainActivity.this, ForumActivity.class);
+                Intent intent = new Intent(MainActivity.this, PopulateSpinnerTestActivity.class);
                 startActivity(intent);
             }
         });

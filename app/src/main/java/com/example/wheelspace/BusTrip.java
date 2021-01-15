@@ -11,10 +11,10 @@ public class BusTrip {
     @Expose
     private TripUpdateDetails tripUpdateDetails;
 
-    public BusTrip(String id, TripUpdateDetails tripUpdateDetails) {
-        this.id = id;
-        this.tripUpdateDetails = tripUpdateDetails;
-    }
+//    public BusTrip(String id, TripUpdateDetails tripUpdateDetails) {
+//        this.id = id;
+//        this.tripUpdateDetails = tripUpdateDetails;
+//    }
 
     public String getId() {
         return id;
