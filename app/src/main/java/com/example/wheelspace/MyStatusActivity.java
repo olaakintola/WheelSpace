@@ -174,12 +174,21 @@ public class MyStatusActivity extends AppCompatActivity {
                     if(busId.equals("60")){
                         busResponse = "Route Id" + routeId.substring(3, 5);
 //                        textJson.append(busResponse);
-                        String checkNumberInArray = routeId.substring(3, 5);
+                        String checkNumberInArray = routeId.substring(3, 6);
                         String checkDash = Character.toString(checkNumberInArray.charAt(1));
                         if(checkDash.equals("-")){
                             checkNumberInArray = Character.toString(checkNumberInArray.charAt(0));
                             checkNumberInArray.trim();
                         }
+                        
+                        if(checkNumberInArray.length() == 3){
+                            checkDash = Character.toString(checkNumberInArray.charAt(2));
+                            if(checkDash.equals("-")){
+                                checkNumberInArray = checkNumberInArray.substring(0, 2);
+                            }
+                        }
+
+
                         if(!(dublinBusList.contains(checkNumberInArray) ) ){
                             dublinBusList.add(checkNumberInArray);
                             Collections.sort(dublinBusList);
