@@ -260,6 +260,7 @@ public class MyStatusActivity extends AppCompatActivity {
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(MyStatusActivity.this,
                 android.R.layout.simple_spinner_dropdown_item, dublinStops);
         loadDepartureStops(dublinStops, spinnerAdapter);
+        loadDestinationStops(dublinStops, spinnerAdapter);
 //        spinnerDepature.setAdapter(spinnerAdapter);
 //        Log.d("TEST", "13");
 //        spinnerDepature.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -274,6 +275,22 @@ public class MyStatusActivity extends AppCompatActivity {
 //            }
 //        });
 
+    }
+
+    private void loadDestinationStops(List<String> dublinStops, ArrayAdapter<String> spinnerAdapter) {
+        spinnerDestination.setAdapter(spinnerAdapter);
+        Log.d("TEST", "13");
+        spinnerDestination.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String itemValue = parent.getItemAtPosition(position).toString();
+                Toast.makeText(MyStatusActivity.this, itemValue + " Selected!", Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                Log.d("TEST", "14");
+            }
+        });
     }
 
     private void loadDepartureStops(List<String> dublinStops, ArrayAdapter<String> spinnerAdapter) {
