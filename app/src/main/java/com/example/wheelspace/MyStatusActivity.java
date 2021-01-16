@@ -20,6 +20,10 @@ import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -47,6 +51,8 @@ public class MyStatusActivity extends AppCompatActivity {
     String amPm;
     List<BusTrip> busArray = new ArrayList<>();
     List<String> dublinBusList = new ArrayList<>();
+    List<String> dublinStops = new ArrayList<>();
+
     String url = "https://gtfsr.transportforireland.ie";
 
     @Override
@@ -148,6 +154,8 @@ public class MyStatusActivity extends AppCompatActivity {
         Call<BusModel> call = busAPICaller.getData();
         Log.d("TEST","2");
 
+        loadBusStops();
+
         call.enqueue(new Callback<BusModel>() {
 
             @Override
@@ -180,7 +188,7 @@ public class MyStatusActivity extends AppCompatActivity {
                             checkNumberInArray = Character.toString(checkNumberInArray.charAt(0));
                             checkNumberInArray.trim();
                         }
-                        
+
                         if(checkNumberInArray.length() == 3){
                             checkDash = Character.toString(checkNumberInArray.charAt(2));
                             if(checkDash.equals("-")){
@@ -227,6 +235,41 @@ public class MyStatusActivity extends AppCompatActivity {
             public void onFailure(Call<BusModel> call, Throwable t) {
                 Log.d("Failure", "LAST TEST");
                 Log.i("onfailure", "Throwable", t);
+            }
+        });
+    }
+
+    private void loadBusStops() {
+        Log.d("TEST", "10");
+        BufferedReader bufferedReader = null;
+        String lineFromFile;
+        dublinStops.clear();
+        Log.d("TEST", "11");
+        try {
+            bufferedReader = new BufferedReader( new InputStreamReader( getAssets().open("stops.txt"), "UTF-8"));
+            Log.d("TEST", "12");
+            while( (lineFromFile = bufferedReader.readLine() ) != null){
+                String[] stopString = lineFromFile.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+                dublinStops.add(stopString[1]);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(MyStatusActivity.this,
+                android.R.layout.simple_spinner_dropdown_item, dublinStops);
+        spinnerDepature.setAdapter(spinnerAdapter);
+        Log.d("TEST", "13");
+        spinnerDepature.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String itemValue = parent.getItemAtPosition(position).toString();
+                Toast.makeText(MyStatusActivity.this, itemValue + " Selected!", Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                Log.d("TEST", "14");
             }
         });
     }

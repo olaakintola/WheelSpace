@@ -11,6 +11,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -27,6 +35,7 @@ public class PopulateSpinnerTestActivity extends AppCompatActivity {
     private Spinner spinnerBus;
     List<BusTrip> busArray = new ArrayList<>();
     List<String> dublinBusList = new ArrayList<>();
+    List<String> dublinStops = new ArrayList<>();
 //    String url = "https://gtfsr.transportforireland.ie/v1/";
     String url = "https://gtfsr.transportforireland.ie";
 
@@ -50,6 +59,8 @@ public class PopulateSpinnerTestActivity extends AppCompatActivity {
         BusAPICaller busAPICaller = retrofit.create(BusAPICaller.class);
         Call<BusModel> call = busAPICaller.getData();
         Log.d("TEST","2");
+
+        loadBusStops();
 
         call.enqueue(new Callback<BusModel>() {
 
@@ -83,28 +94,29 @@ public class PopulateSpinnerTestActivity extends AppCompatActivity {
                             checkNumberInArray = Character.toString(checkNumberInArray.charAt(0));
                             checkNumberInArray.trim();
                         }
-                        if(!(dublinBusList.contains(checkNumberInArray) ) ){
-                           dublinBusList.add(checkNumberInArray);
-                            Collections.sort(dublinBusList);
-                        }
+//                        if(!(dublinBusList.contains(checkNumberInArray) ) ){
+//                           dublinBusList.add(checkNumberInArray);
+//                            Collections.sort(dublinBusList);
+//                        }
                     }
                 }
 
-                ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(PopulateSpinnerTestActivity.this,
-                        android.R.layout.simple_spinner_dropdown_item, dublinBusList);
-                spinnerBus.setAdapter(spinnerAdapter);
-                spinnerBus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        String itemValue = parent.getItemAtPosition(position).toString();
-                        Toast.makeText(PopulateSpinnerTestActivity.this, itemValue + " Selected!", Toast.LENGTH_SHORT).show();
-                    }
+//                ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(PopulateSpinnerTestActivity.this,
+//                        android.R.layout.simple_spinner_dropdown_item, dublinBusList);
+//                spinnerBus.setAdapter(spinnerAdapter);
+//                spinnerBus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//                    @Override
+//                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                        String itemValue = parent.getItemAtPosition(position).toString();
+//                        Toast.makeText(PopulateSpinnerTestActivity.this, itemValue + " Selected!", Toast.LENGTH_SHORT).show();
+//                    }
+//
+//                    @Override
+//                    public void onNothingSelected(AdapterView<?> parent) {
+//
+//                    }
+//                });
 
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-
-                    }
-                });
 //                String busroute = busArray.get(0).getTripUpdateDetails().getTripDetails().getRoute_id();
 //                String busroute1 = busroute.substring(0, 2);
 //                busResponse = "Route Id" + busroute1;
@@ -126,4 +138,40 @@ public class PopulateSpinnerTestActivity extends AppCompatActivity {
 
     }
 
+    private void loadBusStops() {
+        Log.d("TEST", "10");
+        BufferedReader bufferedReader = null;
+        String lineFromFile;
+        dublinStops.clear();
+        Log.d("TEST", "11");
+        try {
+            bufferedReader = new BufferedReader( new InputStreamReader( getAssets().open("stops.txt"), "UTF-8"));
+//            lineFromFile = bufferedReader.readLine();
+            Log.d("TEST", "12");
+//            String[] stopString = lineFromFile.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+            while( (lineFromFile = bufferedReader.readLine() ) != null){
+                String[] stopString = lineFromFile.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+                dublinStops.add(stopString[1]);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(PopulateSpinnerTestActivity.this,
+                android.R.layout.simple_spinner_dropdown_item, dublinStops);
+        spinnerBus.setAdapter(spinnerAdapter);
+        Log.d("TEST", "13");
+        spinnerBus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String itemValue = parent.getItemAtPosition(position).toString();
+                Toast.makeText(PopulateSpinnerTestActivity.this, itemValue + " Selected!", Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                Log.d("TEST", "14");
+            }
+        });
+    }
 }
