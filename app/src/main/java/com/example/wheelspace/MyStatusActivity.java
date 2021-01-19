@@ -27,6 +27,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import retrofit2.Call;
@@ -37,6 +38,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MyStatusActivity extends AppCompatActivity {
 
+    // solve the crashing as a result of generateid function 
+    // delete idea folder
+    // explore app with room
+    // explore reading text file into room
+    // creating restapi and/or google firebase - read report
+    // get the various data that user has selected and display it in snackbar
+    // push to git probems
+    // machine learning variables
     private EditText edtTxtTimePicker;
     private TextView txtRoute, txtDepature, txtDestination, txtStatus;
     private Spinner spinnerRoute, spinnerDepature, spinnerDestination;
@@ -49,9 +58,11 @@ public class MyStatusActivity extends AppCompatActivity {
     int currentHour;
     int currentMinute;
     String amPm;
+    String routeSelected;
     List<BusTrip> busArray = new ArrayList<>();
     List<String> dublinBusList = new ArrayList<>();
     List<String> dublinStops = new ArrayList<>();
+    HashMap<String, String> stopMaps = new HashMap<String, String>();
 
     String url = "https://gtfsr.transportforireland.ie";
 
@@ -64,6 +75,9 @@ public class MyStatusActivity extends AppCompatActivity {
 
         populateSpinner();
 
+/*
+        Selecting and Displaying Time in correct format
+*/
         edtTxtTimePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,17 +100,25 @@ public class MyStatusActivity extends AppCompatActivity {
             }
         });
 
+/*
+        Action takes place when Send Button is clicked
+*/
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 initSend();
+                String routeString = spinnerDestination.getSelectedItem().toString();
+                String tripId = generateTripId(routeString);
+                Toast.makeText(MyStatusActivity.this, tripId + ":Trip ID", Toast.LENGTH_SHORT).show();
             }
         });
 
 
     }
 
-
+/*
+    Needed checks before the entered data is sent as status
+*/
     private void initSend() {
         if(validateData() ){
             Toast.makeText(this, "Status Sent", Toast.LENGTH_SHORT).show();
@@ -105,6 +127,9 @@ public class MyStatusActivity extends AppCompatActivity {
         }
     }
 
+/*
+    It is activated when a field is yet to be completed and the send button is clicked
+*/
     private void showSnackBar() {
         Snackbar.make(parent, "Status Not Sent: Complete All Fields", Snackbar.LENGTH_INDEFINITE)
                 .setAction("Dismiss", new View.OnClickListener() {
@@ -115,6 +140,9 @@ public class MyStatusActivity extends AppCompatActivity {
                 }).show();
     }
 
+/*
+    Validates that the text field (eg. time) is not left empty
+*/
     private boolean validateData() {
         if(edtTxtTimePicker.getText().toString().equals("")){
             return false;
@@ -138,6 +166,9 @@ public class MyStatusActivity extends AppCompatActivity {
         btnSend = findViewById(R.id.btnSend);
     }
 
+/*
+    populates with all the active bus routes
+*/
     private void populateSpinner() {
         Log.d("Test" ,"1");
 //        textJson = findViewById(R.id.textJson);
@@ -212,6 +243,7 @@ public class MyStatusActivity extends AppCompatActivity {
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         String itemValue = parent.getItemAtPosition(position).toString();
                         Toast.makeText(MyStatusActivity.this, itemValue + " Selected!", Toast.LENGTH_SHORT).show();
+//                        routeSelected = itemValue;
                     }
 
                     @Override
@@ -239,6 +271,9 @@ public class MyStatusActivity extends AppCompatActivity {
         });
     }
 
+/*
+    populates the destination and departure stops dropdown list
+*/
     private void loadBusStops() {
         Log.d("TEST", "10");
         BufferedReader bufferedReader = null;
@@ -250,7 +285,13 @@ public class MyStatusActivity extends AppCompatActivity {
             Log.d("TEST", "12");
             while( (lineFromFile = bufferedReader.readLine() ) != null){
                 String[] stopString = lineFromFile.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
-                dublinStops.add(stopString[1]);
+                String stopName = stopString[1].substring(1, (stopString[1].length()-1 )).trim() ;
+                String stopId = stopString[0].substring(2, (stopString[0].length()-1 )).trim() ;
+//                String stopId2 = stopString[0];
+                dublinStops.add(stopName);
+
+                stopMaps.put(stopName, stopId);
+//                dublinStops.add(stopId);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -261,22 +302,11 @@ public class MyStatusActivity extends AppCompatActivity {
                 android.R.layout.simple_spinner_dropdown_item, dublinStops);
         loadDepartureStops(dublinStops, spinnerAdapter);
         loadDestinationStops(dublinStops, spinnerAdapter);
-//        spinnerDepature.setAdapter(spinnerAdapter);
-//        Log.d("TEST", "13");
-//        spinnerDepature.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                String itemValue = parent.getItemAtPosition(position).toString();
-//                Toast.makeText(MyStatusActivity.this, itemValue + " Selected!", Toast.LENGTH_SHORT).show();
-//            }
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//                Log.d("TEST", "14");
-//            }
-//        });
-
     }
 
+/*
+    populates only the destination dropdown list
+*/
     private void loadDestinationStops(List<String> dublinStops, ArrayAdapter<String> spinnerAdapter) {
         spinnerDestination.setAdapter(spinnerAdapter);
         Log.d("TEST", "13");
@@ -285,6 +315,7 @@ public class MyStatusActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String itemValue = parent.getItemAtPosition(position).toString();
                 Toast.makeText(MyStatusActivity.this, itemValue + " Selected!", Toast.LENGTH_SHORT).show();
+
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -293,6 +324,47 @@ public class MyStatusActivity extends AppCompatActivity {
         });
     }
 
+/*
+    generates unique identifier for each bus trip
+*/
+    private String generateTripId(String itemValue) {
+        String idForTrip = null;
+        String idStop = stopMaps.get(itemValue);
+
+        BufferedReader lineReader = null;
+        String fileLine;
+
+        Log.d("TEST", "21");
+        try {
+            lineReader = new BufferedReader( new InputStreamReader( getAssets().open("stop_times.txt"), "UTF-8"));
+            Log.d("TEST", "22");
+            while( (fileLine = lineReader.readLine() ) != null){
+                String[] stopTimesArray = fileLine.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+                String stopTrim = stopTimesArray[3].substring(1, (stopTimesArray[3].length()-1 )).trim() ;
+                if(idStop.equals(stopTrim ) ){
+                    int sixtyPosition = stopTimesArray[0].indexOf("60");
+                    int startIndexOfSelectedRoute = sixtyPosition + 3;
+                    int endIndexOfSelectedRoute = startIndexOfSelectedRoute + routeSelected.length();
+                    if(stopTimesArray[0].substring( startIndexOfSelectedRoute, endIndexOfSelectedRoute ).equals(routeSelected) ){
+                        String timePicked = edtTxtTimePicker.getText().toString();
+                        if(stopTimesArray[2].contains(timePicked.substring(0,4)) ){
+                            idForTrip = stopTimesArray[0];
+                        }
+                    }
+
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return idForTrip;
+    }
+
+/*
+    populates only the departure dropdown list
+*/
     private void loadDepartureStops(List<String> dublinStops, ArrayAdapter<String> spinnerAdapter) {
         spinnerDepature.setAdapter(spinnerAdapter);
         Log.d("TEST", "13");
