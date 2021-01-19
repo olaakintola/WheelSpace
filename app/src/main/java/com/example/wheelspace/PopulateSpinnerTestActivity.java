@@ -174,4 +174,38 @@ public class PopulateSpinnerTestActivity extends AppCompatActivity {
             }
         });
     }
+
+//    private String generateTripId(String itemValue) {
+//        String idForTrip = null;
+//        String idStop = stopMaps.get(itemValue);
+//
+//        BufferedReader lineReader = null;
+//        String fileLine;
+//
+//        Log.d("TEST", "21");
+//        try {
+//            lineReader = new BufferedReader( new InputStreamReader( getAssets().open("stop_times.txt"), "UTF-8"));
+//            Log.d("TEST", "22");
+//            while( (fileLine = lineReader.readLine() ) != null){
+//                String[] stopTimesArray = fileLine.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+//                if(idStop.equals(stopTimesArray[3] ) ){
+//                    int sixtyPosition = stopTimesArray[0].indexOf("60");
+//                    int startIndexOfSelectedRoute = sixtyPosition + 3;
+//                    int endIndexOfSelectedRoute = startIndexOfSelectedRoute + routeSelected.length();
+//                    if(stopTimesArray[0].substring( startIndexOfSelectedRoute, endIndexOfSelectedRoute ).equals(routeSelected) ){
+//                        String timePicked = edtTxtTimePicker.getText().toString();
+//                        if(stopTimesArray[2].contains(timePicked.substring(0,4)) ){
+//                            idForTrip = stopTimesArray[0];
+//                        }
+//                    }
+//
+//                }
+//            }
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return idForTrip;
+//    }
 }
