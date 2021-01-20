@@ -38,13 +38,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MyStatusActivity extends AppCompatActivity {
 
-    // solve the crashing as a result of generateid function 
-    // delete idea folder
+    // solve the crashing as a result of generateid function
     // explore app with room
     // explore reading text file into room
     // creating restapi and/or google firebase - read report
     // get the various data that user has selected and display it in snackbar
-    // push to git probems
     // machine learning variables
     private EditText edtTxtTimePicker;
     private TextView txtRoute, txtDepature, txtDestination, txtStatus;
@@ -58,6 +56,7 @@ public class MyStatusActivity extends AppCompatActivity {
     int currentHour;
     int currentMinute;
     String amPm;
+    String routeString;
     String routeSelected;
     List<BusTrip> busArray = new ArrayList<>();
     List<String> dublinBusList = new ArrayList<>();
@@ -107,8 +106,9 @@ public class MyStatusActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 initSend();
-                String routeString = spinnerDestination.getSelectedItem().toString();
-                String tripId = generateTripId(routeString);
+                String routeString = spinnerDepature.getSelectedItem().toString();
+                routeSelected = spinnerRoute.getSelectedItem().toString();
+                String tripId = generateTripId(routeString, routeSelected);
                 Toast.makeText(MyStatusActivity.this, tripId + ":Trip ID", Toast.LENGTH_SHORT).show();
             }
         });
@@ -227,7 +227,6 @@ public class MyStatusActivity extends AppCompatActivity {
                             }
                         }
 
-
                         if(!(dublinBusList.contains(checkNumberInArray) ) ){
                             dublinBusList.add(checkNumberInArray);
                             Collections.sort(dublinBusList);
@@ -286,10 +285,10 @@ public class MyStatusActivity extends AppCompatActivity {
             while( (lineFromFile = bufferedReader.readLine() ) != null){
                 String[] stopString = lineFromFile.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
                 String stopName = stopString[1].substring(1, (stopString[1].length()-1 )).trim() ;
-                String stopId = stopString[0].substring(2, (stopString[0].length()-1 )).trim() ;
-//                String stopId2 = stopString[0];
-                dublinStops.add(stopName);
+//                String stopId = stopString[0].substring(2, (stopString[0].length()-1 )).trim() ;
+                String stopId = stopString[0].substring(1, (stopString[0].length()-1 )).trim() ;
 
+                dublinStops.add(stopName);
                 stopMaps.put(stopName, stopId);
 //                dublinStops.add(stopId);
             }
@@ -315,21 +314,23 @@ public class MyStatusActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String itemValue = parent.getItemAtPosition(position).toString();
                 Toast.makeText(MyStatusActivity.this, itemValue + " Selected!", Toast.LENGTH_SHORT).show();
-
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 Log.d("TEST", "14");
             }
         });
+        routeString = spinnerDestination.getSelectedItem().toString();
     }
 
 /*
     generates unique identifier for each bus trip
 */
-    private String generateTripId(String itemValue) {
+    private String generateTripId(String stopName, String routeSelected) {
         String idForTrip = null;
-        String idStop = stopMaps.get(itemValue);
+        int sixtyPosition, startIndexOfSelectedRoute, endIndexOfSelectedRoute;
+        String idStop = stopMaps.get(stopName);
+        String idStop2 = idStop.trim();
 
         BufferedReader lineReader = null;
         String fileLine;
@@ -339,19 +340,24 @@ public class MyStatusActivity extends AppCompatActivity {
             lineReader = new BufferedReader( new InputStreamReader( getAssets().open("stop_times.txt"), "UTF-8"));
             Log.d("TEST", "22");
             while( (fileLine = lineReader.readLine() ) != null){
+                Log.d("TEST", "23 - WHILE LOOP");
                 String[] stopTimesArray = fileLine.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+                Log.d("TEST", "24 - AFTER REGEX");
                 String stopTrim = stopTimesArray[3].substring(1, (stopTimesArray[3].length()-1 )).trim() ;
-                if(idStop.equals(stopTrim ) ){
-                    int sixtyPosition = stopTimesArray[0].indexOf("60");
-                    int startIndexOfSelectedRoute = sixtyPosition + 3;
-                    int endIndexOfSelectedRoute = startIndexOfSelectedRoute + routeSelected.length();
+
+                if(idStop2.equals(stopTrim ) ){
+                    Log.d("TEST", "60");
+                    sixtyPosition = stopTimesArray[0].indexOf("60");
+                    startIndexOfSelectedRoute = sixtyPosition + 3;
+                    endIndexOfSelectedRoute = startIndexOfSelectedRoute + routeSelected.length();
                     if(stopTimesArray[0].substring( startIndexOfSelectedRoute, endIndexOfSelectedRoute ).equals(routeSelected) ){
                         String timePicked = edtTxtTimePicker.getText().toString();
+                        Log.d("TEST", "61");
                         if(stopTimesArray[2].contains(timePicked.substring(0,4)) ){
-                            idForTrip = stopTimesArray[0];
+                            idForTrip = stopTimesArray[0].substring(1, (stopTimesArray[0].length()-1 )).trim() ;
+                            Log.d("TEST", "62 - match");
                         }
                     }
-
                 }
             }
         } catch (FileNotFoundException e) {
@@ -359,6 +365,7 @@ public class MyStatusActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        Log.d("TEST", "63 - return");
         return idForTrip;
     }
 
