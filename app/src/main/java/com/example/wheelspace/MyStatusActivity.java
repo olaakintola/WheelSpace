@@ -151,8 +151,11 @@ public class MyStatusActivity extends AppCompatActivity {
                 String departingStop = spinnerDepature.getSelectedItem().toString();
                 routeSelected = spinnerRoute.getSelectedItem().toString();
                 String tripId = generateTripId(departingStop, routeSelected);
-//                Toast.makeText(MyStatusActivity.this, tripId + " :Trip ID", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MyStatusActivity.this, "Status Sent: On Board - Generating Trip ID: " + tripId , Toast.LENGTH_SHORT).show();
+                Toast.makeText(MyStatusActivity.this, tripId + " :Trip ID", Toast.LENGTH_SHORT).show();
+                // TODO: Go and Save the Trip Id and associated Data - Deaprture stop, Destination stop and Time, Status in Firebase
             }else{
+                // TODO: Should I generate tripId again so that I can now use it to go and delete the particular trip from Firebase
                 Toast.makeText(MyStatusActivity.this, "Confirmation of Getting Off Bus - Deleting DATA", Toast.LENGTH_SHORT).show();
             }
 
@@ -374,9 +377,9 @@ public class MyStatusActivity extends AppCompatActivity {
             lineReader = new BufferedReader( new InputStreamReader( getAssets().open("stop_times.txt"), "UTF-8"));
             Log.d("TEST", "22");
             while( (fileLine = lineReader.readLine() ) != null){
-                Log.d("TEST", "23 - WHILE LOOP");
+//                Log.d("TEST", "23 - WHILE LOOP");
                 String[] stopTimesArray = fileLine.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
-                Log.d("TEST", "24 - AFTER REGEX");
+//                Log.d("TEST", "24 - AFTER REGEX");
                 String stopTrim = stopTimesArray[3].substring(1, (stopTimesArray[3].length()-1 )).trim() ;
 
                 if(idStop2.equals(stopTrim ) ){
