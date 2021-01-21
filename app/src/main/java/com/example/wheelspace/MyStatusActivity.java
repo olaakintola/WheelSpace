@@ -145,11 +145,17 @@ public class MyStatusActivity extends AppCompatActivity {
 */
     private void initSend() {
         if(validateData() ){
-            Toast.makeText(this, "Status Sent", Toast.LENGTH_SHORT).show();
-            String departingStop = spinnerDepature.getSelectedItem().toString();
-            routeSelected = spinnerRoute.getSelectedItem().toString();
-            String tripId = generateTripId(departingStop, routeSelected);
-            Toast.makeText(MyStatusActivity.this, tripId + " :Trip ID", Toast.LENGTH_SHORT).show();
+            if(statusRadioBtn.getText().equals("On Board") ){
+                // TRY TO GET TOAST TO DISAPLAY
+                Toast.makeText(MyStatusActivity.this, "Status Sent: On Board - Generating Trip ID", Toast.LENGTH_SHORT).show();
+                String departingStop = spinnerDepature.getSelectedItem().toString();
+                routeSelected = spinnerRoute.getSelectedItem().toString();
+                String tripId = generateTripId(departingStop, routeSelected);
+//                Toast.makeText(MyStatusActivity.this, tripId + " :Trip ID", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(MyStatusActivity.this, "Confirmation of Getting Off Bus - Deleting DATA", Toast.LENGTH_SHORT).show();
+            }
+
         }else{
             showSnackBar();
         }
