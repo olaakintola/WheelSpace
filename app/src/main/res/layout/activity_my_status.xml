@@ -87,13 +87,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="On Board" />
+            android:text="On Board"
+            android:onClick="checkButton" />
 
         <RadioButton
             android:id="@+id/rbGotOff"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Got Off" />
+            android:text="Got Off"
+            android:onClick="checkButton" />
     </RadioGroup>
 
     <EditText

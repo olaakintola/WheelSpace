@@ -49,7 +49,8 @@ public class MyStatusActivity extends AppCompatActivity {
     private Spinner spinnerRoute, spinnerDepature, spinnerDestination;
     private Button btnSend;
     private RadioGroup rgStatus;
-    private RadioButton rbOnBoard, rbGotOff;
+//    private RadioButton rbOnBoard, rbGotOff;
+    private RadioButton statusRadioBtn;
     private ConstraintLayout parent;
     TimePickerDialog timePickerDialog;
     Calendar calendar;
@@ -106,14 +107,37 @@ public class MyStatusActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 initSend();
-                String routeString = spinnerDepature.getSelectedItem().toString();
-                routeSelected = spinnerRoute.getSelectedItem().toString();
-                String tripId = generateTripId(routeString, routeSelected);
-                Toast.makeText(MyStatusActivity.this, tripId + ":Trip ID", Toast.LENGTH_SHORT).show();
+//                String departingStop = spinnerDepature.getSelectedItem().toString();
+//                routeSelected = spinnerRoute.getSelectedItem().toString();
+//                String tripId = generateTripId(departingStop, routeSelected);
+//                Toast.makeText(MyStatusActivity.this, tripId + ":Trip ID", Toast.LENGTH_SHORT).show();
             }
         });
 
 
+    }
+
+/*
+    method for radio button
+*/
+    public void checkButton(View view){
+        boolean checked = ((RadioButton) view).isChecked();
+
+        switch (view.getId()){
+            case R.id.rbOnBoard:
+                if(checked) {
+                    statusRadioBtn = findViewById(R.id.rbOnBoard);
+                    Toast.makeText(MyStatusActivity.this, "Status: " + statusRadioBtn.getText() , Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.rbGotOff:
+                if(checked){
+                    statusRadioBtn = findViewById(R.id.rbGotOff);
+                    Toast.makeText(MyStatusActivity.this, "Status: " + statusRadioBtn.getText() , Toast.LENGTH_SHORT).show();
+                }
+            default:
+                break;
+        }
     }
 
 /*
@@ -122,6 +146,10 @@ public class MyStatusActivity extends AppCompatActivity {
     private void initSend() {
         if(validateData() ){
             Toast.makeText(this, "Status Sent", Toast.LENGTH_SHORT).show();
+            String departingStop = spinnerDepature.getSelectedItem().toString();
+            routeSelected = spinnerRoute.getSelectedItem().toString();
+            String tripId = generateTripId(departingStop, routeSelected);
+            Toast.makeText(MyStatusActivity.this, tripId + " :Trip ID", Toast.LENGTH_SHORT).show();
         }else{
             showSnackBar();
         }
@@ -161,8 +189,8 @@ public class MyStatusActivity extends AppCompatActivity {
         spinnerRoute = findViewById(R.id.spinnerRoute);
         parent = findViewById(R.id.parent);
         rgStatus = findViewById(R.id.rgStatus);
-        rbOnBoard = findViewById(R.id.rbOnBoard);
-        rbGotOff = findViewById(R.id.rbGotOff);
+//        rbOnBoard = findViewById(R.id.rbOnBoard);
+//        rbGotOff = findViewById(R.id.rbGotOff);
         btnSend = findViewById(R.id.btnSend);
     }
 
