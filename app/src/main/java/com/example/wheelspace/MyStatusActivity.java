@@ -368,10 +368,8 @@ public class MyStatusActivity extends AppCompatActivity {
         int sixtyPosition, startIndexOfSelectedRoute, endIndexOfSelectedRoute;
         String idStop = stopMaps.get(stopName);
         String idStop2 = idStop.trim();
-
         BufferedReader lineReader = null;
         String fileLine;
-
         Log.d("TEST", "21");
         try {
             lineReader = new BufferedReader( new InputStreamReader( getAssets().open("stop_times.txt"), "UTF-8"));
@@ -381,7 +379,6 @@ public class MyStatusActivity extends AppCompatActivity {
                 String[] stopTimesArray = fileLine.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
 //                Log.d("TEST", "24 - AFTER REGEX");
                 String stopTrim = stopTimesArray[3].substring(1, (stopTimesArray[3].length()-1 )).trim() ;
-
                 if(idStop2.equals(stopTrim ) ){
                     Log.d("TEST", "60");
                     sixtyPosition = stopTimesArray[0].indexOf("60");
@@ -398,8 +395,10 @@ public class MyStatusActivity extends AppCompatActivity {
                 }
             }
         } catch (FileNotFoundException e) {
+            Log.e("MYAPP", "exception", e);
             e.printStackTrace();
         } catch (IOException e) {
+            Log.e("NEWAPP","IOEException", e);
             e.printStackTrace();
         }
         Log.d("TEST", "63 - return");
