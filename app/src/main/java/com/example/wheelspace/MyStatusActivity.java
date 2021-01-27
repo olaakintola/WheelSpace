@@ -375,7 +375,8 @@ public class MyStatusActivity extends AppCompatActivity {
             lineReader = new BufferedReader( new InputStreamReader( getAssets().open("stop_times.txt"), "UTF-8"));
             Log.d("TEST", "22");
             int i = 0;
-            int minimum = 1000;
+            int minimumMinute = 1000;
+            int minimumSeconds = 1000;
             while( (fileLine = lineReader.readLine() ) != null){
 //                Log.d("TEST", "23 - WHILE LOOP");
                 String[] stopTimesArray = fileLine.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
@@ -394,17 +395,25 @@ public class MyStatusActivity extends AppCompatActivity {
                         if(timePickedSubString.equals(timeFromArray) ){ // changing to 1, 5 instead of 0, 4
 //                            if(timeFromArray.equals(timePicked.substring(0,4)) ){ // changing to 1, 5 instead of 0, 4
 //                            if(stopTimesArray[2].contains(timePicked.substring(0,4)) ){ // changing to 1, 5 instead of 0, 4
-                            String arrayTime = stopTimesArray[2].substring(1,6).trim();
+//                            String arrayTime = stopTimesArray[2].substring(1,6).trim();
+                            String arrayTime = stopTimesArray[2].substring(1,9).trim();
                             String comparePickedTime = timePicked.substring(0,5);
                             String arrayTimeSplit[] = arrayTime.split(":");
                             String comparePickedTimeSplit[] = comparePickedTime.split(":");
                             int arrayTimeMinute = Integer.parseInt(arrayTimeSplit[1]);
+                            int arrayTimeSeconds = Integer.parseInt(arrayTimeSplit[2]);
                             int compareTimePickedMinute = Integer.parseInt(comparePickedTimeSplit[1]);
                             int differenceInMinutes = arrayTimeMinute - compareTimePickedMinute ;
-                            if(differenceInMinutes >= 0 && minimum >= differenceInMinutes){
-                                idForTrip = stopTimesArray[0].substring(1, (stopTimesArray[0].length()-1 )).trim() ;
-                                minimum = differenceInMinutes;
-                                i++;
+                            if(differenceInMinutes >= 0 && minimumMinute >= differenceInMinutes){
+                                if(minimumSeconds > arrayTimeSeconds ){
+                                    idForTrip = stopTimesArray[0].substring(1, (stopTimesArray[0].length()-1 )).trim() ;
+                                    minimumMinute = differenceInMinutes;
+                                    minimumSeconds = arrayTimeSeconds;
+                                    i++;
+                                }
+//                                idForTrip = stopTimesArray[0].substring(1, (stopTimesArray[0].length()-1 )).trim() ;
+//                                minimumMinute = differenceInMinutes;
+//                                i++;
                             }
 //                            idForTrip = stopTimesArray[0].substring(1, (stopTimesArray[0].length()-1 )).trim() ;
                             Log.d("TEST", "62 - match");
