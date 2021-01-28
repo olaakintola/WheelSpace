@@ -44,3 +44,4 @@ dependencies {
 //    Converter for retrofit: GSON
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 }
+apply plugin: 'com.google.gms.google-services'
