@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "109638077517",
+    "project_id": "wheelspace-a95d8",
+    "storage_bucket": "wheelspace-a95d8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:109638077517:android:e0f9f5c62bd389f9eda004",
+        "android_client_info": {
+          "package_name": "com.example.wheelspace"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "109638077517-rsm1l9hc0rlmg3ouq0rre3hmmn3dfrsn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCFBf1JK47q5j4hqPaGAZANJAHyrhlhq0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "109638077517-rsm1l9hc0rlmg3ouq0rre3hmmn3dfrsn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
