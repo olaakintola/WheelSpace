@@ -1,7 +1,7 @@
 package com.example.wheelspace;
 
 public class WheelBayStatus {
-    String identifier;
+    String tripid;
     String route;
     String departure;
     String destination;
@@ -11,8 +11,8 @@ public class WheelBayStatus {
     public WheelBayStatus() {
     }
 
-    public WheelBayStatus(String identifier, String route, String departure, String destination, String time, String intermediarystops) {
-        this.identifier = identifier;
+    public WheelBayStatus(String tripid, String route, String departure, String destination, String time, String intermediarystops) {
+        this.tripid = tripid;
         this.route = route;
         this.departure = departure;
         this.destination = destination;
@@ -20,12 +20,12 @@ public class WheelBayStatus {
         this.intermediarystops = intermediarystops;
     }
 
-    public String getIdentifier() {
-        return identifier;
+    public String getTripid() {
+        return tripid;
     }
 
-    public void setIdentifier(String identifier) {
-        this.identifier = identifier;
+    public void setTripid(String tripid) {
+        this.tripid = tripid;
     }
 
     public String getRoute() {

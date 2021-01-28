@@ -19,6 +19,8 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -38,10 +40,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MyStatusActivity extends AppCompatActivity {
 
-    // solve the crashing as a result of generateid function
     // explore app with room
     // explore reading text file into room
-    // creating restapi and/or google firebase - read report
     // get the various data that user has selected and display it in snackbar
     // machine learning variables
     private EditText edtTxtTimePicker;
@@ -57,12 +57,14 @@ public class MyStatusActivity extends AppCompatActivity {
     int currentHour;
     int currentMinute;
     String amPm;
-    String routeString;
-    String routeSelected;
+    String destination;
+    String route;
     List<BusTrip> busArray = new ArrayList<>();
     List<String> dublinBusList = new ArrayList<>();
     List<String> dublinStops = new ArrayList<>();
     HashMap<String, String> stopMaps = new HashMap<String, String>();
+
+    DatabaseReference wheelchairStatusDbRef;
 
     String url = "https://gtfsr.transportforireland.ie";
 
@@ -70,6 +72,8 @@ public class MyStatusActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_status);
+
+        wheelchairStatusDbRef = FirebaseDatabase.getInstance().getReference().child("WheelchairBayTaken");
 
         initViews();
 
@@ -148,12 +152,18 @@ public class MyStatusActivity extends AppCompatActivity {
             if(statusRadioBtn.getText().equals("On Board") ){
                 // TRY TO GET TOAST TO DISAPLAY
                 Toast.makeText(MyStatusActivity.this, "Status Sent: On Board - Generating Trip ID", Toast.LENGTH_SHORT).show();
-                String departingStop = spinnerDepature.getSelectedItem().toString();
-                routeSelected = spinnerRoute.getSelectedItem().toString();
-                String tripId = generateTripId(departingStop, routeSelected);
-//                Toast.makeText(MyStatusActivity.this, "Status Sent: On Board - Generating Trip ID: " + tripId , Toast.LENGTH_SHORT).show();
-                Toast.makeText(MyStatusActivity.this, tripId + " :Trip ID", Toast.LENGTH_SHORT).show();
+                String departure = spinnerDepature.getSelectedItem().toString();
+                route = spinnerRoute.getSelectedItem().toString();
+                String tripid = generateTripId(departure, route);
+                String time = edtTxtTimePicker.getText().toString();
+                Toast.makeText(MyStatusActivity.this, tripid + " :Trip ID", Toast.LENGTH_SHORT).show();
+
                 // TODO: Go and Save the Trip Id and associated Data - Deaprture stop, Destination stop and Time, Status in Firebase
+                WheelBayStatus wheelBayStatus = new WheelBayStatus(tripid, route, departure, destination, time, null);
+
+                wheelchairStatusDbRef.push().setValue(wheelBayStatus);
+                Toast.makeText(MyStatusActivity.this,  " Data inserted ", Toast.LENGTH_SHORT).show();
+
             }else{
                 // TODO: Should I generate tripId again so that I can now use it to go and delete the particular trip from Firebase
                 Toast.makeText(MyStatusActivity.this, "Confirmation of Getting Off Bus - Deleting DATA", Toast.LENGTH_SHORT).show();
@@ -357,7 +367,7 @@ public class MyStatusActivity extends AppCompatActivity {
                 Log.d("TEST", "14");
             }
         });
-        routeString = spinnerDestination.getSelectedItem().toString();
+        destination = spinnerDestination.getSelectedItem().toString();
     }
 
 /*
