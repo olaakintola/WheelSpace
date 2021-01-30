@@ -1,5 +1,6 @@
 package com.example.wheelspace;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -19,8 +20,11 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -60,6 +64,7 @@ public class MyStatusActivity extends AppCompatActivity {
     String amPm;
 //    String destination;
     String route;
+    String tripIdDuplicate = null;
     List<BusTrip> busArray = new ArrayList<>();
     List<String> dublinBusList = new ArrayList<>();
     List<String> dublinStops = new ArrayList<>();
@@ -157,6 +162,7 @@ public class MyStatusActivity extends AppCompatActivity {
                 String destination = spinnerDestination.getSelectedItem().toString();
                 route = spinnerRoute.getSelectedItem().toString();
                 String tripid = generateTripId(departure, route);
+                tripIdDuplicate = tripid;
                 String time = edtTxtTimePicker.getText().toString();
                 String intermediarystops = generateIntermediaryStops(tripid, departure, destination);
                 Toast.makeText(MyStatusActivity.this, tripid + " :Trip ID", Toast.LENGTH_SHORT).show();
@@ -170,13 +176,31 @@ public class MyStatusActivity extends AppCompatActivity {
             }else{
                 // TODO: Should I generate tripId again so that I can now use it to go and delete the particular trip from Firebase
 //                DatabaseReference deleteWheelBayDBRef = FirebaseDatabase.getInstance().getReference("WheelchairBay Taken").child(whe);
-
+                deleteTrip(tripIdDuplicate);
                 Toast.makeText(MyStatusActivity.this, "Confirmation of Getting Off Bus - Deleting DATA", Toast.LENGTH_SHORT).show();
             }
 
         }else{
             showSnackBar();
         }
+    }
+
+    /*Delete status when user gets off bus*/
+    private void deleteTrip(String tripIdDuplicate) {
+        DatabaseReference deleteDBNode = FirebaseDatabase.getInstance().getReference().child("WheelchairBayTaken");
+        deleteDBNode.orderByChild("tripid").equalTo(tripIdDuplicate).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot data: snapshot.getChildren()){
+                    data.getRef().removeValue();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private String generateIntermediaryStops(String tripid, String departure, String destination) {
