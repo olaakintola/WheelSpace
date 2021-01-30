@@ -177,7 +177,6 @@ public class MyStatusActivity extends AppCompatActivity {
                 // TODO: Should I generate tripId again so that I can now use it to go and delete the particular trip from Firebase
 //                DatabaseReference deleteWheelBayDBRef = FirebaseDatabase.getInstance().getReference("WheelchairBay Taken").child(whe);
                 deleteTrip(tripIdDuplicate);
-                Toast.makeText(MyStatusActivity.this, "Confirmation of Getting Off Bus - Deleting DATA", Toast.LENGTH_SHORT).show();
             }
 
         }else{
@@ -191,9 +190,18 @@ public class MyStatusActivity extends AppCompatActivity {
         deleteDBNode.orderByChild("tripid").equalTo(tripIdDuplicate).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot data: snapshot.getChildren()){
-                    data.getRef().removeValue();
+                if(snapshot.exists() ){
+                    for(DataSnapshot data: snapshot.getChildren()){
+                        data.getRef().removeValue();
+                    }
+                    Toast.makeText(MyStatusActivity.this, "Confirmation of Getting Off Bus - Deleting DATA", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(MyStatusActivity.this, "NO RECORD of Status To Delete", Toast.LENGTH_SHORT).show();
                 }
+//                for(DataSnapshot data: snapshot.getChildren()){
+//                    data.getRef().removeValue();
+//                }
+
             }
 
             @Override
