@@ -26,6 +26,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -57,7 +58,7 @@ public class MyStatusActivity extends AppCompatActivity {
     int currentHour;
     int currentMinute;
     String amPm;
-    String destination;
+//    String destination;
     String route;
     List<BusTrip> busArray = new ArrayList<>();
     List<String> dublinBusList = new ArrayList<>();
@@ -153,19 +154,23 @@ public class MyStatusActivity extends AppCompatActivity {
                 // TRY TO GET TOAST TO DISAPLAY
                 Toast.makeText(MyStatusActivity.this, "Status Sent: On Board - Generating Trip ID", Toast.LENGTH_SHORT).show();
                 String departure = spinnerDepature.getSelectedItem().toString();
+                String destination = spinnerDestination.getSelectedItem().toString();
                 route = spinnerRoute.getSelectedItem().toString();
                 String tripid = generateTripId(departure, route);
                 String time = edtTxtTimePicker.getText().toString();
+                String intermediarystops = generateIntermediaryStops(tripid, departure, destination);
                 Toast.makeText(MyStatusActivity.this, tripid + " :Trip ID", Toast.LENGTH_SHORT).show();
 
                 // TODO: Go and Save the Trip Id and associated Data - Deaprture stop, Destination stop and Time, Status in Firebase
-                WheelBayStatus wheelBayStatus = new WheelBayStatus(tripid, route, departure, destination, time, null);
+                WheelBayStatus wheelBayStatus = new WheelBayStatus(tripid, route, departure, destination, time, intermediarystops);
 
                 wheelchairStatusDbRef.push().setValue(wheelBayStatus);
                 Toast.makeText(MyStatusActivity.this,  " Data inserted ", Toast.LENGTH_SHORT).show();
 
             }else{
                 // TODO: Should I generate tripId again so that I can now use it to go and delete the particular trip from Firebase
+//                DatabaseReference deleteWheelBayDBRef = FirebaseDatabase.getInstance().getReference("WheelchairBay Taken").child(whe);
+
                 Toast.makeText(MyStatusActivity.this, "Confirmation of Getting Off Bus - Deleting DATA", Toast.LENGTH_SHORT).show();
             }
 
@@ -174,9 +179,64 @@ public class MyStatusActivity extends AppCompatActivity {
         }
     }
 
-/*
-    It is activated when a field is yet to be completed and the send button is clicked
-*/
+    private String generateIntermediaryStops(String tripid, String departure, String destination) {
+
+        List<String> intermediaryStopList = new ArrayList<String>();
+
+        String departureStopId = stopMaps.get(departure);
+        String destinationStopId = stopMaps.get(destination);
+        String departureId = departureStopId.trim();
+        String destinationId = destinationStopId.trim();
+        boolean addtoList = false;
+        BufferedReader lineReader = null;
+        String fileLine;
+        Log.d("TEST", "A");
+        try {
+            lineReader = new BufferedReader(new InputStreamReader(getAssets().open("stop_times2.txt"), "UTF-8"));
+            Log.d("TEST", "B");
+
+            while ((fileLine = lineReader.readLine()) != null) {
+//                Log.d("TEST", "23 - WHILE LOOP");
+                String[] stopTimesArray = fileLine.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+//                Log.d("TEST", "24 - AFTER REGEX");
+                String tripIdFromArray = stopTimesArray[0].substring(1, (stopTimesArray[0].length() - 1)).trim();
+                String stopIdTrim = stopTimesArray[3].substring(1, (stopTimesArray[3].length() - 1)).trim();
+
+                if (tripid.equals(tripIdFromArray)) {
+                    if (departureId.equals(stopIdTrim)) {
+                        intermediaryStopList.add(stopIdTrim);
+                        addtoList = true;
+                    }else if (addtoList) {
+                        intermediaryStopList.add(stopIdTrim);
+                        if (destinationId.equals(stopIdTrim)) {
+                            addtoList = false;
+                        }
+                    }
+                }
+
+            }
+
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String intermidiaryStops = changeStopListToString(intermediaryStopList);
+        return intermidiaryStops;
+    }
+
+    private String changeStopListToString(List<String> intermediaryStopList) {
+
+        String listToString = "";
+        for(String stop: intermediaryStopList){
+            listToString += stop + ", ";
+        }
+        return listToString;
+    }
+
+    /*
+        It is activated when a field is yet to be completed and the send button is clicked
+    */
     private void showSnackBar() {
         Snackbar.make(parent, "Status Not Sent: Complete All Fields", Snackbar.LENGTH_INDEFINITE)
                 .setAction("Dismiss", new View.OnClickListener() {
@@ -367,7 +427,7 @@ public class MyStatusActivity extends AppCompatActivity {
                 Log.d("TEST", "14");
             }
         });
-        destination = spinnerDestination.getSelectedItem().toString();
+//        destination = spinnerDestination.getSelectedItem().toString();
     }
 
 /*
@@ -382,7 +442,7 @@ public class MyStatusActivity extends AppCompatActivity {
         String fileLine;
         Log.d("TEST", "21");
         try {
-            lineReader = new BufferedReader( new InputStreamReader( getAssets().open("stop_times.txt"), "UTF-8"));
+            lineReader = new BufferedReader( new InputStreamReader( getAssets().open("stop_times2.txt"), "UTF-8"));
             Log.d("TEST", "22");
             int i = 0;
             int minimumMinute = 1000;
