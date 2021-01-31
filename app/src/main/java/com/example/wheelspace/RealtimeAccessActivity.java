@@ -116,7 +116,11 @@ public class RealtimeAccessActivity extends AppCompatActivity {
     private void initSearch() {
 //        if(validateData() ){
             Toast.makeText(this, "Processing", Toast.LENGTH_SHORT).show();
+            String origin = spinnerOriginRealTime.getSelectedItem().toString();
+            String goingTo = spinnerGoingToRealTime.getSelectedItem().toString();
             Intent intent = new Intent(RealtimeAccessActivity.this, RealtimeResultActivity.class);
+            intent.putExtra("originKey", origin);
+            intent.putExtra("goingToKey", goingTo);
             startActivity(intent);
 //        }else{
 //            showSnackBar();
