@@ -224,7 +224,7 @@ public class MyStatusActivity extends AppCompatActivity {
         String fileLine;
         Log.d("TEST", "A");
         try {
-            lineReader = new BufferedReader(new InputStreamReader(getAssets().open("stop_times2.txt"), "UTF-8"));
+            lineReader = new BufferedReader(new InputStreamReader(getAssets().open("stop_times.txt"), "UTF-8"));
             Log.d("TEST", "B");
 
             while ((fileLine = lineReader.readLine()) != null) {
@@ -474,7 +474,7 @@ public class MyStatusActivity extends AppCompatActivity {
         String fileLine;
         Log.d("TEST", "21");
         try {
-            lineReader = new BufferedReader( new InputStreamReader( getAssets().open("stop_times2.txt"), "UTF-8"));
+            lineReader = new BufferedReader( new InputStreamReader( getAssets().open("stop_times.txt"), "UTF-8"));
             Log.d("TEST", "22");
             int i = 0;
             int minimumMinute = 1000;
