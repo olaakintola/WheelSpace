@@ -102,8 +102,38 @@ public class RealtimeAccessActivity extends AppCompatActivity {
         });
     }
 
+//    private void loadDepartureStops(List<String> dublinStops, ArrayAdapter<String> spinnerAdapter) {
+//        spinnerOriginRealTime.setAdapter(spinnerAdapter);
+//        Log.d("TEST", "13");
+//        spinnerOriginRealTime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                String itemValue = parent.getItemAtPosition(position).toString();
+//                Toast.makeText(RealtimeAccessActivity.this, itemValue + " Selected!", Toast.LENGTH_SHORT).show();
+//            }
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//                Log.d("TEST", "14");
+//            }
+//        });
+//    }
+
+    // remove dublinStops as an argument, it is not used. it is already being used in the spinner in previous origin code
     private void loadDepartureStops(List<String> dublinStops, ArrayAdapter<String> spinnerAdapter) {
-        spinnerOriginRealTime.setAdapter(spinnerAdapter);
+
+        dublinStops.add("Choose Stop");
+        final int listSize = dublinStops.size() - 1;
+        ArrayAdapter<String> stopsAdapter = new ArrayAdapter<String>(RealtimeAccessActivity.this, android.R.layout.simple_spinner_item, dublinStops){
+            @Override
+            public int getCount(){
+              return (listSize);
+          }
+        };
+
+        stopsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerOriginRealTime.setAdapter(stopsAdapter);
+        spinnerOriginRealTime.setSelection(listSize);
+
         Log.d("TEST", "13");
         spinnerOriginRealTime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -119,7 +149,7 @@ public class RealtimeAccessActivity extends AppCompatActivity {
     }
 
     private void initSearch() {
-//        if(validateData() ){
+        if(validateData() ){
             Toast.makeText(this, "Processing", Toast.LENGTH_SHORT).show();
             String origin = spinnerOriginRealTime.getSelectedItem().toString();
             String goingTo = spinnerGoingToRealTime.getSelectedItem().toString();
@@ -131,9 +161,9 @@ public class RealtimeAccessActivity extends AppCompatActivity {
             intent.putExtra("goingToKey", goingTo);
             intent.putExtra("localTimeKey", localTime);
             startActivity(intent);
-//        }else{
-//            showSnackBar();
-//        }
+       }else{
+            showSnackBar();
+        }
     }
 
     private String getLocalTime() {
@@ -157,15 +187,15 @@ public class RealtimeAccessActivity extends AppCompatActivity {
                 }).show();
     }
 
-//    private boolean validateData() {
-//        if(edtTxtOrigin.getText().toString().equals("")){
-//            return false;
-//        }
+    private boolean validateData() {
+        if(spinnerOriginRealTime.getSelectedItem().toString().equals("Choose Stop")){
+            return false;
+        }
 //        if(edtTxtGoingTo.getText().toString().equals("")){
 //            return false;
 //        }
-//        return true;
-//    }
+        return true;
+    }
 
     private void initViews() {
         txtOrigin = findViewById(R.id.txtOrigin);
