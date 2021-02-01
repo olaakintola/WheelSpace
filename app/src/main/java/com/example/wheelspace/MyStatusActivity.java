@@ -236,10 +236,14 @@ public class MyStatusActivity extends AppCompatActivity {
 
                 if (tripid.equals(tripIdFromArray)) {
                     if (departureId.equals(stopIdTrim)) {
-                        intermediaryStopList.add(stopIdTrim);
+                        String timeAtStop = stopTimesArray[2].substring(1, (stopTimesArray[2].length() - 1)).trim();
+                        String stopIdTimeCombo = stopIdTrim + " : " + timeAtStop;
+                        intermediaryStopList.add(stopIdTimeCombo);
                         addtoList = true;
                     }else if (addtoList) {
-                        intermediaryStopList.add(stopIdTrim);
+                        String timeAtStop = stopTimesArray[2].substring(1, (stopTimesArray[2].length() - 1)).trim();
+                        String stopIdTimeCombo = stopIdTrim + " : " + timeAtStop;
+                        intermediaryStopList.add(stopIdTimeCombo);
                         if (destinationId.equals(stopIdTrim)) {
                             addtoList = false;
                         }
