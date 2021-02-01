@@ -21,9 +21,14 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TimeZone;
 
 public class RealtimeAccessActivity extends AppCompatActivity {
 
@@ -118,13 +123,29 @@ public class RealtimeAccessActivity extends AppCompatActivity {
             Toast.makeText(this, "Processing", Toast.LENGTH_SHORT).show();
             String origin = spinnerOriginRealTime.getSelectedItem().toString();
             String goingTo = spinnerGoingToRealTime.getSelectedItem().toString();
+            String localTime = getLocalTime();
+
             Intent intent = new Intent(RealtimeAccessActivity.this, RealtimeResultActivity.class);
+
             intent.putExtra("originKey", origin);
             intent.putExtra("goingToKey", goingTo);
+            intent.putExtra("localTimeKey", localTime);
             startActivity(intent);
 //        }else{
 //            showSnackBar();
 //        }
+    }
+
+    private String getLocalTime() {
+        String localTime = null;
+
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+1:00") );
+        Date currentLocalTime = calendar.getTime();
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm a");
+        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+1:00"));
+        localTime  = dateFormat.format(currentLocalTime);
+
+        return localTime;
     }
 
     private void showSnackBar() {

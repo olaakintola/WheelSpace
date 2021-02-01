@@ -224,7 +224,7 @@ public class MyStatusActivity extends AppCompatActivity {
         String fileLine;
         Log.d("TEST", "A");
         try {
-            lineReader = new BufferedReader(new InputStreamReader(getAssets().open("stop_times.txt"), "UTF-8"));
+            lineReader = new BufferedReader(new InputStreamReader(getAssets().open("stop_times2.txt"), "UTF-8"));
             Log.d("TEST", "B");
 
             while ((fileLine = lineReader.readLine()) != null) {
@@ -236,10 +236,14 @@ public class MyStatusActivity extends AppCompatActivity {
 
                 if (tripid.equals(tripIdFromArray)) {
                     if (departureId.equals(stopIdTrim)) {
-                        intermediaryStopList.add(stopIdTrim);
+                        String timeAtStop = stopTimesArray[2].substring(1, (stopTimesArray[2].length() - 1)).trim();
+                        String stopIdTimeCombo = stopIdTrim + " : " + timeAtStop;
+                        intermediaryStopList.add(stopIdTimeCombo);
                         addtoList = true;
                     }else if (addtoList) {
-                        intermediaryStopList.add(stopIdTrim);
+                        String timeAtStop = stopTimesArray[2].substring(1, (stopTimesArray[2].length() - 1)).trim();
+                        String stopIdTimeCombo = stopIdTrim + " : " + timeAtStop;
+                        intermediaryStopList.add(stopIdTimeCombo);
                         if (destinationId.equals(stopIdTrim)) {
                             addtoList = false;
                         }
@@ -474,7 +478,7 @@ public class MyStatusActivity extends AppCompatActivity {
         String fileLine;
         Log.d("TEST", "21");
         try {
-            lineReader = new BufferedReader( new InputStreamReader( getAssets().open("stop_times.txt"), "UTF-8"));
+            lineReader = new BufferedReader( new InputStreamReader( getAssets().open("stop_times2.txt"), "UTF-8"));
             Log.d("TEST", "22");
             int i = 0;
             int minimumMinute = 1000;
