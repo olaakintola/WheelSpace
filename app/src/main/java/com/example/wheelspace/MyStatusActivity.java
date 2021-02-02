@@ -291,6 +291,12 @@ public class MyStatusActivity extends AppCompatActivity {
         if(edtTxtTimePicker.getText().toString().equals("")){
             return false;
         }
+        if(spinnerDestination.getSelectedItem().toString().equals("Choose Stop") ){
+            return false;
+        }
+        if(spinnerDepature.getSelectedItem().toString().equals("Choose Stop")){
+            return false;
+        }
         return true;
     }
 
@@ -422,6 +428,7 @@ public class MyStatusActivity extends AppCompatActivity {
         BufferedReader bufferedReader = null;
         String lineFromFile;
         dublinStops.clear();
+        dublinStops.add("Choose Stop");
         Log.d("TEST", "11");
         try {
             bufferedReader = new BufferedReader( new InputStreamReader( getAssets().open("stops.txt"), "UTF-8"));

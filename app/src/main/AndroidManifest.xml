@@ -13,7 +13,8 @@
         android:theme="@style/Theme.WheelSpace">
         <activity android:name=".PopulateSpinnerTestActivity"></activity>
         <activity android:name=".OffPeakResultActivity" />
-        <activity android:name=".RealtimeResultActivity" />
+        <activity android:name=".RealtimeResultActivity"
+            android:label="Real-time Information"/>
         <activity
             android:name=".ForumActivity"
             android:label="@string/activity_forum" />
