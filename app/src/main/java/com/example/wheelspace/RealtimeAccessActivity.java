@@ -61,6 +61,7 @@ public class RealtimeAccessActivity extends AppCompatActivity {
         BufferedReader bufferedReader = null;
         String lineFromFile;
         dublinStops.clear();
+        dublinStops.add("Choose Stop");
         Log.d("TEST", "11");
         try {
             bufferedReader = new BufferedReader( new InputStreamReader( getAssets().open("stops.txt"), "UTF-8"));
@@ -80,13 +81,16 @@ public class RealtimeAccessActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(RealtimeAccessActivity.this,
                 android.R.layout.simple_spinner_dropdown_item, dublinStops);
-        loadDepartureStops(dublinStops, spinnerAdapter);
-        loadDestinationStops(dublinStops, spinnerAdapter);
+
+        loadDepartureStops( dublinStops,spinnerAdapter);
+        loadDestinationStops( dublinStops, spinnerAdapter);
     }
 
     private void loadDestinationStops(List<String> dublinStops, ArrayAdapter<String> spinnerAdapter) {
+
         spinnerGoingToRealTime.setAdapter(spinnerAdapter);
         Log.d("TEST", "13");
         spinnerGoingToRealTime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -118,8 +122,9 @@ public class RealtimeAccessActivity extends AppCompatActivity {
         });
     }
 
+
     private void initSearch() {
-//        if(validateData() ){
+        if(validateData() ){
             Toast.makeText(this, "Processing", Toast.LENGTH_SHORT).show();
             String origin = spinnerOriginRealTime.getSelectedItem().toString();
             String goingTo = spinnerGoingToRealTime.getSelectedItem().toString();
@@ -131,9 +136,9 @@ public class RealtimeAccessActivity extends AppCompatActivity {
             intent.putExtra("goingToKey", goingTo);
             intent.putExtra("localTimeKey", localTime);
             startActivity(intent);
-//        }else{
-//            showSnackBar();
-//        }
+       }else{
+            showSnackBar();
+        }
     }
 
     private String getLocalTime() {
@@ -157,15 +162,15 @@ public class RealtimeAccessActivity extends AppCompatActivity {
                 }).show();
     }
 
-//    private boolean validateData() {
-//        if(edtTxtOrigin.getText().toString().equals("")){
-//            return false;
-//        }
-//        if(edtTxtGoingTo.getText().toString().equals("")){
-//            return false;
-//        }
-//        return true;
-//    }
+    private boolean validateData() {
+        if(spinnerOriginRealTime.getSelectedItem().toString().equals("Choose Stop")){
+            return false;
+        }
+        if(spinnerGoingToRealTime.getSelectedItem().toString().equals("Choose Stop")){
+            return false;
+        }
+        return true;
+    }
 
     private void initViews() {
         txtOrigin = findViewById(R.id.txtOrigin);
