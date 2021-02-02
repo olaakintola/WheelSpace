@@ -263,10 +263,11 @@ public class MyStatusActivity extends AppCompatActivity {
 
     private String changeStopListToString(List<String> intermediaryStopList) {
 
-        String listToString = "";
-        for(String stop: intermediaryStopList){
-            listToString += stop + ", ";
-        }
+        String listToString = String.join(", ", intermediaryStopList);
+//        String listToString = "";
+//        for(String stop: intermediaryStopList){
+//            listToString += stop + ", ";
+//        }
         return listToString;
     }
 

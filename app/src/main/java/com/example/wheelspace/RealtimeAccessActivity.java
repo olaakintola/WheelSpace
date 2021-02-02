@@ -80,14 +80,31 @@ public class RealtimeAccessActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(RealtimeAccessActivity.this,
-                android.R.layout.simple_spinner_dropdown_item, dublinStops);
-        loadDepartureStops(dublinStops, spinnerAdapter);
-        loadDestinationStops(dublinStops, spinnerAdapter);
+
+//        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(RealtimeAccessActivity.this,
+//                android.R.layout.simple_spinner_dropdown_item, dublinStops);
+
+        dublinStops.add("Choose Stop");
+        final int listSize = dublinStops.size() - 1;
+        ArrayAdapter<String> stopsAdapter = new ArrayAdapter<String>(RealtimeAccessActivity.this, android.R.layout.simple_spinner_item, dublinStops){
+            @Override
+            public int getCount(){
+                return (listSize);
+            }
+        };
+
+        stopsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        loadDepartureStops(listSize, stopsAdapter);
+        loadDestinationStops(listSize, stopsAdapter);
     }
 
-    private void loadDestinationStops(List<String> dublinStops, ArrayAdapter<String> spinnerAdapter) {
-        spinnerGoingToRealTime.setAdapter(spinnerAdapter);
+    private void loadDestinationStops(final int listSize, ArrayAdapter<String> stopsAdapter) {
+
+        spinnerGoingToRealTime.setAdapter(stopsAdapter);
+        spinnerGoingToRealTime.setSelection(listSize);
+
+//        spinnerGoingToRealTime.setAdapter(spinnerAdapter);
         Log.d("TEST", "13");
         spinnerGoingToRealTime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -119,18 +136,18 @@ public class RealtimeAccessActivity extends AppCompatActivity {
 //    }
 
     // remove dublinStops as an argument, it is not used. it is already being used in the spinner in previous origin code
-    private void loadDepartureStops(List<String> dublinStops, ArrayAdapter<String> spinnerAdapter) {
+    private void loadDepartureStops(final int listSize, ArrayAdapter<String> stopsAdapter) {
 
-        dublinStops.add("Choose Stop");
-        final int listSize = dublinStops.size() - 1;
-        ArrayAdapter<String> stopsAdapter = new ArrayAdapter<String>(RealtimeAccessActivity.this, android.R.layout.simple_spinner_item, dublinStops){
-            @Override
-            public int getCount(){
-              return (listSize);
-          }
-        };
-
-        stopsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        dublinStops.add("Choose Stop");
+//        final int listSize = dublinStops.size() - 1;
+//        ArrayAdapter<String> stopsAdapter = new ArrayAdapter<String>(RealtimeAccessActivity.this, android.R.layout.simple_spinner_item, dublinStops){
+//            @Override
+//            public int getCount(){
+//              return (listSize);
+//          }
+//        };
+//
+//        stopsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerOriginRealTime.setAdapter(stopsAdapter);
         spinnerOriginRealTime.setSelection(listSize);
 

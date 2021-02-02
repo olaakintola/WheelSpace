@@ -33,7 +33,7 @@ public class BusAdapter extends RecyclerView.Adapter<BusAdapter.MyViewHolder> {
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         WheelBayStatus wheelBayStatus = busList.get(position);
         holder.route_number.setText(wheelBayStatus.getRoute() );
-        holder.bus_time.setText(wheelBayStatus.getTime() );
+        holder.bus_time.setText(wheelBayStatus.getIntermediarystops() );
 //        holder.availability_icon()
     }
 
