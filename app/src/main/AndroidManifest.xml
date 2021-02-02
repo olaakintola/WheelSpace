@@ -11,10 +11,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WheelSpace">
-        <activity android:name=".PopulateSpinnerTestActivity"></activity>
+        <activity
+            android:name=".FeedbackActivity"
+            android:label="Feedback"/>
+        <activity
+            android:name=".RaiseAnIssueActivity"
+            android:label="Raise An Issue"/>
+        <activity android:name=".PopulateSpinnerTestActivity" />
         <activity android:name=".OffPeakResultActivity" />
-        <activity android:name=".RealtimeResultActivity"
-            android:label="Real-time Information"/>
+        <activity
+            android:name=".RealtimeResultActivity"
+            android:label="Real-time Information" />
         <activity
             android:name=".ForumActivity"
             android:label="@string/activity_forum" />
