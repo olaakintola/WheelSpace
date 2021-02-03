@@ -10,7 +10,7 @@
         android:id="@+id/txtRouteFeedback"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="108dp"
+        android:layout_marginTop="84dp"
         android:text="Route"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.114"
@@ -73,7 +73,7 @@
         app:layout_constraintTop_toBottomOf="@+id/txtDestinationFeedback" />
 
     <Button
-        android:id="@+id/btnSave"
+        android:id="@+id/btnSubmitFeedback"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="124dp"
@@ -90,14 +90,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/txtRouteFeedback"
         app:layout_constraintStart_toStartOf="@+id/guideline8"
         app:layout_constraintTop_toTopOf="@+id/txtRouteFeedback" />
-
-    <Spinner
-        android:id="@+id/spinnerIssueFeedback"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/txtIssueFeedback"
-        app:layout_constraintStart_toStartOf="@+id/guideline8"
-        app:layout_constraintTop_toTopOf="@+id/txtIssueFeedback" />
 
     <Spinner
         android:id="@+id/spinnerDepartureFeedback"
@@ -143,4 +135,18 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_begin="163dp" />
+
+    <TextView
+        android:id="@+id/txtIssue"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/editbox_background"
+        android:drawableEnd="@android:drawable/arrow_down_float"
+        android:drawablePadding="15dp"
+        android:hint="Select Issue that Apply"
+        android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/txtIssueFeedback"
+        app:layout_constraintStart_toStartOf="@+id/guideline8"
+        app:layout_constraintTop_toTopOf="@+id/txtIssueFeedback" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
