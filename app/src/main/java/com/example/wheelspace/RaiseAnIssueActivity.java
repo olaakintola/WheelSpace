@@ -78,6 +78,7 @@ public class RaiseAnIssueActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if(snapshot.exists() ){
+                        feedbackList.clear();
                         for(DataSnapshot child: snapshot.getChildren() ){
                             feedbackList.add(child.getValue(Feedback.class) );
                         }
