@@ -124,7 +124,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Tell us more..."
+        android:hint="(optional)"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="@+id/txtFeedbackDescription"
         app:layout_constraintStart_toStartOf="@+id/guideline8"

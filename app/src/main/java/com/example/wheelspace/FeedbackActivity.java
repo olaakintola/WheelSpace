@@ -106,7 +106,7 @@ public class FeedbackActivity extends AppCompatActivity {
         if(validateFeedback() ){
             String routeFeedback = spinnerRouteFeedback.getSelectedItem().toString();
             String issueFeedback = txtIssue.getText().toString();
-            String timeFeedback = edtTxtTimeFeedback.getText().toString();
+            String timeFeedback = edtTxtTimeFeedback.getText().toString().substring(0,5).trim();
             String departureFeedback = spinnerDepartureFeedback.getSelectedItem().toString();
             String destinationFeedback = spinnerDestinationFeedback.getSelectedItem().toString();
             String descriptionFeedback = edtTxtFeedbackDescription.getText().toString();
