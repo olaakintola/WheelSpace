@@ -1,6 +1,7 @@
 package com.example.wheelspace;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
@@ -17,8 +18,10 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -58,6 +61,7 @@ public class FeedbackActivity extends AppCompatActivity {
     String amPm;
     TimePickerDialog fTimePickerDialog;
     boolean[] issueSelected;
+    private ConstraintLayout parentFeedback;
 
     List<BusTrip> busArray = new ArrayList<>();
     List<String> dublinBusList = new ArrayList<>();
@@ -76,6 +80,7 @@ public class FeedbackActivity extends AppCompatActivity {
         setContentView(R.layout.activity_feedback);
 
         feedbackDbRef = FirebaseDatabase.getInstance().getReference().child("Feedback Message");
+//        feedbackDbRef.onDisconnect().setValue(ServerValue.TIMESTAMP);
 
         initViews();
 
@@ -97,9 +102,9 @@ public class FeedbackActivity extends AppCompatActivity {
 
     private void initSubmit() {
         
-        if( true ){
-//            if(validateFeedback() ){
-                String routeFeedback = spinnerRouteFeedback.getSelectedItem().toString();
+//        if( true ){
+        if(validateFeedback() ){
+            String routeFeedback = spinnerRouteFeedback.getSelectedItem().toString();
             String issueFeedback = txtIssue.getText().toString();
             String timeFeedback = edtTxtTimeFeedback.getText().toString();
             String departureFeedback = spinnerDepartureFeedback.getSelectedItem().toString();
@@ -109,6 +114,7 @@ public class FeedbackActivity extends AppCompatActivity {
             Feedback feedback = new Feedback(routeFeedback, issueFeedback, timeFeedback, departureFeedback, destinationFeedback, descriptionFeedback);
 
             feedbackDbRef.push().setValue(feedback);
+
             Toast.makeText(FeedbackActivity.this,  " Feedback inserted ", Toast.LENGTH_SHORT).show();
 
         }else{
@@ -116,7 +122,30 @@ public class FeedbackActivity extends AppCompatActivity {
         }
     }
 
+    private boolean validateFeedback() {
+        if(edtTxtTimeFeedback.getText().toString().equals("")){
+            return false;
+        }
+        if(txtIssue.getText().toString().equals("")){
+            return false;
+        }
+        if(spinnerDestinationFeedback.getSelectedItem().toString().equals("Choose Stop") ){
+            return false;
+        }
+        if(spinnerDepartureFeedback.getSelectedItem().toString().equals("Choose Stop")){
+            return false;
+        }
+        return true;
+
+    }
+
     private void showErrorMessage() {
+        Snackbar.make(parentFeedback,"Error: Departure and/or Destination has not been Entered", Snackbar.LENGTH_INDEFINITE)
+                .setAction("Dismiss", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                    }
+                }).show();
     }
 
     private void displayIssueFeedbackDialog() {
@@ -359,6 +388,7 @@ public class FeedbackActivity extends AppCompatActivity {
         edtTxtFeedbackDescription = findViewById(R.id.edtTxtFeedbackDescription);
         txtIssue = findViewById(R.id.txtIssue);
         btnSubmitFeedback = findViewById(R.id.btnSubmitFeedback);
+        parentFeedback = findViewById(R.id.parentFeedback);
     }
 
 }

@@ -52,7 +52,7 @@ public class RaiseAnIssueActivity extends AppCompatActivity {
         btnFeedback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                edtTxtSearch.setText("");
                 Intent intent = new Intent(RaiseAnIssueActivity.this, FeedbackActivity.class);
                 startActivity(intent);
             }
