@@ -27,7 +27,7 @@ public class RaiseAnIssueAdapter extends RecyclerView.Adapter<RaiseAnIssueAdapte
 
     @Override
     public void onBindViewHolder(@NonNull FeedbackViewHolder holder, int position) {
-        holder.initialiseFeedbackVariables(feedbackList.get(position).getRouteFeedback(), feedbackList.get(position).getIssueFeedback() );
+        holder.initialiseFeedbackVariables(feedbackList.get(position).getRouteFeedback(), feedbackList.get(position).getTimeFeedback() );
     }
 
     @Override
@@ -44,12 +44,12 @@ public class RaiseAnIssueAdapter extends RecyclerView.Adapter<RaiseAnIssueAdapte
             feedbackView = itemView;
         }
 
-        public void initialiseFeedbackVariables(String routeFeedback, String issueFeedback){
+        public void initialiseFeedbackVariables(String routeFeedback, String timeFeedback){
             TextView feedback_route = feedbackView.findViewById(R.id.feedback_route);
-            TextView feedback_subject = feedbackView.findViewById(R.id.feedback_subject);
+            TextView feedback_time = feedbackView.findViewById(R.id.feedback_time);
 
             feedback_route.setText(routeFeedback);
-            feedback_subject.setText(issueFeedback);
+            feedback_time.setText(timeFeedback);
         }
 
     }
