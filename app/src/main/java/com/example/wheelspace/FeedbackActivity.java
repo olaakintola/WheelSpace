@@ -1,18 +1,27 @@
 package com.example.wheelspace;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.app.AlertDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -39,7 +48,9 @@ public class FeedbackActivity extends AppCompatActivity {
     private TextView txtDepartureFeedback;
     private TextView txtFeedbackDescription;
     private Spinner spinnerRouteFeedback;
-    private Spinner spinnerIssueFeedback;
+    private Button btnSubmitFeedback;
+//    private String spinnerIssueFeedback;
+    private TextView txtIssue;
     private Spinner spinnerDepartureFeedback;
     private Spinner spinnerDestinationFeedback;
     private EditText edtTxtTimeFeedback;
@@ -49,11 +60,16 @@ public class FeedbackActivity extends AppCompatActivity {
     int fCurrentMinute;
     String amPm;
     TimePickerDialog fTimePickerDialog;
+    boolean[] issueSelected;
+    private ConstraintLayout parentFeedback;
 
     List<BusTrip> busArray = new ArrayList<>();
     List<String> dublinBusList = new ArrayList<>();
     List<String> dublinStops = new ArrayList<>();
+    ArrayList<Integer> listOfIssues = new ArrayList<>();
+    String[] issuesArray = {"Ramp", "Wheelchair Buzzer", "Passenger", "Driver", "Inaccessible bus-stops","Luggage not in Racks", "Others"};
     HashMap<String, String> stopMaps = new HashMap<String, String>();
+    DatabaseReference feedbackDbRef;
 
 
     String url = "https://gtfsr.transportforireland.ie";
@@ -63,11 +79,126 @@ public class FeedbackActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feedback);
 
+        feedbackDbRef = FirebaseDatabase.getInstance().getReference().child("Feedback Message");
+//        feedbackDbRef.onDisconnect().setValue(ServerValue.TIMESTAMP);
+
         initViews();
 
         populateFeedbackRouteSpinner();
 
         showTimeDialog();
+
+        displayIssueFeedbackDialog();
+
+        btnSubmitFeedback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initSubmit();
+            }
+        });
+
+
+    }
+
+    private void initSubmit() {
+        
+//        if( true ){
+        if(validateFeedback() ){
+            String routeFeedback = spinnerRouteFeedback.getSelectedItem().toString();
+            String issueFeedback = txtIssue.getText().toString();
+            String timeFeedback = edtTxtTimeFeedback.getText().toString().substring(0,5).trim();
+            String departureFeedback = spinnerDepartureFeedback.getSelectedItem().toString();
+            String destinationFeedback = spinnerDestinationFeedback.getSelectedItem().toString();
+            String descriptionFeedback = edtTxtFeedbackDescription.getText().toString();
+            
+            Feedback feedback = new Feedback(routeFeedback, issueFeedback, timeFeedback, departureFeedback, destinationFeedback, descriptionFeedback);
+
+            feedbackDbRef.push().setValue(feedback);
+
+            Toast.makeText(FeedbackActivity.this,  " Feedback inserted ", Toast.LENGTH_SHORT).show();
+
+        }else{
+            showErrorMessage();
+        }
+    }
+
+    private boolean validateFeedback() {
+        if(edtTxtTimeFeedback.getText().toString().equals("")){
+            return false;
+        }
+        if(txtIssue.getText().toString().equals("")){
+            return false;
+        }
+        if(spinnerDestinationFeedback.getSelectedItem().toString().equals("Choose Stop") ){
+            return false;
+        }
+        if(spinnerDepartureFeedback.getSelectedItem().toString().equals("Choose Stop")){
+            return false;
+        }
+        return true;
+
+    }
+
+    private void showErrorMessage() {
+        Snackbar.make(parentFeedback,"Error: Departure and/or Destination has not been Entered", Snackbar.LENGTH_INDEFINITE)
+                .setAction("Dismiss", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                    }
+                }).show();
+    }
+
+    private void displayIssueFeedbackDialog() {
+        issueSelected = new boolean[issuesArray.length];
+        txtIssue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(FeedbackActivity.this);
+                alertDialogBuilder.setTitle("Tick Issues That Apply");
+                alertDialogBuilder.setCancelable(false);
+                alertDialogBuilder.setMultiChoiceItems(issuesArray, issueSelected, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                        // Action to be taken when the user selects and unselects an Option
+                        if(isChecked){
+                            listOfIssues.add(which);
+                            Collections.sort(listOfIssues);
+                        }else{
+                            listOfIssues.remove(which);
+                        }
+                    }
+                });
+                alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        List<String> chosenList = new ArrayList<>();
+                        for(int j = 0; j < listOfIssues.size(); j++){
+                            chosenList.add(issuesArray[listOfIssues.get(j) ] );
+                        }
+                        String issuesChosen = String.join(", ", chosenList);
+                        txtIssue.setText( issuesChosen );
+                    }
+                });
+                alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                alertDialogBuilder.setNeutralButton("Clear All", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        for(int j = 0; j < issueSelected.length; j++){
+                            issueSelected[j] = false;
+                            listOfIssues.clear();
+                            txtIssue.setText("");
+                        }
+                    }
+                });
+                alertDialogBuilder.show();
+            }
+        });
     }
 
     private void showTimeDialog() {
@@ -250,11 +381,14 @@ public class FeedbackActivity extends AppCompatActivity {
         txtDepartureFeedback = findViewById(R.id.txtDepartureFeedback);
         txtFeedbackDescription = findViewById(R.id.txtFeedbackDescription);
         spinnerRouteFeedback =findViewById(R.id.spinnerRouteFeedback);
-        spinnerIssueFeedback = findViewById(R.id.spinnerIssueFeedback);
+//        spinnerIssueFeedback = findViewById(R.id.spinnerIssueFeedback);
         spinnerDepartureFeedback = findViewById(R.id.spinnerDepartureFeedback);
         spinnerDestinationFeedback = findViewById(R.id.spinnerDestinationFeedback);
         edtTxtTimeFeedback =findViewById(R.id.edtTxtTimeFeedback);
         edtTxtFeedbackDescription = findViewById(R.id.edtTxtFeedbackDescription);
+        txtIssue = findViewById(R.id.txtIssue);
+        btnSubmitFeedback = findViewById(R.id.btnSubmitFeedback);
+        parentFeedback = findViewById(R.id.parentFeedback);
     }
 
 }
