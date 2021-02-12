@@ -1,5 +1,6 @@
 package com.example.wheelspace;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,23 @@ public class RaiseAnIssueAdapter extends RecyclerView.Adapter<RaiseAnIssueAdapte
     @Override
     public void onBindViewHolder(@NonNull FeedbackViewHolder holder, int position) {
         holder.initialiseFeedbackVariables(feedbackList.get(position).getRouteFeedback(), feedbackList.get(position).getTimeFeedback() );
+
+        holder.feedbackView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(v.getContext() ,FeedbackDetailsActivity.class);
+
+                intent.putExtra("route", feedbackList.get(position).getRouteFeedback() );
+                intent.putExtra("issue", feedbackList.get(position).getIssueFeedback() );
+                intent.putExtra("time", feedbackList.get(position).getTimeFeedback() );
+                intent.putExtra("description", feedbackList.get(position).getDescriptionFeedback() );
+                intent.putExtra("departure", feedbackList.get(position).getDepartureFeedback() );
+                intent.putExtra("destination", feedbackList.get(position).getDestinationFeedback() );
+
+                v.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override

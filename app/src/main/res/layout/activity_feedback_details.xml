@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".FeedbackDetailsActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:text="Route Number"
+                android:textColor="@color/red"
+                android:id="@+id/fRouteLabel"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:text="Route Number"
+                android:textColor="@color/red"
+                android:id="@+id/fRoute"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:text="Time"
+                android:textColor="@color/purple_200"
+                android:id="@+id/fTimeLabel"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:textAppearance="?android:textAppearanceSmall"
+                android:text="Time"
+                android:textColor="@color/black"
+                android:id="@+id/fTime"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:text="Issue"
+                android:textColor="@color/purple_200"
+                android:id="@+id/fIssueLabel"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:textAppearance="?android:textAppearanceSmall"
+                android:text="Issue"
+                android:textColor="@color/black"
+                android:id="@+id/fIssue"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:text="Departure Stop"
+                android:textColor="@color/purple_200"
+                android:id="@+id/fDepartureLabel"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:textAppearance="?android:textAppearanceSmall"
+                android:text="Departure Stop"
+                android:textColor="@color/black"
+                android:id="@+id/fDeparture"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:text="Destination Stop"
+                android:textColor="@color/purple_200"
+                android:id="@+id/fDestinationLabel"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:textAppearance="?android:textAppearanceSmall"
+                android:text="Destination Stop"
+                android:textColor="@color/black"
+                android:id="@+id/fDestination"
+                />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:text="Description"
+                android:textColor="@color/purple_200"
+                android:id="@+id/fDescriptionLabel"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:textAppearance="?android:textAppearanceSmall"
+                android:text="Description"
+                android:textColor="@color/black"
+                android:id="@+id/fDescription"
+                />
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

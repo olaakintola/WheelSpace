@@ -11,12 +11,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WheelSpace">
+        <activity android:name=".FeedbackDetailsActivity"
+            android:label="Feeback Details"/>
         <activity
             android:name=".FeedbackActivity"
-            android:label="Feedback"/>
+            android:label="Feedback" />
         <activity
             android:name=".RaiseAnIssueActivity"
-            android:label="Raise An Issue"/>
+            android:label="Raise An Issue" />
         <activity android:name=".PopulateSpinnerTestActivity" />
         <activity android:name=".OffPeakResultActivity" />
         <activity
