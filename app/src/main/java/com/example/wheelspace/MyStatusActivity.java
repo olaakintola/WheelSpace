@@ -424,6 +424,7 @@ public class MyStatusActivity extends AppCompatActivity {
     populates the destination and departure stops dropdown list
 */
     private void loadBusStops() {
+        ArrayList<String> unsortedDublinStops = new ArrayList<>();
         Log.d("TEST", "10");
         BufferedReader bufferedReader = null;
         String lineFromFile;
@@ -439,7 +440,7 @@ public class MyStatusActivity extends AppCompatActivity {
 //                String stopId = stopString[0].substring(2, (stopString[0].length()-1 )).trim() ;
                 String stopId = stopString[0].substring(1, (stopString[0].length()-1 )).trim() ;
 
-                dublinStops.add(stopName);
+                unsortedDublinStops.add(stopName);
                 stopMaps.put(stopName, stopId);
 //                dublinStops.add(stopId);
             }
@@ -448,6 +449,11 @@ public class MyStatusActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        Collections.sort(unsortedDublinStops);
+//        dublinStops.add(stopName);
+        dublinStops.addAll(unsortedDublinStops);
+
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(MyStatusActivity.this,
                 android.R.layout.simple_spinner_dropdown_item, dublinStops);
         loadDepartureStops(dublinStops, spinnerAdapter);
