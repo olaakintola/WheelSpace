@@ -25,6 +25,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -57,6 +58,7 @@ public class RealtimeAccessActivity extends AppCompatActivity {
     }
 
     private void loadBusStops() {
+        ArrayList<String> unsortedDublinStops = new ArrayList<>();
         Log.d("TEST", "10");
         BufferedReader bufferedReader = null;
         String lineFromFile;
@@ -72,7 +74,7 @@ public class RealtimeAccessActivity extends AppCompatActivity {
 //                String stopId = stopString[0].substring(2, (stopString[0].length()-1 )).trim() ;
                 String stopId = stopString[0].substring(1, (stopString[0].length()-1 )).trim() ;
 
-                dublinStops.add(stopName);
+                unsortedDublinStops.add(stopName);
                 stopMaps.put(stopName, stopId);
 //                dublinStops.add(stopId);
             }
@@ -81,6 +83,10 @@ public class RealtimeAccessActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        Collections.sort(unsortedDublinStops);
+//        dublinStops.add(stopName);
+        dublinStops.addAll(unsortedDublinStops);
 
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(RealtimeAccessActivity.this,
                 android.R.layout.simple_spinner_dropdown_item, dublinStops);
