@@ -141,40 +141,6 @@ public class RaiseAnIssueActivity extends AppCompatActivity {
         recyclerRaiseIssue.setAdapter(raiseAnIssueAdapter);
 
 //        if(filterFeedback != null){
-//            filterFeedback.se
-//        }
-//
-//        feedbackDbReference.orderByChild("routeFeedback").startAt(filterFeedback).endAt(filterFeedback + "\uf8ff").addChildEventListener(
-//                new ChildEventListener() {
-//                    @Override
-//                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-//                        if(snapshot.child("routeFeedback").getValue(String.class).equals(filterFeedback) ){
-////                            WheelBayStatus wheelBayStatus = dataSnapshot.getValue(WheelBayStatus.class);
-//                            Feedback feedback = snapshot.getValue(Feedback.class);
-//                            routeFilter.add(feedback);
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError error) {
-//
-//                    }
-//                }
 //        );
     }
 

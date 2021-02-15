@@ -160,8 +160,9 @@ public class MyStatusActivity extends AppCompatActivity {
                 Toast.makeText(MyStatusActivity.this, "Status Sent: On Board - Generating Trip ID", Toast.LENGTH_SHORT).show();
                 String departure = spinnerDepature.getSelectedItem().toString();
                 String destination = spinnerDestination.getSelectedItem().toString();
-                route = spinnerRoute.getSelectedItem().toString();
-                String tripid = generateTripId(departure, route);
+                String routeFirst = spinnerRoute.getSelectedItem().toString();
+                route = routeFirst;
+                String tripid = generateTripId(departure, routeFirst);
                 tripIdDuplicate = tripid;
                 String time = edtTxtTimePicker.getText().toString();
                 String intermediarystops = generateIntermediaryStops(tripid, departure, destination);
@@ -224,7 +225,7 @@ public class MyStatusActivity extends AppCompatActivity {
         String fileLine;
         Log.d("TEST", "A");
         try {
-            lineReader = new BufferedReader(new InputStreamReader(getAssets().open("stop_times2.txt"), "UTF-8"));
+            lineReader = new BufferedReader(new InputStreamReader(getAssets().open("stop_times3.txt"), "UTF-8"));
             Log.d("TEST", "B");
 
             while ((fileLine = lineReader.readLine()) != null) {
@@ -248,6 +249,8 @@ public class MyStatusActivity extends AppCompatActivity {
                             addtoList = false;
                         }
                     }
+                }else{
+                    AppCrashSnackBar();
                 }
 
             }
@@ -259,6 +262,16 @@ public class MyStatusActivity extends AppCompatActivity {
         }
         String intermidiaryStops = changeStopListToString(intermediaryStopList);
         return intermidiaryStops;
+    }
+
+    private void AppCrashSnackBar() {
+        Snackbar.make(parent, "Unfortunately The App has Crashed", Snackbar.LENGTH_INDEFINITE)
+                .setAction("Dismiss", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        edtTxtTimePicker.setText("");
+                    }
+                }).show();
     }
 
     private String changeStopListToString(List<String> intermediaryStopList) {
@@ -492,7 +505,7 @@ public class MyStatusActivity extends AppCompatActivity {
         String fileLine;
         Log.d("TEST", "21");
         try {
-            lineReader = new BufferedReader( new InputStreamReader( getAssets().open("stop_times2.txt"), "UTF-8"));
+            lineReader = new BufferedReader( new InputStreamReader( getAssets().open("stop_times3.txt"), "UTF-8"));
             Log.d("TEST", "22");
             int i = 0;
             int minimumMinute = 1000;
@@ -504,10 +517,11 @@ public class MyStatusActivity extends AppCompatActivity {
                 String stopTrim = stopTimesArray[3].substring(1, (stopTimesArray[3].length()-1 )).trim() ;
                 if(idStop2.equals(stopTrim ) ){
                     Log.d("TEST", "60");
-                    sixtyPosition = stopTimesArray[0].indexOf("60");
+                    sixtyPosition = stopTimesArray[0].indexOf("60-");
                     startIndexOfSelectedRoute = sixtyPosition + 3;
                     endIndexOfSelectedRoute = startIndexOfSelectedRoute + routeSelected.length();
-                    if(stopTimesArray[0].substring( startIndexOfSelectedRoute, endIndexOfSelectedRoute ).equals(routeSelected) ){
+                    String routeFromArray = stopTimesArray[0].substring( startIndexOfSelectedRoute, endIndexOfSelectedRoute ).trim();
+                    if(routeFromArray.equals(routeSelected) ){
                         String timePicked = edtTxtTimePicker.getText().toString();
                         Log.d("TEST", "61");
                         String timeFromArray = stopTimesArray[2].substring(1,5).trim() ;
