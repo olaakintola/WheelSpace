@@ -37,8 +37,9 @@ public class RealtimeAccessActivity extends AppCompatActivity {
     private Spinner spinnerOriginRealTime, spinnerGoingToRealTime;
     private Button btnSearch;
     private ConstraintLayout parentRealTime;
-    List<String> dublinStops = new ArrayList<>();
+    ArrayList<String> dublinStops = new ArrayList<>();
     HashMap<String, String> stopMaps = new HashMap<String, String>();
+    BusStopUtility busStopUtility = new BusStopUtility();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +48,7 @@ public class RealtimeAccessActivity extends AppCompatActivity {
 
         initViews();
 
-        loadBusStops();
+        busStopUtility.loadBusStops(stopMaps, this, dublinStops, spinnerGoingToRealTime, spinnerOriginRealTime);
 
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,76 +58,6 @@ public class RealtimeAccessActivity extends AppCompatActivity {
         });
     }
 
-    private void loadBusStops() {
-        ArrayList<String> unsortedDublinStops = new ArrayList<>();
-        Log.d("TEST", "10");
-        BufferedReader bufferedReader = null;
-        String lineFromFile;
-        dublinStops.clear();
-        dublinStops.add("Choose Stop");
-        Log.d("TEST", "11");
-        try {
-            bufferedReader = new BufferedReader( new InputStreamReader( getAssets().open("stops.txt"), "UTF-8"));
-            Log.d("TEST", "12");
-            while( (lineFromFile = bufferedReader.readLine() ) != null){
-                String[] stopString = lineFromFile.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
-                String stopName = stopString[1].substring(1, (stopString[1].length()-1 )).trim() ;
-//                String stopId = stopString[0].substring(2, (stopString[0].length()-1 )).trim() ;
-                String stopId = stopString[0].substring(1, (stopString[0].length()-1 )).trim() ;
-
-                unsortedDublinStops.add(stopName);
-                stopMaps.put(stopName, stopId);
-//                dublinStops.add(stopId);
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        Collections.sort(unsortedDublinStops);
-//        dublinStops.add(stopName);
-        dublinStops.addAll(unsortedDublinStops);
-
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(RealtimeAccessActivity.this,
-                android.R.layout.simple_spinner_dropdown_item, dublinStops);
-
-        loadDepartureStops( dublinStops,spinnerAdapter);
-        loadDestinationStops( dublinStops, spinnerAdapter);
-    }
-
-    private void loadDestinationStops(List<String> dublinStops, ArrayAdapter<String> spinnerAdapter) {
-
-        spinnerGoingToRealTime.setAdapter(spinnerAdapter);
-        Log.d("TEST", "13");
-        spinnerGoingToRealTime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String itemValue = parent.getItemAtPosition(position).toString();
-                Toast.makeText(RealtimeAccessActivity.this, itemValue + " Selected!", Toast.LENGTH_SHORT).show();
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                Log.d("TEST", "14");
-            }
-        });
-    }
-
-    private void loadDepartureStops(List<String> dublinStops, ArrayAdapter<String> spinnerAdapter) {
-        spinnerOriginRealTime.setAdapter(spinnerAdapter);
-        Log.d("TEST", "13");
-        spinnerOriginRealTime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String itemValue = parent.getItemAtPosition(position).toString();
-                Toast.makeText(RealtimeAccessActivity.this, itemValue + " Selected!", Toast.LENGTH_SHORT).show();
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                Log.d("TEST", "14");
-            }
-        });
-    }
 
 
     private void initSearch() {

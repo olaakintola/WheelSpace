@@ -49,5 +49,6 @@
         android:layout_height="500dp"
         android:layout_marginTop="25dp"
         app:layout_constraintTop_toBottomOf="@+id/edtTxtSearch"
-        tools:layout_editor_absoluteX="16dp" />
+        tools:layout_editor_absoluteX="16dp"
+        android:paddingBottom="120dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

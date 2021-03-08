@@ -67,8 +67,9 @@ public class MyStatusActivity extends AppCompatActivity {
     String tripIdDuplicate = null;
     List<BusTrip> busArray = new ArrayList<>();
     List<String> dublinBusList = new ArrayList<>();
-    List<String> dublinStops = new ArrayList<>();
+    ArrayList<String> dublinStops = new ArrayList<>();
     HashMap<String, String> stopMaps = new HashMap<String, String>();
+    BusStopUtility busStopUtility = new BusStopUtility();
 
     DatabaseReference wheelchairStatusDbRef;
 
@@ -160,8 +161,9 @@ public class MyStatusActivity extends AppCompatActivity {
                 Toast.makeText(MyStatusActivity.this, "Status Sent: On Board - Generating Trip ID", Toast.LENGTH_SHORT).show();
                 String departure = spinnerDepature.getSelectedItem().toString();
                 String destination = spinnerDestination.getSelectedItem().toString();
-                route = spinnerRoute.getSelectedItem().toString();
-                String tripid = generateTripId(departure, route);
+                String routeFirst = spinnerRoute.getSelectedItem().toString();
+                route = routeFirst;
+                String tripid = generateTripId(departure, routeFirst);
                 tripIdDuplicate = tripid;
                 String time = edtTxtTimePicker.getText().toString();
                 String intermediarystops = generateIntermediaryStops(tripid, departure, destination);
@@ -224,7 +226,7 @@ public class MyStatusActivity extends AppCompatActivity {
         String fileLine;
         Log.d("TEST", "A");
         try {
-            lineReader = new BufferedReader(new InputStreamReader(getAssets().open("stop_times2.txt"), "UTF-8"));
+            lineReader = new BufferedReader(new InputStreamReader(getAssets().open("stop_times3.txt"), "UTF-8"));
             Log.d("TEST", "B");
 
             while ((fileLine = lineReader.readLine()) != null) {
@@ -259,6 +261,16 @@ public class MyStatusActivity extends AppCompatActivity {
         }
         String intermidiaryStops = changeStopListToString(intermediaryStopList);
         return intermidiaryStops;
+    }
+
+    private void AppCrashSnackBar() {
+        Snackbar.make(parent, "Unfortunately The App has Crashed", Snackbar.LENGTH_INDEFINITE)
+                .setAction("Dismiss", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        edtTxtTimePicker.setText("");
+                    }
+                }).show();
     }
 
     private String changeStopListToString(List<String> intermediaryStopList) {
@@ -335,7 +347,8 @@ public class MyStatusActivity extends AppCompatActivity {
         Call<BusModel> call = busAPICaller.getData();
         Log.d("TEST","2");
 
-        loadBusStops();
+
+        busStopUtility.loadBusStops(stopMaps, this, dublinStops, spinnerDestination, spinnerDepature);
 
         call.enqueue(new Callback<BusModel>() {
 
@@ -423,62 +436,12 @@ public class MyStatusActivity extends AppCompatActivity {
 /*
     populates the destination and departure stops dropdown list
 */
-    private void loadBusStops() {
-        ArrayList<String> unsortedDublinStops = new ArrayList<>();
-        Log.d("TEST", "10");
-        BufferedReader bufferedReader = null;
-        String lineFromFile;
-        dublinStops.clear();
-        dublinStops.add("Choose Stop");
-        Log.d("TEST", "11");
-        try {
-            bufferedReader = new BufferedReader( new InputStreamReader( getAssets().open("stops.txt"), "UTF-8"));
-            Log.d("TEST", "12");
-            while( (lineFromFile = bufferedReader.readLine() ) != null){
-                String[] stopString = lineFromFile.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
-                String stopName = stopString[1].substring(1, (stopString[1].length()-1 )).trim() ;
-//                String stopId = stopString[0].substring(2, (stopString[0].length()-1 )).trim() ;
-                String stopId = stopString[0].substring(1, (stopString[0].length()-1 )).trim() ;
 
-                unsortedDublinStops.add(stopName);
-                stopMaps.put(stopName, stopId);
-//                dublinStops.add(stopId);
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        Collections.sort(unsortedDublinStops);
-//        dublinStops.add(stopName);
-        dublinStops.addAll(unsortedDublinStops);
-
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(MyStatusActivity.this,
-                android.R.layout.simple_spinner_dropdown_item, dublinStops);
-        loadDepartureStops(dublinStops, spinnerAdapter);
-        loadDestinationStops(dublinStops, spinnerAdapter);
-    }
 
 /*
     populates only the destination dropdown list
 */
-    private void loadDestinationStops(List<String> dublinStops, ArrayAdapter<String> spinnerAdapter) {
-        spinnerDestination.setAdapter(spinnerAdapter);
-        Log.d("TEST", "13");
-        spinnerDestination.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String itemValue = parent.getItemAtPosition(position).toString();
-                Toast.makeText(MyStatusActivity.this, itemValue + " Selected!", Toast.LENGTH_SHORT).show();
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                Log.d("TEST", "14");
-            }
-        });
-//        destination = spinnerDestination.getSelectedItem().toString();
-    }
+
 
 /*
     generates unique identifier for each bus trip
@@ -492,7 +455,7 @@ public class MyStatusActivity extends AppCompatActivity {
         String fileLine;
         Log.d("TEST", "21");
         try {
-            lineReader = new BufferedReader( new InputStreamReader( getAssets().open("stop_times2.txt"), "UTF-8"));
+            lineReader = new BufferedReader( new InputStreamReader( getAssets().open("stop_times3.txt"), "UTF-8"));
             Log.d("TEST", "22");
             int i = 0;
             int minimumMinute = 1000;
@@ -504,10 +467,11 @@ public class MyStatusActivity extends AppCompatActivity {
                 String stopTrim = stopTimesArray[3].substring(1, (stopTimesArray[3].length()-1 )).trim() ;
                 if(idStop2.equals(stopTrim ) ){
                     Log.d("TEST", "60");
-                    sixtyPosition = stopTimesArray[0].indexOf("60");
+                    sixtyPosition = stopTimesArray[0].indexOf("60-");
                     startIndexOfSelectedRoute = sixtyPosition + 3;
                     endIndexOfSelectedRoute = startIndexOfSelectedRoute + routeSelected.length();
-                    if(stopTimesArray[0].substring( startIndexOfSelectedRoute, endIndexOfSelectedRoute ).equals(routeSelected) ){
+                    String routeFromArray = stopTimesArray[0].substring( startIndexOfSelectedRoute, endIndexOfSelectedRoute ).trim();
+                    if(routeFromArray.equals(routeSelected) ){
                         String timePicked = edtTxtTimePicker.getText().toString();
                         Log.d("TEST", "61");
                         String timeFromArray = stopTimesArray[2].substring(1,5).trim() ;
@@ -555,19 +519,6 @@ public class MyStatusActivity extends AppCompatActivity {
 /*
     populates only the departure dropdown list
 */
-    private void loadDepartureStops(List<String> dublinStops, ArrayAdapter<String> spinnerAdapter) {
-        spinnerDepature.setAdapter(spinnerAdapter);
-        Log.d("TEST", "13");
-        spinnerDepature.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String itemValue = parent.getItemAtPosition(position).toString();
-                Toast.makeText(MyStatusActivity.this, itemValue + " Selected!", Toast.LENGTH_SHORT).show();
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                Log.d("TEST", "14");
-            }
-        });
-    }
+
+
 }
