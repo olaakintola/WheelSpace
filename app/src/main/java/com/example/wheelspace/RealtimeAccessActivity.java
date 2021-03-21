@@ -112,8 +112,8 @@ public class RealtimeAccessActivity extends AppCompatActivity {
     private void initViews() {
         txtOrigin = findViewById(R.id.txtOrigin);
         txtGoingTo = findViewById(R.id.txtGoingTo);
-        spinnerOriginRealTime = findViewById(R.id.spinnerOriginRealTime);
-        spinnerGoingToRealTime = findViewById(R.id.spinnerGoingToRealTime);
+        spinnerOriginRealTime = findViewById(R.id.spinnerOriginRTAccess);
+        spinnerGoingToRealTime = findViewById(R.id.spinnerGoingToRTAccess);
         btnSearch = findViewById(R.id.btnSearch);
         parentRealTime = findViewById(R.id.parentRealTime);
     }

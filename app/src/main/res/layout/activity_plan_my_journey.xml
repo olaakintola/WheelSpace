@@ -5,7 +5,7 @@
     android:id="@+id/parentPlanMyJourney"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PlanMyJourneyActivity" >
+    tools:context=".PlanMyJourneyActivity">
 
     <TextView
         android:id="@+id/txtDate"
@@ -45,40 +45,37 @@
         app:layout_constraintStart_toEndOf="@+id/txtDate"
         app:layout_constraintTop_toTopOf="@+id/txtDate" />
 
-    <EditText
-        android:id="@+id/edtTxtFutureDeparture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="27dp"
-        android:ems="10"
-        android:hint="Leaving From"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="@+id/txtLeavingFrom"
-        app:layout_constraintStart_toEndOf="@+id/txtLeavingFrom"
-        app:layout_constraintTop_toTopOf="@+id/txtLeavingFrom" />
 
-    <EditText
-        android:id="@+id/edtTxtFutureDestination"
+    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+        android:id="@+id/spinnerFtrDestination"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="18dp"
-        android:ems="10"
-        android:hint="Going To"
-        android:inputType="textPersonName"
+        android:layout_marginStart="16dp"
         app:layout_constraintBottom_toBottomOf="@+id/txtArrivingAt"
         app:layout_constraintStart_toEndOf="@+id/txtArrivingAt"
-        app:layout_constraintTop_toTopOf="@+id/txtArrivingAt" />
+        app:layout_constraintTop_toTopOf="@+id/txtArrivingAt"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+        android:id="@+id/spinnerFtrDeparture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/txtLeavingFrom"
+        app:layout_constraintStart_toEndOf="@+id/txtLeavingFrom"
+        app:layout_constraintTop_toTopOf="@+id/txtLeavingFrom"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/btnFindOffPeak"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="44dp"
         android:text="Find Off-Peak Period"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.48"
+        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="@+id/guideline6"
-        app:layout_constraintTop_toBottomOf="@+id/edtTxtFutureDestination" />
+        app:layout_constraintTop_toTopOf="@+id/guideline9" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline6"
@@ -93,4 +90,11 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="125dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="338dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

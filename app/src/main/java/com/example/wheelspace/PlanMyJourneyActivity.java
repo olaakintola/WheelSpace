@@ -10,12 +10,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 
 public class PlanMyJourneyActivity extends AppCompatActivity {
 
@@ -24,6 +27,11 @@ public class PlanMyJourneyActivity extends AppCompatActivity {
     private Button btnFindOffPeak;
     private ConstraintLayout parentPlanMyJourney;
     DatePickerDialog.OnDateSetListener onDateSetListener;
+    Spinner spinnerFtrDeparture;
+    Spinner spinnerFtrDestination;
+    ArrayList<String> dublinStops = new ArrayList<>();
+    HashMap<String, String> stopMaps = new HashMap<String, String>();
+    BusStopUtility busStopUtility = new BusStopUtility();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +39,8 @@ public class PlanMyJourneyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_plan_my_journey);
 
         initViews();
+
+        busStopUtility.loadBusStops(stopMaps, this, dublinStops, spinnerFtrDestination, spinnerFtrDeparture);
 
         Calendar calendar = Calendar.getInstance();
         final int year = calendar.get(Calendar.YEAR);
@@ -102,9 +112,11 @@ public class PlanMyJourneyActivity extends AppCompatActivity {
         txtArrivingAt = findViewById(R.id.txtArrivingAt);
         txtLeavingFrom = findViewById(R.id.txtLeavingFrom);
         edtTxtDate = findViewById(R.id.edtTxtDate);
-        edtTxtFutureDeparture = findViewById(R.id.edtTxtFutureDeparture);
-        edtTxtFutureDestination = findViewById(R.id.edtTxtFutureDestination);
+//        edtTxtFutureDeparture = findViewById(R.id.edtTxtFutureDeparture);
+//        edtTxtFutureDestination = findViewById(R.id.edtTxtFutureDestination);
         parentPlanMyJourney = findViewById(R.id.parentPlanMyJourney);
         btnFindOffPeak = findViewById(R.id.btnFindOffPeak);
+        spinnerFtrDeparture = findViewById(R.id.spinnerFtrDeparture);
+        spinnerFtrDestination = findViewById(R.id.spinnerFtrDestination);
     }
 }

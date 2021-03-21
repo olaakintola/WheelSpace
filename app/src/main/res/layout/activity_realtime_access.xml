@@ -57,8 +57,22 @@
         android:orientation="vertical"
         app:layout_constraintGuide_begin="263dp" />
 
-    <Spinner
-        android:id="@+id/spinnerOriginRealTime"
+<!--    <Spinner-->
+<!--        android:id="@+id/spinnerOriginRealTime"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        tools:layout_editor_absoluteX="88dp"-->
+<!--        tools:layout_editor_absoluteY="533dp" />-->
+
+<!--    <Spinner-->
+<!--        android:id="@+id/spinnerGoingToRealTime"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        tools:layout_editor_absoluteX="88dp"-->
+<!--        tools:layout_editor_absoluteY="616dp" />-->
+
+    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+        android:id="@+id/spinnerOriginRTAccess"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
@@ -66,8 +80,8 @@
         app:layout_constraintStart_toEndOf="@+id/txtOrigin"
         app:layout_constraintTop_toTopOf="@+id/txtOrigin" />
 
-    <Spinner
-        android:id="@+id/spinnerGoingToRealTime"
+    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+        android:id="@+id/spinnerGoingToRTAccess"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="38dp"

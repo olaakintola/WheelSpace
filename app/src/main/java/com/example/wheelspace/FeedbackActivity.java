@@ -388,8 +388,8 @@ public class FeedbackActivity extends AppCompatActivity {
         txtFeedbackDescription = findViewById(R.id.txtFeedbackDescription);
         spinnerRouteFeedback =findViewById(R.id.spinnerRouteFeedback);
 //        spinnerIssueFeedback = findViewById(R.id.spinnerIssueFeedback);
-        spinnerDepartureFeedback = findViewById(R.id.spinnerDepartureFeedback);
-        spinnerDestinationFeedback = findViewById(R.id.spinnerDestinationFeedback);
+        spinnerDepartureFeedback = findViewById(R.id.spinnerFdbackDeparture);
+        spinnerDestinationFeedback = findViewById(R.id.spinnerFdbackDestination);
         edtTxtTimeFeedback =findViewById(R.id.edtTxtTimeFeedback);
         edtTxtFeedbackDescription = findViewById(R.id.edtTxtFeedbackDescription);
         txtIssue = findViewById(R.id.txtIssue);
