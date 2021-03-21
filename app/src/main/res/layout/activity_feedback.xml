@@ -2,10 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parentFeedback"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FeedbackActivity"
-    android:id="@+id/parentFeedback">
+    tools:context=".FeedbackActivity">
 
     <TextView
         android:id="@+id/txtRouteFeedback"
@@ -92,21 +92,19 @@
         app:layout_constraintStart_toStartOf="@+id/guideline8"
         app:layout_constraintTop_toTopOf="@+id/txtRouteFeedback" />
 
-    <Spinner
-        android:id="@+id/spinnerDepartureFeedback"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/txtDepartureFeedback"
-        app:layout_constraintStart_toStartOf="@+id/guideline8"
-        app:layout_constraintTop_toTopOf="@+id/txtDepartureFeedback" />
+    <!--    <Spinner-->
+    <!--        android:id="@+id/spinnerDepartureFeedback"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        tools:layout_editor_absoluteX="77dp"-->
+    <!--        tools:layout_editor_absoluteY="622dp" />-->
 
-    <Spinner
-        android:id="@+id/spinnerDestinationFeedback"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/txtDestinationFeedback"
-        app:layout_constraintStart_toStartOf="@+id/guideline8"
-        app:layout_constraintTop_toTopOf="@+id/txtDestinationFeedback" />
+    <!--    <Spinner-->
+    <!--        android:id="@+id/spinnerDestinationFeedback"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        tools:layout_editor_absoluteX="75dp"-->
+    <!--        tools:layout_editor_absoluteY="583dp" />-->
 
     <EditText
         android:id="@+id/edtTxtTimeFeedback"
@@ -148,6 +146,27 @@
         android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="@+id/txtIssueFeedback"
         app:layout_constraintStart_toStartOf="@+id/guideline8"
-        app:layout_constraintTop_toTopOf="@+id/txtIssueFeedback" />
+        app:layout_constraintTop_toTopOf="@+id/txtIssueFeedback"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+        android:id="@+id/spinnerFdbackDeparture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/txtDepartureFeedback"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline8"
+        app:layout_constraintTop_toTopOf="@+id/txtDepartureFeedback"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+        android:id="@+id/spinnerFdbackDestination"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/txtDestinationFeedback"
+        app:layout_constraintStart_toStartOf="@+id/guideline8"
+        app:layout_constraintTop_toTopOf="@+id/txtDestinationFeedback" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

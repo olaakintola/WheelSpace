@@ -318,8 +318,8 @@ public class MyStatusActivity extends AppCompatActivity {
         txtDestination = findViewById(R.id.txtDestination);
         txtRoute = findViewById(R.id.txtRoute);
         txtStatus = findViewById(R.id.txtStatus);
-        spinnerDepature = findViewById(R.id.spinnerDepature);
-        spinnerDestination = findViewById(R.id.spinnerDestination);
+        spinnerDepature = findViewById(R.id.spinnerDepartureStatus);
+        spinnerDestination = findViewById(R.id.spinnerDestinationStatus);
         spinnerRoute = findViewById(R.id.spinnerRoute);
         parent = findViewById(R.id.parent);
         rgStatus = findViewById(R.id.rgStatus);

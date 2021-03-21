@@ -43,25 +43,21 @@
         app:layout_constraintStart_toEndOf="@+id/txtRoute"
         app:layout_constraintTop_toTopOf="@+id/txtRoute" />
 
-    <Spinner
-        android:id="@+id/spinnerDepature"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="45dp"
-        android:entries="@array/departure_stops"
-        app:layout_constraintBottom_toBottomOf="@+id/txtDepature"
-        app:layout_constraintStart_toEndOf="@+id/txtDepature"
-        app:layout_constraintTop_toTopOf="@+id/txtDepature" />
+<!--    <Spinner-->
+<!--        android:id="@+id/spinnerDepature"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:entries="@array/departure_stops"-->
+<!--        tools:layout_editor_absoluteX="78dp"-->
+<!--        tools:layout_editor_absoluteY="498dp" />-->
 
-    <Spinner
-        android:id="@+id/spinnerDestination"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:entries="@array/destination_stops"
-        app:layout_constraintBottom_toBottomOf="@+id/txtDestination"
-        app:layout_constraintStart_toEndOf="@+id/txtDestination"
-        app:layout_constraintTop_toTopOf="@+id/txtDestination" />
+<!--    <Spinner-->
+<!--        android:id="@+id/spinnerDestination"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:entries="@array/destination_stops"-->
+<!--        tools:layout_editor_absoluteX="78dp"-->
+<!--        tools:layout_editor_absoluteY="557dp" />-->
 
     <Button
         android:id="@+id/btnSend"
@@ -130,4 +126,23 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="100dp" />
+
+    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+        android:id="@+id/spinnerDepartureStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="45dp"
+        app:layout_constraintBottom_toBottomOf="@+id/txtDepature"
+        app:layout_constraintStart_toEndOf="@+id/txtDepature"
+        app:layout_constraintTop_toTopOf="@+id/txtDepature" />
+
+    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+        android:id="@+id/spinnerDestinationStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        app:layout_constraintBottom_toBottomOf="@+id/txtDestination"
+        app:layout_constraintStart_toEndOf="@+id/txtDestination"
+        app:layout_constraintTop_toTopOf="@+id/txtDestination" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
