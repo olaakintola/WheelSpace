@@ -2,10 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MyStatusActivity"
-    android:id="@+id/parent">
+    tools:context=".MyStatusActivity">
 
     <TextView
         android:id="@+id/txtRoute"
@@ -43,21 +43,21 @@
         app:layout_constraintStart_toEndOf="@+id/txtRoute"
         app:layout_constraintTop_toTopOf="@+id/txtRoute" />
 
-<!--    <Spinner-->
-<!--        android:id="@+id/spinnerDepature"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:entries="@array/departure_stops"-->
-<!--        tools:layout_editor_absoluteX="78dp"-->
-<!--        tools:layout_editor_absoluteY="498dp" />-->
+    <!--    <Spinner-->
+    <!--        android:id="@+id/spinnerDepature"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:entries="@array/departure_stops"-->
+    <!--        tools:layout_editor_absoluteX="78dp"-->
+    <!--        tools:layout_editor_absoluteY="498dp" />-->
 
-<!--    <Spinner-->
-<!--        android:id="@+id/spinnerDestination"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:entries="@array/destination_stops"-->
-<!--        tools:layout_editor_absoluteX="78dp"-->
-<!--        tools:layout_editor_absoluteY="557dp" />-->
+    <!--    <Spinner-->
+    <!--        android:id="@+id/spinnerDestination"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:entries="@array/destination_stops"-->
+    <!--        tools:layout_editor_absoluteX="78dp"-->
+    <!--        tools:layout_editor_absoluteY="557dp" />-->
 
     <Button
         android:id="@+id/btnSend"
@@ -83,15 +83,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="On Board"
-            android:onClick="checkButton" />
+            android:onClick="checkButton"
+            android:text="On Board" />
 
         <RadioButton
             android:id="@+id/rbGotOff"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Got Off"
-            android:onClick="checkButton" />
+            android:onClick="checkButton"
+            android:text="Got Off" />
     </RadioGroup>
 
     <EditText
@@ -144,5 +144,21 @@
         app:layout_constraintBottom_toBottomOf="@+id/txtDestination"
         app:layout_constraintStart_toEndOf="@+id/txtDestination"
         app:layout_constraintTop_toTopOf="@+id/txtDestination" />
+
+    <Spinner
+        android:id="@+id/spinnerBusDirection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline10" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="511dp" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

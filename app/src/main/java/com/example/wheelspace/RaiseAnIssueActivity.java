@@ -25,8 +25,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class RaiseAnIssueActivity extends AppCompatActivity {
 
@@ -68,6 +72,10 @@ public class RaiseAnIssueActivity extends AppCompatActivity {
 //        });
     }
 
+//    WheelBayStatus wheelBayStatus = dataSnapshot.getValue(WheelBayStatus.class);
+//    String intermediaryStops = wheelBayStatus.getIntermediarystops();
+//    String[] intermediaryStopArray = intermediaryStops.split(",");
+//    int i;
 
     @Override
     protected void onStart() {
@@ -79,8 +87,18 @@ public class RaiseAnIssueActivity extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if(snapshot.exists() ){
                         feedbackList.clear();
+                        String dateCheck = generateFeedbackSentDate();
                         for(DataSnapshot child: snapshot.getChildren() ){
-                            feedbackList.add(child.getValue(Feedback.class) );
+                            Feedback feedback = child.getValue(Feedback.class);
+                            String dateOfFeedback = feedback.getGeneratedDate();
+//                            String dateCheck = generateFeedbackSentDate();
+                            if(dateCheck.equals(dateOfFeedback)){
+                                feedbackList.add(feedback );
+                            }
+//                            feedbackList.add(child.getValue(Feedback.class) );
+
+
+                            
                         }
                         RaiseAnIssueAdapter raiseAnIssueAdapter = new RaiseAnIssueAdapter(feedbackList);
                         recyclerRaiseIssue.setAdapter(raiseAnIssueAdapter);
@@ -128,6 +146,22 @@ public class RaiseAnIssueActivity extends AppCompatActivity {
 //        feedbackRecyclerAdapter.startListening();
 //        recyclerRaiseIssue.setAdapter(feedbackRecyclerAdapter);
 
+    }
+
+    private String generateFeedbackSentDate() {
+        String localTime = null;
+
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+1:00") );
+        Date currentLocalDate= calendar.getTime();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss 'GMT'Z yyyy");
+//        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+1:00"));
+        localTime  = dateFormat.format(currentLocalDate);
+
+        String localDateDayCombo = localTime.substring(0,10);
+        String localYear = localTime.substring(29,33);
+
+        localTime = localDateDayCombo + " " + localYear;
+        return localTime;
     }
 
     private void feedbackSearch(String filterFeedback) {

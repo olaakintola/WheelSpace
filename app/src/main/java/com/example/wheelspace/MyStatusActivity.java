@@ -51,7 +51,7 @@ public class MyStatusActivity extends AppCompatActivity {
     // machine learning variables
     private EditText edtTxtTimePicker;
     private TextView txtRoute, txtDepature, txtDestination, txtStatus;
-    private Spinner spinnerRoute, spinnerDepature, spinnerDestination;
+    private Spinner spinnerRoute, spinnerDepature, spinnerDestination, spinnerBusDirection;
     private Button btnSend;
     private RadioGroup rgStatus;
 //    private RadioButton rbOnBoard, rbGotOff;
@@ -67,6 +67,7 @@ public class MyStatusActivity extends AppCompatActivity {
     String tripIdDuplicate = null;
     List<BusTrip> busArray = new ArrayList<>();
     List<String> dublinBusList = new ArrayList<>();
+    List<String> tempDublinBusList = new ArrayList<>();
     ArrayList<String> dublinStops = new ArrayList<>();
     HashMap<String, String> stopMaps = new HashMap<String, String>();
     BusStopUtility busStopUtility = new BusStopUtility();
@@ -164,7 +165,13 @@ public class MyStatusActivity extends AppCompatActivity {
                 String routeFirst = spinnerRoute.getSelectedItem().toString();
                 route = routeFirst;
                 String tripid = generateTripId(departure, routeFirst);
+                if(tripid == null){
+//                    showRouteBusComboSnackBar();
+                    showSnackBar();
+                }
+
                 tripIdDuplicate = tripid;
+//                tripIdDuplicate = tripid;
                 String time = edtTxtTimePicker.getText().toString();
                 String intermediarystops = generateIntermediaryStops(tripid, departure, destination);
                 Toast.makeText(MyStatusActivity.this, tripid + " :Trip ID", Toast.LENGTH_SHORT).show();
@@ -287,7 +294,18 @@ public class MyStatusActivity extends AppCompatActivity {
         It is activated when a field is yet to be completed and the send button is clicked
     */
     private void showSnackBar() {
+
         Snackbar.make(parent, "Status Not Sent: Complete All Fields", Snackbar.LENGTH_INDEFINITE)
+                .setAction("Dismiss", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        edtTxtTimePicker.setText("");
+                    }
+                }).show();
+    }
+
+    private void showRouteBusComboSnackBar() {
+        Snackbar.make(parent, "Bus Route/Bus Stop Combination NOT Possible: Retry", Snackbar.LENGTH_INDEFINITE)
                 .setAction("Dismiss", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -309,6 +327,9 @@ public class MyStatusActivity extends AppCompatActivity {
         if(spinnerDepature.getSelectedItem().toString().equals("Choose Stop")){
             return false;
         }
+//        if(tripIdDuplicate.equals("error")){
+//            return false;
+//        }
         return true;
     }
 
@@ -326,6 +347,7 @@ public class MyStatusActivity extends AppCompatActivity {
 //        rbOnBoard = findViewById(R.id.rbOnBoard);
 //        rbGotOff = findViewById(R.id.rbGotOff);
         btnSend = findViewById(R.id.btnSend);
+        spinnerBusDirection = findViewById(R.id.spinnerBusDirection);
     }
 
 /*
@@ -369,6 +391,8 @@ public class MyStatusActivity extends AppCompatActivity {
 //
 //                textJson.append(busResponse);
                 //use getarray to get the array part
+                dublinBusList.clear();
+                dublinBusList.add("Choose Route");
                 busArray = response.body().getBusEntities();
                 for(int i = 0; i < busArray.size(); i++){   // change to busArray.size  from 10
                     String routeId = busArray.get(i).getTripUpdateDetails().getTripDetails().getRoute_id();
@@ -390,15 +414,19 @@ public class MyStatusActivity extends AppCompatActivity {
                             }
                         }
 
-                        if(!(dublinBusList.contains(checkNumberInArray) ) ){
-                            dublinBusList.add(checkNumberInArray);
-                            Collections.sort(dublinBusList);
+                        if(!(tempDublinBusList.contains(checkNumberInArray) ) ){
+                            tempDublinBusList.add(checkNumberInArray);
+                            Collections.sort(tempDublinBusList);
                         }
                     }
                 }
 
+//        dublinStops.add(stopName);
+                dublinBusList.addAll(tempDublinBusList);
+
                 ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(MyStatusActivity.this,
                         android.R.layout.simple_spinner_dropdown_item, dublinBusList);
+                spinnerAdapter.notifyDataSetChanged();      // code for 2nd dropdown implementation
                 spinnerRoute.setAdapter(spinnerAdapter);
                 spinnerRoute.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
@@ -414,14 +442,6 @@ public class MyStatusActivity extends AppCompatActivity {
                     }
                 });
 //                String busroute = busArray.get(0).getTripUpdateDetails().getTripDetails().getRoute_id();
-//                String busroute1 = busroute.substring(0, 2);
-//                busResponse = "Route Id" + busroute1;
-//                textJson.append(busResponse);
-
-                // use the first two characters of route_id to see if it is dublin
-                // if use the fourth and fifth character to build an array list of character that can be sent to loadspinner
-                // if I click on a stop and bus route number, I should go through api again to see which of the buses
-                // with that route number is at that stop using the time to filter. using the time to filter means that
                 // we can know which trip id we need to store in firebase. we then store the destination in the firesbase also.
             }
 

@@ -27,11 +27,15 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TimeZone;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -110,8 +114,9 @@ public class FeedbackActivity extends AppCompatActivity {
             String departureFeedback = spinnerDepartureFeedback.getSelectedItem().toString();
             String destinationFeedback = spinnerDestinationFeedback.getSelectedItem().toString();
             String descriptionFeedback = edtTxtFeedbackDescription.getText().toString();
+            String generatedDate = generateFeedbackSentDate();
             
-            Feedback feedback = new Feedback(routeFeedback, issueFeedback, timeFeedback, departureFeedback, destinationFeedback, descriptionFeedback);
+            Feedback feedback = new Feedback(routeFeedback, issueFeedback, timeFeedback, departureFeedback, destinationFeedback, descriptionFeedback, generatedDate);
 
             feedbackDbRef.push().setValue(feedback);
 
@@ -120,6 +125,22 @@ public class FeedbackActivity extends AppCompatActivity {
         }else{
             showErrorMessage();
         }
+    }
+
+    private String generateFeedbackSentDate() {
+        String localTime = null;
+
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+1:00") );
+        Date currentLocalDate= calendar.getTime();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss 'GMT'Z yyyy");
+//        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+1:00"));
+        localTime  = dateFormat.format(currentLocalDate);
+
+        String localDateDayCombo = localTime.substring(0,10);
+        String localYear = localTime.substring(29,33);
+
+        localTime = localDateDayCombo + " " + localYear;
+        return localTime;
     }
 
     private boolean validateFeedback() {
