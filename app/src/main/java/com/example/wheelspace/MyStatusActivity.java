@@ -72,6 +72,12 @@ public class MyStatusActivity extends AppCompatActivity {
     HashMap<String, String> stopMaps = new HashMap<String, String>();
     BusStopUtility busStopUtility = new BusStopUtility();
 
+    List<String> directiontList = new ArrayList<>();
+    ArrayAdapter<String> directionAdapter;
+    ArrayAdapter<String> busDirectionAdapter;
+    List<String> busDirectiontList = new ArrayList<>();
+
+
     DatabaseReference wheelchairStatusDbRef;
 
     String url = "https://gtfsr.transportforireland.ie";
@@ -424,6 +430,8 @@ public class MyStatusActivity extends AppCompatActivity {
 //        dublinStops.add(stopName);
                 dublinBusList.addAll(tempDublinBusList);
 
+//                loadBusDirection();
+
                 ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(MyStatusActivity.this,
                         android.R.layout.simple_spinner_dropdown_item, dublinBusList);
                 spinnerAdapter.notifyDataSetChanged();      // code for 2nd dropdown implementation
@@ -431,7 +439,11 @@ public class MyStatusActivity extends AppCompatActivity {
                 spinnerRoute.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                        if(position == 0){
+//                        }
+//                        loadBusDirection(position);
                         String itemValue = parent.getItemAtPosition(position).toString();
+                        loadBusDirection(position, itemValue);
                         Toast.makeText(MyStatusActivity.this, itemValue + " Selected!", Toast.LENGTH_SHORT).show();
 //                        routeSelected = itemValue;
                     }
@@ -440,9 +452,12 @@ public class MyStatusActivity extends AppCompatActivity {
                     public void onNothingSelected(AdapterView<?> parent) {
 
                     }
+
+
                 });
 //                String busroute = busArray.get(0).getTripUpdateDetails().getTripDetails().getRoute_id();
                 // we can know which trip id we need to store in firebase. we then store the destination in the firesbase also.
+//                loadBusDirection();
             }
 
             @Override
@@ -452,6 +467,109 @@ public class MyStatusActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void loadBusDirection(int position, String route) {
+        List<String> directiontList = new ArrayList<>();
+        ArrayAdapter<String> directionAdapter;
+        ArrayAdapter<String> busDirectionAdapter;
+        List<String> busDirectiontList = new ArrayList<>();
+
+        List<String> listOfDirection = new ArrayList<>();
+//        listOfDirection = generateBusDirection(route);
+
+        directiontList.add("Select Route First");
+        directionAdapter = new ArrayAdapter<>(MyStatusActivity.this, android.R.layout.simple_spinner_dropdown_item , directiontList);
+        directionAdapter.notifyDataSetChanged();
+
+        listOfDirection = generateBusDirection(route);
+
+        busDirectiontList.add("Choose Direction");
+        busDirectiontList.addAll(listOfDirection);
+
+        busDirectionAdapter = new ArrayAdapter<>(MyStatusActivity.this, android.R.layout.simple_spinner_dropdown_item , busDirectiontList);
+        busDirectionAdapter.notifyDataSetChanged();
+
+        if(position == 0){
+            spinnerBusDirection.setAdapter(directionAdapter);
+        }else{
+            spinnerBusDirection.setAdapter(busDirectionAdapter);
+        }
+
+        spinnerBusDirection.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        });
+    }
+
+    private List<String> generateBusDirection(String route) {
+        List<String> routeDirectionList = new ArrayList<>();
+        List<String> seenStopIdBefore = new ArrayList<>();
+
+        int sixtyPosition, startIndexOfSelectedRoute, endIndexOfSelectedRoute;
+//        String idStop = stopMaps.get(stopName);
+//        String idStop2 = idStop.trim();
+        BufferedReader lineReader = null;
+        String fileLine;
+        String startOfSequence = "1";
+        Log.d("TEST", "21");
+        boolean flag = false;
+        String tempBusDirection = null;
+        String  firstRouteStop = null;
+        try {
+            lineReader = new BufferedReader( new InputStreamReader( getAssets().open("stop_times3.txt"), "UTF-8"));
+            Log.d("TEST", "22");
+            int i = 0;
+            while( (fileLine = lineReader.readLine() ) != null){
+//                Log.d("TEST", "23 - WHILE LOOP");
+                String[] stopTimesArray = fileLine.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+//                Log.d("TEST", "24 - AFTER REGEX");
+                String stopTrim = stopTimesArray[3].substring(1, (stopTimesArray[3].length()-1 )).trim() ;
+                Log.d("TEST", "60");
+                sixtyPosition = stopTimesArray[0].indexOf("60-");
+                startIndexOfSelectedRoute = sixtyPosition + 3;
+                endIndexOfSelectedRoute = startIndexOfSelectedRoute + route.length();
+                String routeFromArray = stopTimesArray[0].substring( startIndexOfSelectedRoute, endIndexOfSelectedRoute ).trim();
+                String stopSequence = stopTimesArray[4].substring(1,(stopTimesArray[4].length()-1 ) ).trim();
+
+                if(routeFromArray.equals(route) &&  stopSequence.equals(startOfSequence) ){
+
+                    Log.d("TEST", "61");
+//                    String stopSequence = stopTimesArray[4].substring(1,(stopTimesArray[4].length()-1 ) ).trim() ;
+//                                flag = false;
+
+                    tempBusDirection = stopTimesArray[5].substring(1, (stopTimesArray[5].length()-1 )).trim() ;
+                    if(!(routeDirectionList.isEmpty() ) ){
+                        if(!( routeDirectionList.get(0).equals(tempBusDirection)) ){
+
+                            routeDirectionList.add(tempBusDirection);
+                        }
+
+                    }else{
+                        routeDirectionList.add(tempBusDirection);
+                    }
+
+                    if(routeDirectionList.size() == 2){
+                        break;
+                    }
+
+                    firstRouteStop = stopTimesArray[3].substring(1, (stopTimesArray[3].length()-1 )).trim() ;
+                    seenStopIdBefore.add(firstRouteStop);
+                }
+
+            }
+        } catch (FileNotFoundException e) {
+            Log.e("MYAPP", "exception", e);
+            e.printStackTrace();
+        } catch (IOException e) {
+            Log.e("NEWAPP","IOEException", e);
+            e.printStackTrace();
+        }
+        Log.d("TEST", "63 - return");
+        return routeDirectionList;
+    }
+
 
 /*
     populates the destination and departure stops dropdown list
