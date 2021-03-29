@@ -376,7 +376,10 @@ public class MyStatusActivity extends AppCompatActivity {
         Log.d("TEST","2");
 
 
-        busStopUtility.loadBusStops(stopMaps, this, dublinStops, spinnerDestination, spinnerDepature);
+//        busStopUtility.loadBusStops(stopMaps, this, dublinStops, spinnerDestination, spinnerDepature);
+        busStopUtility.loadBusStops(stopMaps, this, dublinStops);
+
+
 
         call.enqueue(new Callback<BusModel>() {
 
@@ -495,12 +498,163 @@ public class MyStatusActivity extends AppCompatActivity {
             spinnerBusDirection.setAdapter(busDirectionAdapter);
         }
 
-        spinnerBusDirection.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//        spinnerDestination.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinnerBusDirection.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                String itemValue = parent.getItemAtPosition(position).toString();
+                generateDepartureStops(position, itemValue, route);
+                Toast.makeText(MyStatusActivity.this, itemValue + " Selected!", Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
+    }
+
+    private void generateDepartureStops(int position, String direction, String route) {
+
+        List<String> stopsOptions = new ArrayList<>();
+        ArrayAdapter<String> departureAdapter;
+        List<String> listOfStopsOnRoutes = new ArrayList<>();
+
+        listOfStopsOnRoutes = returnsStops(route, direction);
+
+        if(position == 0){
+            stopsOptions.add("Select Direction First");
+            departureAdapter = new ArrayAdapter<>(MyStatusActivity.this, android.R.layout.simple_spinner_dropdown_item , stopsOptions);
+            departureAdapter.notifyDataSetChanged();
+            spinnerDepature.setAdapter(departureAdapter);
+        }else{
+            stopsOptions.add("Choose Stops");
+            stopsOptions.addAll(listOfStopsOnRoutes);
+            departureAdapter = new ArrayAdapter<>(MyStatusActivity.this, android.R.layout.simple_spinner_dropdown_item , stopsOptions);
+            departureAdapter.notifyDataSetChanged();
+            spinnerDepature.setAdapter(departureAdapter);
+        }
+
+        spinnerDepature.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                String itemValue = parent.getItemAtPosition(position).toString();
+                generateDestinantionStops(position, stopsOptions );
+                Toast.makeText(MyStatusActivity.this, itemValue + " Selected!", Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private void generateDestinantionStops(int position, List<String> stopsOptions) {
+
+        List<String> destinationBusStops = new ArrayList<>();
+        ArrayAdapter<String> destinationAdapter;
+        List<String> remainingStopsOnRoutes = new ArrayList<>();
+
+//        remainingStopsOnRoutes = returnRemainingStops(position, stopsOptions);
+
+        if(position == 0){
+            destinationBusStops.add("Select Departure First");
+            destinationAdapter = new ArrayAdapter<>(MyStatusActivity.this, android.R.layout.simple_spinner_dropdown_item , destinationBusStops);
+            destinationAdapter.notifyDataSetChanged();
+            spinnerDestination.setAdapter(destinationAdapter);
+        }else{
+            destinationBusStops.add("Choose Stops");
+            remainingStopsOnRoutes = stopsOptions.subList(position, stopsOptions.size() );
+            destinationBusStops.addAll(remainingStopsOnRoutes);
+            destinationAdapter = new ArrayAdapter<>(MyStatusActivity.this, android.R.layout.simple_spinner_dropdown_item , destinationBusStops);
+            destinationAdapter.notifyDataSetChanged();
+            spinnerDestination.setAdapter(destinationAdapter);
+        }
+
+        spinnerDestination.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String itemValue = parent.getItemAtPosition(position).toString();
+                Toast.makeText(MyStatusActivity.this, itemValue + " Selected!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+//    private List<String> returnRemainingStops(int position, List<String> stopsOptions) {
+//        List<String> stopFiltered = new ArrayList<>();
+//
+//        if(!(position == 0)){
+//            stopFiltered = stopsOptions
+//
+//        }else{
+//            stopFiltered.add("No Options Selected");
+//        }
+//        return stopFiltered;
+//    }
+
+    private List<String> returnsStops(String route, String direction) {
+        List<String> stopList = new ArrayList<>();
+
+        int sixtyPosition, startIndexOfSelectedRoute, endIndexOfSelectedRoute;
+        BufferedReader lineReader = null;
+        String fileLine;
+        String startOfSequence = "1";
+        boolean flag = false;
+        String nameOfStop = null;
+        String stopId = null;
+        try {
+            lineReader = new BufferedReader( new InputStreamReader( getAssets().open("stop_times3.txt"), "UTF-8"));
+            int i = 0;
+            while( (fileLine = lineReader.readLine() ) != null){
+                String[] stopTimesArray = fileLine.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+
+                sixtyPosition = stopTimesArray[0].indexOf("60-");
+                startIndexOfSelectedRoute = sixtyPosition + 3;
+                endIndexOfSelectedRoute = startIndexOfSelectedRoute + route.length();
+                String routeFromArray = stopTimesArray[0].substring( startIndexOfSelectedRoute, endIndexOfSelectedRoute ).trim();
+                String stopSequence = stopTimesArray[4].substring(1,(stopTimesArray[4].length()-1 ) ).trim();
+                String stopHeadSign = stopTimesArray[5].substring(1, (stopTimesArray[5].length()-1 )).trim() ;
+
+                if(routeFromArray.equals(route) &&  direction.equals(stopHeadSign) ){
+                    if(stopSequence.equals(startOfSequence) || (flag) ){
+
+                        if(stopSequence.equals(startOfSequence) && flag ){
+                            break;
+                        }
+
+                        if(!flag){
+                            flag = true;
+                        }
+
+                        stopId = stopTimesArray[3].substring(1, (stopTimesArray[3].length()-1 )).trim() ;
+                        nameOfStop= busStopUtility.stopIdKeyMaps.get(stopId);
+                        stopList.add(nameOfStop);
+                    }
+                }else{
+                    if(!(stopList.isEmpty() ) ){
+                        break;
+                    }
+                }
+            }
+        } catch (FileNotFoundException e) {
+            Log.e("MYAPP", "exception", e);
+            e.printStackTrace();
+        } catch (IOException e) {
+            Log.e("NEWAPP","IOEException", e);
+            e.printStackTrace();
+        }
+
+        return stopList;
     }
 
     private List<String> generateBusDirection(String route) {

@@ -19,7 +19,11 @@ import java.util.List;
 
 public class BusStopUtility {
 
-    public void loadBusStops(HashMap<String, String> stopMaps, Context context, ArrayList<String> dublinStops, Spinner spinnerDestination, Spinner spinnerDeparture ) {
+    HashMap<String, String> stopIdKeyMaps = new HashMap<>();
+
+    public void loadBusStops(HashMap<String, String> stopMaps, Context context, ArrayList<String> dublinStops ) {
+//        public void loadBusStops(HashMap<String, String> stopMaps, Context context, ArrayList<String> dublinStops, Spinner spinnerDestination, Spinner spinnerDeparture ) {
+
         ArrayList<String> unsortedDublinStops = new ArrayList<>();
         Log.d("TEST", "10");
         BufferedReader bufferedReader = null;
@@ -38,6 +42,7 @@ public class BusStopUtility {
 
                 unsortedDublinStops.add(stopName);
                 stopMaps.put(stopName, stopId);
+                stopIdKeyMaps.put(stopId,stopName);
 //                dublinStops.add(stopId);
             }
         } catch (FileNotFoundException e) {
@@ -52,8 +57,8 @@ public class BusStopUtility {
 
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(context,
                 android.R.layout.simple_spinner_dropdown_item, dublinStops);
-        loadDepartureStops(dublinStops, spinnerAdapter, spinnerDeparture, context);
-        loadDestinationStops(dublinStops, spinnerAdapter, spinnerDestination, context );
+//        loadDepartureStops(dublinStops, spinnerAdapter, spinnerDeparture, context);
+//        loadDestinationStops(dublinStops, spinnerAdapter, spinnerDestination, context );
     }
 
     private void loadDestinationStops(List<String> dublinStops, ArrayAdapter<String> spinnerAdapter, Spinner spinnerDestination, Context context) {
