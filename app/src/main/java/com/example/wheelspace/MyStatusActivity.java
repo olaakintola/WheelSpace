@@ -757,6 +757,7 @@ public class MyStatusActivity extends AppCompatActivity {
 
                     } else {
                         routeDirectionList.add(tempBusDirection);
+                        firstStop
                     }
 
                     if (routeDirectionList.size() == 2) {
@@ -921,7 +922,7 @@ public class MyStatusActivity extends AppCompatActivity {
             String results = null;
             BufferedReader lineReader;
             String fileLine;
-            String routeCombo = ".60-" + route +"-d12";
+            String routeCombo = ".60-" + route +"-";
             lineReader = new BufferedReader(new InputStreamReader(getAssets().open(fileName), "UTF-8"));
             while ((fileLine = lineReader.readLine()) != null) {
                 String[] stopTimesArray = fileLine.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
