@@ -94,4 +94,41 @@ public class BusStopUtility {
         });
     }
 
+    public void loadBusStops(HashMap<String, String> stopMaps, Context context, ArrayList<String> dublinStops, Spinner spinnerDestination, Spinner spinnerDeparture ) {
+        ArrayList<String> unsortedDublinStops = new ArrayList<>();
+        Log.d("TEST", "10");
+        BufferedReader bufferedReader = null;
+        String lineFromFile;
+        dublinStops.clear();
+        dublinStops.add("Choose Stop");
+        Log.d("TEST", "11");
+        try {
+            bufferedReader = new BufferedReader( new InputStreamReader( context.getAssets().open("stops.txt"), "UTF-8"));
+            Log.d("TEST", "12");
+            while( (lineFromFile = bufferedReader.readLine() ) != null){
+                String[] stopString = lineFromFile.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+                String stopName = stopString[1].substring(1, (stopString[1].length()-1 )).trim() ;
+//                String stopId = stopString[0].substring(2, (stopString[0].length()-1 )).trim() ;
+                String stopId = stopString[0].substring(1, (stopString[0].length()-1 )).trim() ;
+
+                unsortedDublinStops.add(stopName);
+                stopMaps.put(stopName, stopId);
+                stopIdKeyMaps.put(stopId,stopName);
+//                dublinStops.add(stopId);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Collections.sort(unsortedDublinStops);
+//        dublinStops.add(stopName);
+        dublinStops.addAll(unsortedDublinStops);
+
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(context,
+                android.R.layout.simple_spinner_dropdown_item, dublinStops);
+        loadDepartureStops(dublinStops, spinnerAdapter, spinnerDeparture, context);
+        loadDestinationStops(dublinStops, spinnerAdapter, spinnerDestination, context );
+    }
 }

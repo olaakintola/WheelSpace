@@ -40,8 +40,8 @@ public class PlanMyJourneyActivity extends AppCompatActivity {
 
         initViews();
 
-//        busStopUtility.loadBusStops(stopMaps, this, dublinStops, spinnerFtrDestination, spinnerFtrDeparture);
-//
+        busStopUtility.loadBusStops(stopMaps, this, dublinStops, spinnerFtrDestination, spinnerFtrDeparture);
+
         Calendar calendar = Calendar.getInstance();
         final int year = calendar.get(Calendar.YEAR);
         final int month = calendar.get(Calendar.MONTH);

@@ -48,7 +48,7 @@ public class RealtimeAccessActivity extends AppCompatActivity {
 
         initViews();
 
-//        busStopUtility.loadBusStops(stopMaps, this, dublinStops, spinnerGoingToRealTime, spinnerOriginRealTime);
+        busStopUtility.loadBusStops(stopMaps, this, dublinStops, spinnerGoingToRealTime, spinnerOriginRealTime);
 
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
