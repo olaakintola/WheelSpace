@@ -757,7 +757,7 @@ public class MyStatusActivity extends AppCompatActivity {
 
                     } else {
                         routeDirectionList.add(tempBusDirection);
-                        firstStop
+//                        firstStop
                     }
 
                     if (routeDirectionList.size() == 2) {
