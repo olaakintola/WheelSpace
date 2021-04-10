@@ -713,6 +713,11 @@ public class MyStatusActivity extends AppCompatActivity {
         boolean flag = false;
         String tempBusDirection = null;
         String firstRouteStop = null;
+        String routeHeadSignFirstStop = null;
+        String checkFirstRouteStop = null;
+//        String stopSequence = null;
+        String routeStopStart = "1";
+
 
 //        List<String> textFileContainingRoute = new ArrayList<>();
 //        List<String> returnedBusValues = new ArrayList<>();
@@ -750,14 +755,16 @@ public class MyStatusActivity extends AppCompatActivity {
 
                     tempBusDirection = stopTimesArray[5].substring(1, (stopTimesArray[5].length() - 1)).trim();
                     if (!(routeDirectionList.isEmpty())) {
-                        if (!(routeDirectionList.get(0).equals(tempBusDirection))) {
+                        checkFirstRouteStop = stopTimesArray[3].substring(1, (stopTimesArray[3].length() - 1)).trim();
+//                        String stopSequence = stopTimesArray[4].substring(1, (stopTimesArray[4].length() - 1)).trim();
+                        if (!(routeDirectionList.get(0).equals(tempBusDirection) ) && !(routeHeadSignFirstStop.equals(checkFirstRouteStop) ) && stopSequence.equals(routeStopStart) ) {
 
                             routeDirectionList.add(tempBusDirection);
                         }
 
                     } else {
                         routeDirectionList.add(tempBusDirection);
-//                        firstStop
+                        routeHeadSignFirstStop = stopTimesArray[3].substring(1, (stopTimesArray[3].length() - 1)).trim();
                     }
 
                     if (routeDirectionList.size() == 2) {
@@ -850,7 +857,14 @@ public class MyStatusActivity extends AppCompatActivity {
                             int arrayTimeMinute = Integer.parseInt(arrayTimeSplit[1]);
                             int arrayTimeSeconds = Integer.parseInt(arrayTimeSplit[2]);
                             int compareTimePickedMinute = Integer.parseInt(comparePickedTimeSplit[1]);
+//                            int differenceInMinutes = arrayTimeMinute - compareTimePickedMinute;
+                            // will swap things over if bug persists
                             int differenceInMinutes = arrayTimeMinute - compareTimePickedMinute;
+
+                            if(differenceInMinutes < 0){
+                                differenceInMinutes = -(differenceInMinutes);
+                            }
+
                             if (differenceInMinutes >= 0 && minimumMinute >= differenceInMinutes) {
                                 if (minimumSeconds > arrayTimeSeconds) {
                                     idForTrip = stopTimesArray[0].substring(1, (stopTimesArray[0].length() - 1)).trim();
