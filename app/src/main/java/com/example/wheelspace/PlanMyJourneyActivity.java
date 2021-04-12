@@ -75,8 +75,18 @@ public class PlanMyJourneyActivity extends AppCompatActivity {
     private void initFindOffPeak() {
         if(validateData() ){
             Toast.makeText(this, "Processing", Toast.LENGTH_SHORT).show();
+
+            String ftrDeparture = spinnerFtrDeparture.getSelectedItem().toString();
+            String ftrDestination = spinnerFtrDestination.getSelectedItem().toString();
+            String ftrDate = edtTxtDate.getText().toString() ;
+
             Intent intent = new Intent(PlanMyJourneyActivity.this, OffPeakResultActivity.class);
+
+            intent.putExtra("ftrDepartureKey", ftrDeparture);
+            intent.putExtra("ftrDestinationKey", ftrDestination);
+            intent.putExtra("ftrDateKey", ftrDate);
             startActivity(intent);
+
         }else{
             showSnackBar();
         }
