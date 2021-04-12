@@ -2,10 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MyStatusActivity"
-    android:id="@+id/parent">
+    tools:context=".MyStatusActivity">
 
     <TextView
         android:id="@+id/txtRoute"
@@ -20,16 +20,16 @@
         android:id="@+id/txtDepature"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="40dp"
         android:text="Depature"
         app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/txtRoute" />
+        app:layout_constraintTop_toBottomOf="@+id/txtBusDirection" />
 
     <TextView
         android:id="@+id/txtDestination"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="40dp"
         android:text="Destination"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/txtDepature" />
@@ -43,25 +43,21 @@
         app:layout_constraintStart_toEndOf="@+id/txtRoute"
         app:layout_constraintTop_toTopOf="@+id/txtRoute" />
 
-    <Spinner
-        android:id="@+id/spinnerDepature"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="45dp"
-        android:entries="@array/departure_stops"
-        app:layout_constraintBottom_toBottomOf="@+id/txtDepature"
-        app:layout_constraintStart_toEndOf="@+id/txtDepature"
-        app:layout_constraintTop_toTopOf="@+id/txtDepature" />
+    <!--    <Spinner-->
+    <!--        android:id="@+id/spinnerDepature"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:entries="@array/departure_stops"-->
+    <!--        tools:layout_editor_absoluteX="78dp"-->
+    <!--        tools:layout_editor_absoluteY="498dp" />-->
 
-    <Spinner
-        android:id="@+id/spinnerDestination"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:entries="@array/destination_stops"
-        app:layout_constraintBottom_toBottomOf="@+id/txtDestination"
-        app:layout_constraintStart_toEndOf="@+id/txtDestination"
-        app:layout_constraintTop_toTopOf="@+id/txtDestination" />
+    <!--    <Spinner-->
+    <!--        android:id="@+id/spinnerDestination"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:entries="@array/destination_stops"-->
+    <!--        tools:layout_editor_absoluteX="78dp"-->
+    <!--        tools:layout_editor_absoluteY="557dp" />-->
 
     <Button
         android:id="@+id/btnSend"
@@ -87,22 +83,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="On Board"
-            android:onClick="checkButton" />
+            android:onClick="checkButton"
+            android:text="On Board" />
 
         <RadioButton
             android:id="@+id/rbGotOff"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Got Off"
-            android:onClick="checkButton" />
+            android:onClick="checkButton"
+            android:text="Got Off" />
     </RadioGroup>
 
     <EditText
         android:id="@+id/edtTxtTimePicker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="40dp"
         android:ems="10"
         android:hint="Enter the time..."
         app:layout_constraintStart_toStartOf="@+id/guideline"
@@ -129,5 +125,51 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="100dp" />
+        app:layout_constraintGuide_begin="84dp" />
+
+    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+        android:id="@+id/spinnerDepartureStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="45dp"
+        app:layout_constraintBottom_toBottomOf="@+id/txtDepature"
+        app:layout_constraintStart_toEndOf="@+id/txtDepature"
+        app:layout_constraintTop_toTopOf="@+id/txtDepature" />
+
+    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+        android:id="@+id/spinnerDestinationStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        app:layout_constraintBottom_toBottomOf="@+id/txtDestination"
+        app:layout_constraintStart_toEndOf="@+id/txtDestination"
+        app:layout_constraintTop_toTopOf="@+id/txtDestination" />
+
+    <Spinner
+        android:id="@+id/spinnerBusDirection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        app:layout_constraintBottom_toBottomOf="@+id/txtBusDirection"
+        app:layout_constraintStart_toEndOf="@+id/txtBusDirection"
+        app:layout_constraintTop_toTopOf="@+id/txtBusDirection"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="563dp" />
+
+    <TextView
+        android:id="@+id/txtBusDirection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="Towards"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/txtRoute" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

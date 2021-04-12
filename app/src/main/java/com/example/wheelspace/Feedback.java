@@ -7,17 +7,19 @@ public class Feedback {
     String departureFeedback;
     String destinationFeedback;
     String descriptionFeedback;
+    String generatedDate;
 
     public Feedback() {
     }
 
-    public Feedback(String routeFeedback, String issueFeedback, String timeFeedback, String departureFeedback, String destinationFeedback, String descriptionFeedback) {
+    public Feedback(String routeFeedback, String issueFeedback, String timeFeedback, String departureFeedback, String destinationFeedback, String descriptionFeedback, String generatedDate) {
         this.routeFeedback = routeFeedback;
         this.issueFeedback = issueFeedback;
         this.timeFeedback = timeFeedback;
         this.departureFeedback = departureFeedback;
         this.destinationFeedback = destinationFeedback;
         this.descriptionFeedback = descriptionFeedback;
+        this.generatedDate = generatedDate;
     }
 
     public String getRouteFeedback() {
@@ -43,4 +45,6 @@ public class Feedback {
     public String getDescriptionFeedback() {
         return descriptionFeedback;
     }
+
+    public String getGeneratedDate(){ return generatedDate; }
 }

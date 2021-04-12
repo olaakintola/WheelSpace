@@ -52,8 +52,8 @@ public class RealtimeResultActivity extends AppCompatActivity {
 
         origin = intent.getStringExtra("originKey");
         goingTo = intent.getStringExtra("goingToKey");
-        String localTime2 = intent.getStringExtra("localTimeKey");
-        localTime = "17:55";
+        String localTime = intent.getStringExtra("localTimeKey");
+//        localTime = "17:55";
 
 
         String originId = stopNameToCodeMap.get(origin);
