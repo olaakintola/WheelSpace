@@ -6,4 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".OffPeakResultActivity">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/offPeakRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="181dp"
+        tools:layout_editor_absoluteY="328dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

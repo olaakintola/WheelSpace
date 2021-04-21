@@ -10,6 +10,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.WheelSpace">
         <activity android:name=".FeedbackDetailsActivity"
             android:label="Feeback Details"/>
@@ -20,7 +21,8 @@
             android:name=".RaiseAnIssueActivity"
             android:label="Raise An Issue" />
         <activity android:name=".PopulateSpinnerTestActivity" />
-        <activity android:name=".OffPeakResultActivity" />
+        <activity android:name=".OffPeakResultActivity"
+                  android:label="Off-Peak Results"/>
         <activity
             android:name=".RealtimeResultActivity"
             android:label="Real-time Information" />

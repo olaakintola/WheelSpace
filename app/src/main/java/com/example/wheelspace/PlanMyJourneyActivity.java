@@ -16,9 +16,14 @@ import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class PlanMyJourneyActivity extends AppCompatActivity {
 
@@ -78,7 +83,8 @@ public class PlanMyJourneyActivity extends AppCompatActivity {
 
             String ftrDeparture = spinnerFtrDeparture.getSelectedItem().toString();
             String ftrDestination = spinnerFtrDestination.getSelectedItem().toString();
-            String ftrDate = edtTxtDate.getText().toString() ;
+            String dateInput = edtTxtDate.getText().toString() ;
+            String ftrDate = getWeekDay(dateInput);
 
             Intent intent = new Intent(PlanMyJourneyActivity.this, OffPeakResultActivity.class);
 
@@ -90,6 +96,19 @@ public class PlanMyJourneyActivity extends AppCompatActivity {
         }else{
             showSnackBar();
         }
+    }
+
+    private String getWeekDay(String dateInput) {
+        SimpleDateFormat simpleDateFmt = new SimpleDateFormat("dd/MM/yyyy" );
+        Date newDate = null;
+        try {
+            newDate = simpleDateFmt.parse(dateInput);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        DateFormat dateFormat = new SimpleDateFormat("EEEE");
+        String dayOfWeek = dateFormat.format(newDate);
+        return dayOfWeek;
     }
 
     private void showSnackBar() {
@@ -105,10 +124,10 @@ public class PlanMyJourneyActivity extends AppCompatActivity {
     }
 
     private boolean validateData() {
-        if(edtTxtFutureDeparture.getText().toString().equals("")){
+        if(spinnerFtrDeparture.getSelectedItem().toString().equals("")){
             return false;
         }
-        if(edtTxtFutureDestination.getText().toString().equals("")){
+        if(spinnerFtrDestination.getSelectedItem().toString().equals("")){
             return false;
         }
         if(edtTxtDate.getText().toString().equals("")){
