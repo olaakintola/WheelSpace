@@ -13,6 +13,11 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.jakewharton.shimo.ObjectOrderRandomizer;
+import com.squareup.moshi.JsonAdapter;
+import com.squareup.moshi.Moshi;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,6 +47,7 @@ public class OffPeakResultActivity extends AppCompatActivity {
     String predictionResult = null;
     private ArrayList<UserPost> futureFreeBayList = new ArrayList<>();
     HashMap<String, String> weekDays = new HashMap<>();
+    RouteGenerator routeGenerator;
 
     static String url = "http://10.0.2.2:5000/";
 
@@ -66,7 +72,7 @@ public class OffPeakResultActivity extends AppCompatActivity {
         futureDestination = intent.getStringExtra("ftrDestinationKey");
         futureDate = intent.getStringExtra("ftrDateKey");
 
-        Interceptor interceptor = new Interceptor(){
+/*        Interceptor interceptor = new Interceptor(){
 
             @Override
             public okhttp3.Response intercept(Chain chain) throws IOException {
@@ -75,16 +81,17 @@ public class OffPeakResultActivity extends AppCompatActivity {
                 request = builder.build();
                 return chain.proceed(request);
             }
-        };
+        };*/
 
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(100, TimeUnit.SECONDS)
-                .readTimeout(100, TimeUnit.SECONDS).addInterceptor(interceptor).cache(null).build();
+                .readTimeout(100, TimeUnit.SECONDS).cache(null).build();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(url).client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory( GsonConverterFactory.create()  )   // GsonConverterFactory.create()
                 .build();
+
 
         // instance for interface
         classifierModelAPIService = retrofit.create(ClassifierModelAPIService.class);
@@ -94,6 +101,11 @@ public class OffPeakResultActivity extends AppCompatActivity {
         userPost.setTimes("16:00");
         userPost.setDays("fri");
 
+        Moshi moshi = new Moshi.Builder()
+                .add(ObjectOrderRandomizer.create() )
+                .add( new UserPostAdapter() ).build();
+        JsonAdapter<UserPost> jsonAdapter = moshi.adapter(UserPost.class);
+        String json = jsonAdapter.toJson(userPost);
 
         weekDays.put("Monday", "mon");
         weekDays.put("Tuesday", "tues");
@@ -104,8 +116,11 @@ public class OffPeakResultActivity extends AppCompatActivity {
         String chosenDay = weekDays.get(futureDate);
 
         ArrayList<String> routesList = new ArrayList<>();
-        routesList.add("1");
-        routesList.add("151");
+
+        routesList = routeGenerator.generatorBusRouteNuumber(futureDeparture, futureDestination);
+
+//        routesList.add("1");
+//        routesList.add("151");
 
         ArrayList<String> timesHour = new ArrayList<>();
         timesHour.add("7:00");
@@ -134,6 +149,8 @@ public class OffPeakResultActivity extends AppCompatActivity {
 
 
         processClassifierInput(userPost);
+//        processClassifierInput(json, userPost, jsonAdapter);
+
 
 //        testTxtId.setText(predictionResult);
     }
@@ -143,7 +160,11 @@ public class OffPeakResultActivity extends AppCompatActivity {
 
         List<UserPost> userPostList = new ArrayList<>();
         userPostList.add(userPost);
-        Call<UserPost > call = classifierModelAPIService.getPrediction(userPostList);
+        Call<UserPost> call = classifierModelAPIService.getPrediction(userPostList);
+
+        String json = new Gson().toJson(userPostList);
+        Log.d("Debug",json);
+
         call.enqueue(new Callback<UserPost>() {
             @Override
             public void onResponse(Call<UserPost> call, Response<UserPost> response) {
@@ -151,7 +172,14 @@ public class OffPeakResultActivity extends AppCompatActivity {
                 if (response.code() != 200) {
                     Toast.makeText(OffPeakResultActivity.this, "Check Connection", Toast.LENGTH_SHORT).show();
                 }
+
                 UserPost newListPost = response.body();
+//                UserPost newListPost = null;
+//                try {
+//                    newListPost = (UserPost) jsonAdapter.fromJson(returnedApiResult);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
 //                UserPost item = newListPost.get(0);
 
                 predictionResult = newListPost.getPrediction();

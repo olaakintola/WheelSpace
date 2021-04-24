@@ -22,6 +22,6 @@ public interface ClassifierModelAPIService {
 
     @Headers("Cache-Control: no-cache")
     @POST("/predict")
-    Call< UserPost > getPrediction(@Body List<UserPost> userPost);
+    Call< UserPost> getPrediction(@Body List<UserPost> userPost);
 
 }
