@@ -12,3 +12,6 @@ public interface BusAPICaller {
     @GET("v1/?format=json")
     Call<BusModel> getData();
 }
+
+
+

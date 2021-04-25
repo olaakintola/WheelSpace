@@ -59,6 +59,8 @@ dependencies {
     implementation("com.squareup.moshi:moshi:1.12.0")
 
 //    implementation 'com.squareup.retrofit2:converter-moshi:latest.version'
+//    implementation 'com.squareup.retrofit2:converter-moshi:retrofit:2.9.0'
+
 
     implementation("com.squareup.okhttp3:okhttp:4.9.0")
 

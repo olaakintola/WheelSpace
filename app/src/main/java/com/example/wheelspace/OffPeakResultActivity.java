@@ -13,10 +13,16 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.wheelspace.busdata.model.BusRoute;
+import com.example.wheelspace.busdata.model.Leg;
+import com.example.wheelspace.busdata.model.Line;
+import com.example.wheelspace.busdata.model.Route;
+import com.example.wheelspace.busdata.model.Step;
 import com.google.gson.Gson;
 import com.jakewharton.shimo.ObjectOrderRandomizer;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
+//import retrofit2.converter.moshi.MoshiConverterFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,8 +54,13 @@ public class OffPeakResultActivity extends AppCompatActivity {
     private ArrayList<UserPost> futureFreeBayList = new ArrayList<>();
     HashMap<String, String> weekDays = new HashMap<>();
     RouteGenerator routeGenerator;
+    List<Route> routeNumbers = new ArrayList<>();
+    ArrayList<String> listOfRouteNumbers = new ArrayList<>();
+
 
     static String url = "http://10.0.2.2:5000/";
+    String busOptionUrl = "https://maps.googleapis.com/";
+//    String apiKey = "AIzaSyB4pfSZwkbrKDasVSw7hmME0sYdV36C2xY";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +100,7 @@ public class OffPeakResultActivity extends AppCompatActivity {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(url).client(okHttpClient)
-                .addConverterFactory( GsonConverterFactory.create()  )   // GsonConverterFactory.create()
+                .addConverterFactory( GsonConverterFactory.create() )   // GsonConverterFactory.create()
                 .build();
 
 
@@ -101,11 +112,12 @@ public class OffPeakResultActivity extends AppCompatActivity {
         userPost.setTimes("16:00");
         userPost.setDays("fri");
 
-        Moshi moshi = new Moshi.Builder()
-                .add(ObjectOrderRandomizer.create() )
-                .add( new UserPostAdapter() ).build();
-        JsonAdapter<UserPost> jsonAdapter = moshi.adapter(UserPost.class);
-        String json = jsonAdapter.toJson(userPost);
+//        Moshi moshi = new Moshi.Builder()
+//                .add(ObjectOrderRandomizer.create() )
+//                .add( new UserPostAdapter() ).build();
+//        JsonAdapter<UserPost> jsonAdapter = moshi.adapter(UserPost.class);
+//
+//        String json = jsonAdapter.toJson(userPost);
 
         weekDays.put("Monday", "mon");
         weekDays.put("Tuesday", "tues");
@@ -117,7 +129,10 @@ public class OffPeakResultActivity extends AppCompatActivity {
 
         ArrayList<String> routesList = new ArrayList<>();
 
-        routesList = routeGenerator.generatorBusRouteNuumber(futureDeparture, futureDestination);
+//        routesList = routeGenerator.generatorBusRouteNuumber(futureDeparture, futureDestination);
+
+        routesList = generatorBusRouteNuumber(futureDeparture, futureDestination);
+
 
 //        routesList.add("1");
 //        routesList.add("151");
@@ -149,10 +164,85 @@ public class OffPeakResultActivity extends AppCompatActivity {
 
 
         processClassifierInput(userPost);
-//        processClassifierInput(json, userPost, jsonAdapter);
 
 
-//        testTxtId.setText(predictionResult);
+    }
+
+    private ArrayList<String> generatorBusRouteNuumber(String futureDeparture, String futureDestination) {
+        ArrayList<String> busRouteList = new ArrayList<>();
+
+        String[] temp_departure = futureDeparture.split(",");
+        futureDeparture = temp_departure[0]+","+temp_departure[1].substring(1, temp_departure[1].length() );
+        String[] temp_destination = futureDestination.split(",");
+        futureDestination = temp_destination[0]+","+temp_destination[1].substring(1, temp_destination[1].length());
+
+        futureDeparture = futureDeparture.replaceAll(" ","_");
+        futureDestination= futureDestination.replaceAll(" ", "_");
+
+        busRouteList = processItinerary(futureDeparture, futureDestination);
+
+        return busRouteList;
+    }
+
+    private ArrayList<String> processItinerary(String futureDeparture, String futureDestination) {
+        ArrayList<String> busOptions = new ArrayList<>();
+
+//        String urlAddon= "json?origin="+futureDeparture+"&destination="+futureDestination+"&mode=transit&transit_mode=bus&alternatives=true&key="+apiKey;
+//        String urlAddon= "json?origin="+futureDeparture+"&destination="+futureDestination+"&mode=transit&transit_mode=bus&alternatives=true"; //&key="+apiKey;
+        String mode = "transit";
+        String transit_mode = "bus";
+        String alternatives = "true";
+        String apiKey = "AIzaSyB4pfSZwkbrKDasVSw7hmME0sYdV36C2xY";
+
+        OkHttpClient okHttpClient_bus = new OkHttpClient.Builder()
+                .connectTimeout(100, TimeUnit.SECONDS)
+                .readTimeout(100, TimeUnit.SECONDS).cache(null).build();
+
+        Retrofit retrofit_bus = new Retrofit.Builder()
+                .baseUrl(busOptionUrl).client(okHttpClient_bus)
+                .addConverterFactory( GsonConverterFactory.create() )
+                .build();
+
+        RouteOptionsAPICaller routeOptionsAPICaller = retrofit_bus.create(RouteOptionsAPICaller.class);
+//        Call<BusRoute> call_route = routeOptionsAPICaller.getBusOptions(urlAddon);
+        Call<BusRoute> request = routeOptionsAPICaller.getBusOptions(futureDeparture, futureDestination, mode, transit_mode, alternatives, apiKey);
+
+
+        request.enqueue(new Callback<BusRoute>() {
+            @Override
+            public void onResponse(Call<BusRoute> request, Response<BusRoute> response) {
+
+                if (response.code() != 200) {
+                    Toast.makeText(OffPeakResultActivity.this, "Check Connection", Toast.LENGTH_SHORT).show();
+                }
+
+                routeNumbers = response.body().getRoutes();
+                for (int i = 0; i < routeNumbers.size(); i++) {   // change to busArray.size  from 10
+                    List<Leg> legs = routeNumbers.get(i).getLegs();
+                    for(int j = 0; j < legs.size(); j++ ){
+                        List<Step> step = legs.get(j).getSteps();
+                        for(int x= 0; x < step.size(); x++){
+                            if(step.get(x).getTravelMode().equals("TRANSIT") ){
+                                String busRouteNumber = step.get(x).getTransitDetails().getLine().getShortName() ;
+                                if( !(listOfRouteNumbers.contains(busRouteNumber) ) ){
+                                    listOfRouteNumbers.add(busRouteNumber);
+                                }
+//                                listOfRouteNumbers.add(busRouteNumber);
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BusRoute> request, Throwable t) {
+                Log.d("Failure", "LAST TEST");
+                Log.i("onfailure", "Throwable", t);
+            }
+        });
+
+        busOptions = listOfRouteNumbers;
+        return busOptions;
     }
 
     private void processClassifierInput(UserPost userPost) {
@@ -204,7 +294,8 @@ public class OffPeakResultActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<UserPost> call, Throwable t) {
-//                testTxtId.setText(t.getMessage() );
+                Log.d("Failure", "LAST TEST");
+                Log.i("onfailure", "Throwable", t);
             }
         });
 
