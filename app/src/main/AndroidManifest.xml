@@ -3,6 +3,7 @@
     package="com.example.wheelspace">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    
 
     <application
         android:allowBackup="true"
@@ -32,6 +33,10 @@
         <activity
             android:name=".PlanMyJourneyActivity"
             android:label="@string/activity_plan_my_journey" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key"/>
+
         <activity
             android:name=".RealtimeAccessActivity"
             android:label="@string/activity_realtime_access" />

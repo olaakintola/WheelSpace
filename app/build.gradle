@@ -61,8 +61,12 @@ dependencies {
 //    implementation 'com.squareup.retrofit2:converter-moshi:latest.version'
 //    implementation 'com.squareup.retrofit2:converter-moshi:retrofit:2.9.0'
 
+//    implementation 'org.apache.httpcomponents:httpcore:4.4.10'
+//    implementation 'org.apache.httpcomponents:httpclient:4.5.6'
 
-    implementation("com.squareup.okhttp3:okhttp:4.9.0")
+//    implementation("com.squareup.okhttp3:okhttp:4.9.0")
+    implementation("com.squareup.okhttp3:okhttp:3.2.0")
+
 
 //    Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'

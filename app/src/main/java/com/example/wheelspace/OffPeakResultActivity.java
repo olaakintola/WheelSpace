@@ -1,10 +1,12 @@
 package com.example.wheelspace;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+//import org.apache.http.client.HttpClient;
 
 import com.example.wheelspace.busdata.model.BusRoute;
 import com.example.wheelspace.busdata.model.Leg;
@@ -19,12 +22,18 @@ import com.example.wheelspace.busdata.model.Line;
 import com.example.wheelspace.busdata.model.Route;
 import com.example.wheelspace.busdata.model.Step;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.jakewharton.shimo.ObjectOrderRandomizer;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 //import retrofit2.converter.moshi.MoshiConverterFactory;
 
+//import org.apache.http.client.HttpClient;
+
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -57,9 +66,11 @@ public class OffPeakResultActivity extends AppCompatActivity {
     List<Route> routeNumbers = new ArrayList<>();
     ArrayList<String> listOfRouteNumbers = new ArrayList<>();
 
+    UserPost userPost = new UserPost();
+
 
     static String url = "http://10.0.2.2:5000/";
-    String busOptionUrl = "https://maps.googleapis.com/";
+    String busUrl = "https://maps.googleapis.com/maps/";
 //    String apiKey = "AIzaSyB4pfSZwkbrKDasVSw7hmME0sYdV36C2xY";
 
     @Override
@@ -107,7 +118,7 @@ public class OffPeakResultActivity extends AppCompatActivity {
         // instance for interface
         classifierModelAPIService = retrofit.create(ClassifierModelAPIService.class);
 
-        UserPost userPost = new UserPost();
+//        UserPost userPost = new UserPost();
         userPost.setRoute("13");
         userPost.setTimes("16:00");
         userPost.setDays("fri");
@@ -131,6 +142,7 @@ public class OffPeakResultActivity extends AppCompatActivity {
 
 //        routesList = routeGenerator.generatorBusRouteNuumber(futureDeparture, futureDestination);
 
+        //routes list last to be commented out
         routesList = generatorBusRouteNuumber(futureDeparture, futureDestination);
 
 
@@ -150,6 +162,17 @@ public class OffPeakResultActivity extends AppCompatActivity {
         timesHour.add("16:00");
         timesHour.add("17:00");
         timesHour.add("18:00");
+
+//        if( routesList.isEmpty()  ){
+//            boolean emptyList = true;
+//            while(emptyList){
+//
+//                if( !(routesList.isEmpty() ) ){
+//                    emptyList = false;
+//                    break;
+//                }
+//            }
+//        }
 
 //        for(String route: routesList ){
 //            for(String tHour: timesHour ){
@@ -185,30 +208,32 @@ public class OffPeakResultActivity extends AppCompatActivity {
     }
 
     private ArrayList<String> processItinerary(String futureDeparture, String futureDestination) {
+
         ArrayList<String> busOptions = new ArrayList<>();
 
-//        String urlAddon= "json?origin="+futureDeparture+"&destination="+futureDestination+"&mode=transit&transit_mode=bus&alternatives=true&key="+apiKey;
-//        String urlAddon= "json?origin="+futureDeparture+"&destination="+futureDestination+"&mode=transit&transit_mode=bus&alternatives=true"; //&key="+apiKey;
-        String mode = "transit";
-        String transit_mode = "bus";
-        String alternatives = "true";
-        String apiKey = "AIzaSyB4pfSZwkbrKDasVSw7hmME0sYdV36C2xY";
 
-        OkHttpClient okHttpClient_bus = new OkHttpClient.Builder()
-                .connectTimeout(100, TimeUnit.SECONDS)
-                .readTimeout(100, TimeUnit.SECONDS).cache(null).build();
+//
+        Proxy retroProxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("157.245.142.71",80));
+
+        OkHttpClient okHttpClient_bus = new OkHttpClient.Builder().proxy(retroProxy)
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .readTimeout(60, TimeUnit.SECONDS)
+                .writeTimeout(120, TimeUnit.SECONDS)
+                .build();
+
+
+        Gson gson = new GsonBuilder().setLenient().create();
 
         Retrofit retrofit_bus = new Retrofit.Builder()
-                .baseUrl(busOptionUrl).client(okHttpClient_bus)
-                .addConverterFactory( GsonConverterFactory.create() )
+                .baseUrl(busUrl).client(okHttpClient_bus)
+                .addConverterFactory( GsonConverterFactory.create(gson) )
                 .build();
 
         RouteOptionsAPICaller routeOptionsAPICaller = retrofit_bus.create(RouteOptionsAPICaller.class);
-//        Call<BusRoute> call_route = routeOptionsAPICaller.getBusOptions(urlAddon);
-        Call<BusRoute> request = routeOptionsAPICaller.getBusOptions(futureDeparture, futureDestination, mode, transit_mode, alternatives, apiKey);
-
-
+        Call<BusRoute> request = routeOptionsAPICaller.getBusOptions(futureDeparture, futureDestination);
+//
         request.enqueue(new Callback<BusRoute>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onResponse(Call<BusRoute> request, Response<BusRoute> response) {
 
@@ -232,6 +257,7 @@ public class OffPeakResultActivity extends AppCompatActivity {
                         }
                     }
                 }
+//                processClassifierInput(userPost);
             }
 
             @Override
@@ -245,9 +271,10 @@ public class OffPeakResultActivity extends AppCompatActivity {
         return busOptions;
     }
 
+
     private void processClassifierInput(UserPost userPost) {
 //        UserPost userPost = new UserPost("11","9:00", "weds" );
-
+      //  userPost.setRoute(routeList.get(0));
         List<UserPost> userPostList = new ArrayList<>();
         userPostList.add(userPost);
         Call<UserPost> call = classifierModelAPIService.getPrediction(userPostList);
