@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -90,9 +91,19 @@ public class OffPeakResultActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        futureDeparture = intent.getStringExtra("ftrDepartureKey");
-        futureDestination = intent.getStringExtra("ftrDestinationKey");
+//        futureDeparture = intent.getStringExtra("ftrDepartureKey");
+        ArrayList<String> rtList;
         futureDate = intent.getStringExtra("ftrDateKey");
+        rtList = (ArrayList<String>)getIntent().getSerializableExtra("busRetrofitResponse");
+//        rtList = (ArrayList<String>)getIntent().getParcelableExtra("busRetrofitResponse");
+
+//        routeNumbers = intent.getParcelableArrayListExtra("busRetrofitResponse")//.getStringExtra("busRetrofitResponse");
+
+
+
+
+//        intent.putExtra("ftrDateKey", ftrDate);
+//        intent.putExtra("busRetrofitResponse", (Parcelable) response.body().getRoutes());
 
 /*        Interceptor interceptor = new Interceptor(){
 
@@ -104,6 +115,13 @@ public class OffPeakResultActivity extends AppCompatActivity {
                 return chain.proceed(request);
             }
         };*/
+
+//        List<String> routesList = new ArrayList<>();
+//        routesList = processItinerary(routeNumbers);
+
+
+//        routesList = generatorBusRouteNuumber(futureDeparture, futureDestination);
+
 
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(100, TimeUnit.SECONDS)
@@ -138,12 +156,12 @@ public class OffPeakResultActivity extends AppCompatActivity {
 
         String chosenDay = weekDays.get(futureDate);
 
-        ArrayList<String> routesList = new ArrayList<>();
+//        ArrayList<String> routesList = new ArrayList<>();
 
 //        routesList = routeGenerator.generatorBusRouteNuumber(futureDeparture, futureDestination);
 
         //routes list last to be commented out
-        routesList = generatorBusRouteNuumber(futureDeparture, futureDestination);
+//        routesList = generatorBusRouteNuumber(futureDeparture, futureDestination);
 
 
 //        routesList.add("1");
@@ -174,19 +192,19 @@ public class OffPeakResultActivity extends AppCompatActivity {
 //            }
 //        }
 
-//        for(String route: routesList ){
-//            for(String tHour: timesHour ){
-//                UserPost userPost1 = new UserPost();
-//                userPost1.setRoute(route);
-//                userPost1.setTimes(tHour);
-//                userPost1.setDays(chosenDay);
-//
-//                processClassifierInput(userPost1);
-//            }
-//        }
+        for(String route: rtList ){
+            for(String tHour: timesHour ){
+                UserPost userPost1 = new UserPost();
+                userPost1.setRoute(route);
+                userPost1.setTimes(tHour);
+                userPost1.setDays(chosenDay);
+
+                processClassifierInput(userPost1);
+            }
+        }
 
 
-        processClassifierInput(userPost);
+//        processClassifierInput(userPost);
 
 
     }
@@ -202,46 +220,46 @@ public class OffPeakResultActivity extends AppCompatActivity {
         futureDeparture = futureDeparture.replaceAll(" ","_");
         futureDestination= futureDestination.replaceAll(" ", "_");
 
-        busRouteList = processItinerary(futureDeparture, futureDestination);
+//        busRouteList = processItinerary(futureDeparture, futureDestination);
 
         return busRouteList;
     }
 
-    private ArrayList<String> processItinerary(String futureDeparture, String futureDestination) {
+    private ArrayList<String> processItinerary(List<Route> routeNumbers) {
 
         ArrayList<String> busOptions = new ArrayList<>();
-
-
 //
-        Proxy retroProxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("157.245.142.71",80));
-
-        OkHttpClient okHttpClient_bus = new OkHttpClient.Builder().proxy(retroProxy)
-                .connectTimeout(60, TimeUnit.SECONDS)
-                .readTimeout(60, TimeUnit.SECONDS)
-                .writeTimeout(120, TimeUnit.SECONDS)
-                .build();
-
-
-        Gson gson = new GsonBuilder().setLenient().create();
-
-        Retrofit retrofit_bus = new Retrofit.Builder()
-                .baseUrl(busUrl).client(okHttpClient_bus)
-                .addConverterFactory( GsonConverterFactory.create(gson) )
-                .build();
-
-        RouteOptionsAPICaller routeOptionsAPICaller = retrofit_bus.create(RouteOptionsAPICaller.class);
-        Call<BusRoute> request = routeOptionsAPICaller.getBusOptions(futureDeparture, futureDestination);
 //
-        request.enqueue(new Callback<BusRoute>() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onResponse(Call<BusRoute> request, Response<BusRoute> response) {
+////
+////        Proxy retroProxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("157.245.142.71",80));
+////
+//        OkHttpClient okHttpClient_bus = new OkHttpClient.Builder()//.proxy(retroProxy)
+//                .connectTimeout(60, TimeUnit.SECONDS)
+//                .readTimeout(60, TimeUnit.SECONDS)
+//                .writeTimeout(120, TimeUnit.SECONDS)
+//                .build();
+//
+//
+//        Gson gson = new GsonBuilder().setLenient().create();
+//
+//        Retrofit retrofit_bus = new Retrofit.Builder()
+//                .baseUrl(busUrl).client(okHttpClient_bus)
+//                .addConverterFactory( GsonConverterFactory.create(gson) )
+//                .build();
+//
+//        RouteOptionsAPICaller routeOptionsAPICaller = retrofit_bus.create(RouteOptionsAPICaller.class);
+//        Call<BusRoute> request = routeOptionsAPICaller.getBusOptions(futureDeparture, futureDestination);
+////
+//        request.enqueue(new Callback<BusRoute>() {
+//            @RequiresApi(api = Build.VERSION_CODES.N)
+//            @Override
+//            public void onResponse(Call<BusRoute> request, Response<BusRoute> response) {
+//
+//                if (response.code() != 200) {
+//                    Toast.makeText(OffPeakResultActivity.this, "Check Connection", Toast.LENGTH_SHORT).show();
+//                }
 
-                if (response.code() != 200) {
-                    Toast.makeText(OffPeakResultActivity.this, "Check Connection", Toast.LENGTH_SHORT).show();
-                }
-
-                routeNumbers = response.body().getRoutes();
+//                routeNumbers = response.body().getRoutes();
                 for (int i = 0; i < routeNumbers.size(); i++) {   // change to busArray.size  from 10
                     List<Leg> legs = routeNumbers.get(i).getLegs();
                     for(int j = 0; j < legs.size(); j++ ){
@@ -258,15 +276,15 @@ public class OffPeakResultActivity extends AppCompatActivity {
                     }
                 }
 //                processClassifierInput(userPost);
-            }
+//            }
 
-            @Override
-            public void onFailure(Call<BusRoute> request, Throwable t) {
-                Log.d("Failure", "LAST TEST");
-                Log.i("onfailure", "Throwable", t);
-            }
-        });
-
+//            @Override
+//            public void onFailure(Call<BusRoute> request, Throwable t) {
+//                Log.d("Failure", "LAST TEST");
+//                Log.i("onfailure", "Throwable", t);
+//            }
+//        });
+//
         busOptions = listOfRouteNumbers;
         return busOptions;
     }
@@ -275,8 +293,19 @@ public class OffPeakResultActivity extends AppCompatActivity {
     private void processClassifierInput(UserPost userPost) {
 //        UserPost userPost = new UserPost("11","9:00", "weds" );
       //  userPost.setRoute(routeList.get(0));
+
         List<UserPost> userPostList = new ArrayList<>();
         userPostList.add(userPost);
+
+//        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+//                .connectTimeout(100, TimeUnit.SECONDS)
+//                .readTimeout(100, TimeUnit.SECONDS).cache(null).build();
+//
+//        Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl(url).client(okHttpClient)
+//                .addConverterFactory( GsonConverterFactory.create() )   // GsonConverterFactory.create()
+//                .build();
+
         Call<UserPost> call = classifierModelAPIService.getPrediction(userPostList);
 
         String json = new Gson().toJson(userPostList);
