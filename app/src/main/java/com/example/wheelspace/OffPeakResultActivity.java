@@ -83,9 +83,8 @@ public class OffPeakResultActivity extends AppCompatActivity {
         offPeakRecycler.setHasFixedSize(true);
         offPeakRecycler.setLayoutManager(new LinearLayoutManager(this) );
 
-        freeBayAdapter = new FreeBayAdapter(this, futureFreeBayList );
 
-        offPeakRecycler.setAdapter(freeBayAdapter);
+//        offPeakRecycler.setAdapter(freeBayAdapter);
 
 //        initViews();
 
@@ -205,7 +204,9 @@ public class OffPeakResultActivity extends AppCompatActivity {
 
 
 //        processClassifierInput(userPost);
-
+        freeBayAdapter = new FreeBayAdapter(this, futureFreeBayList );
+        offPeakRecycler.setAdapter(freeBayAdapter);
+//        freeBayAdapter.notifyDataSetChanged();
 
     }
 
