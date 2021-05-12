@@ -11,11 +11,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import retrofit2.Callback;
+
 public class FreeBayAdapter extends RecyclerView.Adapter<FreeBayAdapter.BayViewHolder> {
     ArrayList<UserPost> futureFreeBayList;
-    Context context;
+    Callback<UserPost> context;
 
-    public FreeBayAdapter(Context context, ArrayList<UserPost> futureFreeBayList) {
+    public FreeBayAdapter(Callback<UserPost> context, ArrayList<UserPost> futureFreeBayList) {
         this.context = context;
         this.futureFreeBayList = futureFreeBayList;
     }

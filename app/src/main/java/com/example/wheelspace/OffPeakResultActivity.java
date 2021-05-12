@@ -204,8 +204,8 @@ public class OffPeakResultActivity extends AppCompatActivity {
 
 
 //        processClassifierInput(userPost);
-        freeBayAdapter = new FreeBayAdapter(this, futureFreeBayList );
-        offPeakRecycler.setAdapter(freeBayAdapter);
+//        freeBayAdapter = new FreeBayAdapter(this, futureFreeBayList );
+//        offPeakRecycler.setAdapter(freeBayAdapter);
 //        freeBayAdapter.notifyDataSetChanged();
 
     }
@@ -347,6 +347,10 @@ public class OffPeakResultActivity extends AppCompatActivity {
                 String returnedRoute = newListPost.getRoute();
 //                String returnedTimes = userPostResponse.getTimes();
 //                String returnedDays = userPostResponse.getDays();
+
+                freeBayAdapter = new FreeBayAdapter(this, futureFreeBayList );
+                offPeakRecycler.setAdapter(freeBayAdapter);
+
             }
 
             @Override
