@@ -83,6 +83,8 @@ public class OffPeakResultActivity extends AppCompatActivity {
         offPeakRecycler.setHasFixedSize(true);
         offPeakRecycler.setLayoutManager(new LinearLayoutManager(this) );
 
+        freeBayAdapter = new FreeBayAdapter();
+
 
 //        offPeakRecycler.setAdapter(freeBayAdapter);
 
@@ -336,19 +338,11 @@ public class OffPeakResultActivity extends AppCompatActivity {
                     futureFreeBayList.add(userPost);
                     predictionResult = null;
                 }
-//                else{
-////                    testTxtId.setText(predictionResult);
-//                }
 
-
-//                testTxtId.setText(predictionResult);
-                // use for recyclerview
                 predictionResult = null;
                 String returnedRoute = newListPost.getRoute();
-//                String returnedTimes = userPostResponse.getTimes();
-//                String returnedDays = userPostResponse.getDays();
 
-                freeBayAdapter = new FreeBayAdapter(this, futureFreeBayList );
+                freeBayAdapter.setData(futureFreeBayList);
                 offPeakRecycler.setAdapter(freeBayAdapter);
 
             }

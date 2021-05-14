@@ -15,11 +15,15 @@ import retrofit2.Callback;
 
 public class FreeBayAdapter extends RecyclerView.Adapter<FreeBayAdapter.BayViewHolder> {
     ArrayList<UserPost> futureFreeBayList;
-    Callback<UserPost> context;
+    Context context;
 
-    public FreeBayAdapter(Callback<UserPost> context, ArrayList<UserPost> futureFreeBayList) {
-        this.context = context;
+    public FreeBayAdapter(){
+
+    }
+
+    public void setData( ArrayList<UserPost> futureFreeBayList) {
         this.futureFreeBayList = futureFreeBayList;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -27,7 +31,9 @@ public class FreeBayAdapter extends RecyclerView.Adapter<FreeBayAdapter.BayViewH
     public FreeBayAdapter.BayViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext() ).inflate(R.layout.free_bay_bus_list, parent, false);
-        return new BayViewHolder(view);
+//        return new BayViewHolder(view);
+        return new FreeBayAdapter.BayViewHolder(view);
+
     }
 
     @Override
