@@ -1,5 +1,6 @@
 package com.example.wheelspace;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
@@ -21,8 +22,11 @@ public class BusStopUtility {
 
     HashMap<String, String> stopIdKeyMaps = new HashMap<>();
 
+/*
+    Calls the method that populates the departure and destination fields in other Activities beside My Status Activity without the use of destination
+    and departure spinner
+*/
     public void loadBusStops(HashMap<String, String> stopMaps, Context context, ArrayList<String> dublinStops ) {
-//        public void loadBusStops(HashMap<String, String> stopMaps, Context context, ArrayList<String> dublinStops, Spinner spinnerDestination, Spinner spinnerDeparture ) {
 
         ArrayList<String> unsortedDublinStops = new ArrayList<>();
         Log.d("TEST", "10");
@@ -37,13 +41,11 @@ public class BusStopUtility {
             while( (lineFromFile = bufferedReader.readLine() ) != null){
                 String[] stopString = lineFromFile.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
                 String stopName = stopString[1].substring(1, (stopString[1].length()-1 )).trim() ;
-//                String stopId = stopString[0].substring(2, (stopString[0].length()-1 )).trim() ;
                 String stopId = stopString[0].substring(1, (stopString[0].length()-1 )).trim() ;
 
                 unsortedDublinStops.add(stopName);
                 stopMaps.put(stopName, stopId);
                 stopIdKeyMaps.put(stopId,stopName);
-//                dublinStops.add(stopId);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -52,15 +54,15 @@ public class BusStopUtility {
         }
 
         Collections.sort(unsortedDublinStops);
-//        dublinStops.add(stopName);
         dublinStops.addAll(unsortedDublinStops);
 
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(context,
                 android.R.layout.simple_spinner_dropdown_item, dublinStops);
-//        loadDepartureStops(dublinStops, spinnerAdapter, spinnerDeparture, context);
-//        loadDestinationStops(dublinStops, spinnerAdapter, spinnerDestination, context );
     }
 
+/*
+    Populates the Destination Fields in some Activities
+*/
     private void loadDestinationStops(List<String> dublinStops, ArrayAdapter<String> spinnerAdapter, Spinner spinnerDestination, Context context) {
         spinnerDestination.setAdapter(spinnerAdapter);
         Log.d("TEST", "13");
@@ -75,9 +77,11 @@ public class BusStopUtility {
                 Log.d("TEST", "14");
             }
         });
-//        destination = spinnerDestination.getSelectedItem().toString();
     }
 
+    /*
+    Populates the Destination Fields in some Activities
+*/
     private void loadDepartureStops(List<String> dublinStops, ArrayAdapter<String> spinnerAdapter, Spinner spinnerDepature, Context context) {
         spinnerDepature.setAdapter(spinnerAdapter);
         Log.d("TEST", "13");
@@ -94,6 +98,10 @@ public class BusStopUtility {
         });
     }
 
+    /*
+    Calls the method that populates the departure and destination fields in other Activities beside My Status Activity WITH the use of destination
+    and departure spinner
+*/
     public void loadBusStops(HashMap<String, String> stopMaps, Context context, ArrayList<String> dublinStops, Spinner spinnerDestination, Spinner spinnerDeparture ) {
         ArrayList<String> unsortedDublinStops = new ArrayList<>();
         Log.d("TEST", "10");
@@ -108,13 +116,11 @@ public class BusStopUtility {
             while( (lineFromFile = bufferedReader.readLine() ) != null){
                 String[] stopString = lineFromFile.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
                 String stopName = stopString[1].substring(1, (stopString[1].length()-1 )).trim() ;
-//                String stopId = stopString[0].substring(2, (stopString[0].length()-1 )).trim() ;
                 String stopId = stopString[0].substring(1, (stopString[0].length()-1 )).trim() ;
 
                 unsortedDublinStops.add(stopName);
                 stopMaps.put(stopName, stopId);
                 stopIdKeyMaps.put(stopId,stopName);
-//                dublinStops.add(stopId);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -123,7 +129,6 @@ public class BusStopUtility {
         }
 
         Collections.sort(unsortedDublinStops);
-//        dublinStops.add(stopName);
         dublinStops.addAll(unsortedDublinStops);
 
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(context,

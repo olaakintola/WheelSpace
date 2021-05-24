@@ -53,7 +53,6 @@ public class FeedbackActivity extends AppCompatActivity {
     private TextView txtFeedbackDescription;
     private Spinner spinnerRouteFeedback;
     private Button btnSubmitFeedback;
-//    private String spinnerIssueFeedback;
     private TextView txtIssue;
     private Spinner spinnerDepartureFeedback;
     private Spinner spinnerDestinationFeedback;
@@ -84,7 +83,6 @@ public class FeedbackActivity extends AppCompatActivity {
         setContentView(R.layout.activity_feedback);
 
         feedbackDbRef = FirebaseDatabase.getInstance().getReference().child("Feedback Message");
-//        feedbackDbRef.onDisconnect().setValue(ServerValue.TIMESTAMP);
 
         initViews();
 
@@ -105,8 +103,7 @@ public class FeedbackActivity extends AppCompatActivity {
     }
 
     private void initSubmit() {
-        
-//        if( true ){
+
         if(validateFeedback() ){
             String routeFeedback = spinnerRouteFeedback.getSelectedItem().toString();
             String issueFeedback = txtIssue.getText().toString();
@@ -127,13 +124,15 @@ public class FeedbackActivity extends AppCompatActivity {
         }
     }
 
+/*
+    Generate a Timestamp for when a feedback is sent
+*/
     private String generateFeedbackSentDate() {
         String localTime = null;
 
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+1:00") );
         Date currentLocalDate= calendar.getTime();
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss 'GMT'Z yyyy");
-//        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+1:00"));
         localTime  = dateFormat.format(currentLocalDate);
 
         String localDateDayCombo = localTime.substring(0,10);
@@ -169,6 +168,9 @@ public class FeedbackActivity extends AppCompatActivity {
                 }).show();
     }
 
+/*
+    Populates the dialog box, with list of possible incidents, for the Issue field in Feedback Activity
+*/
     private void displayIssueFeedbackDialog() {
         issueSelected = new boolean[issuesArray.length];
         txtIssue.setOnClickListener(new View.OnClickListener() {
@@ -222,6 +224,9 @@ public class FeedbackActivity extends AppCompatActivity {
         });
     }
 
+/*
+    Displays the Dialog box for time
+*/
     private void showTimeDialog() {
         edtTxtTimeFeedback.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -246,6 +251,9 @@ public class FeedbackActivity extends AppCompatActivity {
         });
     }
 
+/*
+    Populates the route field in Feedback Activity with bus routes numbers
+*/
     private void populateFeedbackRouteSpinner() {
         Log.d("Test" ,"1");
 
@@ -282,7 +290,6 @@ public class FeedbackActivity extends AppCompatActivity {
                     String busId = routeId.substring(0, 2);
                     if(busId.equals("60")){
                         busResponse = "Route Id" + routeId.substring(3, 5);
-//                        textJson.append(busResponse);
                         String checkNumberInArray = routeId.substring(3, 6);
                         String checkDash = Character.toString(checkNumberInArray.charAt(1));
                         if(checkDash.equals("-")){
@@ -312,7 +319,6 @@ public class FeedbackActivity extends AppCompatActivity {
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         String itemValue = parent.getItemAtPosition(position).toString();
                         Toast.makeText(FeedbackActivity.this, itemValue + " Selected!", Toast.LENGTH_SHORT).show();
-//                        routeSelected = itemValue;
                     }
 
                     @Override
@@ -330,6 +336,9 @@ public class FeedbackActivity extends AppCompatActivity {
         });
     }
 
+/*
+    Calls the functions that populates the departure and destination stops in Feedback Activity
+*/
     private void loadBusStops() {
         ArrayList<String> unsortedDublinStops = new ArrayList<>();
         Log.d("TEST", "10");
@@ -344,12 +353,10 @@ public class FeedbackActivity extends AppCompatActivity {
             while( (lineFromFile = bufferedReader.readLine() ) != null){
                 String[] stopString = lineFromFile.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
                 String stopName = stopString[1].substring(1, (stopString[1].length()-1 )).trim() ;
-//                String stopId = stopString[0].substring(2, (stopString[0].length()-1 )).trim() ;
                 String stopId = stopString[0].substring(1, (stopString[0].length()-1 )).trim() ;
 
                 unsortedDublinStops.add(stopName);
                 stopMaps.put(stopName, stopId);
-//                dublinStops.add(stopId);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -358,7 +365,6 @@ public class FeedbackActivity extends AppCompatActivity {
         }
 
         Collections.sort(unsortedDublinStops);
-//        dublinStops.add(stopName);
         dublinStops.addAll(unsortedDublinStops);
 
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(FeedbackActivity.this,
@@ -367,6 +373,9 @@ public class FeedbackActivity extends AppCompatActivity {
         loadFeedbackDestinationStops(dublinStops, spinnerAdapter);
     }
 
+/*
+    Loads the destination field in Feedback Activity
+*/
     private void loadFeedbackDestinationStops(List<String> dublinStops, ArrayAdapter<String> spinnerAdapter) {
         spinnerDestinationFeedback.setAdapter(spinnerAdapter);
         Log.d("TEST", "13");
@@ -381,9 +390,11 @@ public class FeedbackActivity extends AppCompatActivity {
                 Log.d("TEST", "14");
             }
         });
-//        destination = spinnerDestination.getSelectedItem().toString();
     }
 
+    /*
+    Loads the departure field in Feedback Activity
+*/
     private void loadFeedbackDepartureStops(List<String> dublinStops, ArrayAdapter<String> spinnerAdapter) {
         spinnerDepartureFeedback.setAdapter(spinnerAdapter);
         Log.d("TEST", "13");
@@ -408,7 +419,6 @@ public class FeedbackActivity extends AppCompatActivity {
         txtDepartureFeedback = findViewById(R.id.txtDepartureFeedback);
         txtFeedbackDescription = findViewById(R.id.txtFeedbackDescription);
         spinnerRouteFeedback =findViewById(R.id.spinnerRouteFeedback);
-//        spinnerIssueFeedback = findViewById(R.id.spinnerIssueFeedback);
         spinnerDepartureFeedback = findViewById(R.id.spinnerFdbackDeparture);
         spinnerDestinationFeedback = findViewById(R.id.spinnerFdbackDestination);
         edtTxtTimeFeedback =findViewById(R.id.edtTxtTimeFeedback);

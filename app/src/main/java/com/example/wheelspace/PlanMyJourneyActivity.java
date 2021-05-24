@@ -77,6 +77,9 @@ public class PlanMyJourneyActivity extends AppCompatActivity {
         final int month = calendar.get(Calendar.MONTH);
         final int day = calendar.get(Calendar.DAY_OF_MONTH);
 
+/*
+        Displays the dialog box for Date
+*/
         edtTxtDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,6 +96,7 @@ public class PlanMyJourneyActivity extends AppCompatActivity {
             }
         });
 
+
         btnFindOffPeak.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,6 +106,8 @@ public class PlanMyJourneyActivity extends AppCompatActivity {
 
     }
 
+/*    Calls the function that generates the bus route number that goes
+    from departure stop to destination stop*/
     private void initFindOffPeak() {
         if(validateData() ){
             Toast.makeText(this, "Processing", Toast.LENGTH_SHORT).show();
@@ -113,22 +119,16 @@ public class PlanMyJourneyActivity extends AppCompatActivity {
 
             ArrayList<String> routesList = new ArrayList<>();
 
-//            routesList = generatorBusRouteNuumber(ftrDeparture, ftrDestination);
-
             generatorBusRouteNuumber(ftrDeparture, ftrDestination, ftrDate);
-
-//            Intent intent = new Intent(PlanMyJourneyActivity.this, OffPeakResultActivity.class);
-
-//            intent.putExtra("ftrDepartureKey", ftrDeparture);
-//            intent.putExtra("ftrDestinationKey", ftrDestination);
-//            intent.putExtra("ftrDateKey", ftrDate);
-//            startActivity(intent);
 
         }else{
             showSnackBar();
         }
     }
 
+/*
+    Returns the bus route number that goes from departure to destination stops
+*/
     private void generatorBusRouteNuumber(String ftrDeparture, String ftrDestination, String ftrDate) {
 
         ArrayList<String> busRouteList = new ArrayList<>();
@@ -141,20 +141,17 @@ public class PlanMyJourneyActivity extends AppCompatActivity {
         ftrDeparture = ftrDeparture.replaceAll(" ","_");
         ftrDestination= ftrDestination.replaceAll(" ", "_");
 
-//        busRouteList = processItinerary(ftrDeparture, ftrDestination, ftrDate);
-
         processItinerary(ftrDeparture, ftrDestination, ftrDate);
-//        return busRouteList;
-
     }
 
+/*
+    The bus route number is passed to Off-Peak Result Activity when returned from Google Directions API
+*/
     private void processItinerary(String ftrDeparture, String ftrDestination, String ftrDate) {
 
         ArrayList<String> busOptions = new ArrayList<>();
-//
-//        Proxy retroProxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("157.245.142.71",80));
-//
-        OkHttpClient okHttpClient_bus = new OkHttpClient.Builder()//.proxy(retroProxy)
+
+        OkHttpClient okHttpClient_bus = new OkHttpClient.Builder()
                 .connectTimeout(60, TimeUnit.SECONDS)
                 .readTimeout(60, TimeUnit.SECONDS)
                 .writeTimeout(120, TimeUnit.SECONDS)
@@ -170,7 +167,7 @@ public class PlanMyJourneyActivity extends AppCompatActivity {
 
         RouteOptionsAPICaller routeOptionsAPICaller = retrofit_bus.create(RouteOptionsAPICaller.class);
         Call<BusRoute> request = routeOptionsAPICaller.getBusOptions(ftrDeparture, ftrDestination);
-//
+
         request.enqueue(new Callback<BusRoute>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -185,31 +182,11 @@ public class PlanMyJourneyActivity extends AppCompatActivity {
                 returnedRoute = getRoute(routeNumbers);
                 Intent intent = new Intent(PlanMyJourneyActivity.this, OffPeakResultActivity.class);
                 intent.putExtra("ftrDateKey", ftrDate);
-//                intent.putExtra("busRetrofitResponse", (Parcelable) routeNumbers);
-//                ArrayList<String> test = new ArrayList<String>();
-                //intent.putParcelableArrayListExtra("busRetrofitResponse", returnedRoute);
+
                 intent.putExtra("busRetrofitResponse", returnedRoute);
 
                 startActivity(intent);
 
-
-//                routeNumbers = response.body().getRoutes();
-//                for (int i = 0; i < routeNumbers.size(); i++) {   // change to busArray.size  from 10
-//                    List<Leg> legs = routeNumbers.get(i).getLegs();
-//                    for(int j = 0; j < legs.size(); j++ ){
-//                        List<Step> step = legs.get(j).getSteps();
-//                        for(int x= 0; x < step.size(); x++){
-//                            if(step.get(x).getTravelMode().equals("TRANSIT") ){
-//                                String busRouteNumber = step.get(x).getTransitDetails().getLine().getShortName() ;
-//                                if( !(listOfRouteNumbers.contains(busRouteNumber) ) ){
-//                                    listOfRouteNumbers.add(busRouteNumber);
-//                                }
-////                                listOfRouteNumbers.add(busRouteNumber);
-//                            }
-//                        }
-//                    }
-//                }
-//                processClassifierInput(userPost);
             }
 
             @Override
@@ -219,33 +196,35 @@ public class PlanMyJourneyActivity extends AppCompatActivity {
             }
         });
 
-//        busOptions = listOfRouteNumbers;
-//        return busOptions;
-
     }
 
+/*
+    Creates an arraylist of actual bus route numbers
+*/
     private ArrayList<String> getRoute(List<Route> routeNumbers) {
         ArrayList<String> busChoices = new ArrayList<>();
 
-                for (int i = 0; i < routeNumbers.size(); i++) {   // change to busArray.size  from 10
-                    List<Leg> legs = routeNumbers.get(i).getLegs();
-                    for(int j = 0; j < legs.size(); j++ ){
-                        List<Step> step = legs.get(j).getSteps();
-                        for(int x= 0; x < step.size(); x++){
-                            if(step.get(x).getTravelMode().equals("TRANSIT") ){
-                                String busRouteNumber = step.get(x).getTransitDetails().getLine().getShortName() ;
-                                if( !(listOfRouteNumbers.contains(busRouteNumber) ) ){
-                                    listOfRouteNumbers.add(busRouteNumber);
-                                }
-//                                listOfRouteNumbers.add(busRouteNumber);
-                            }
+        for (int i = 0; i < routeNumbers.size(); i++) {   // change to busArray.size  from 10
+            List<Leg> legs = routeNumbers.get(i).getLegs();
+            for(int j = 0; j < legs.size(); j++ ){
+                List<Step> step = legs.get(j).getSteps();
+                for(int x= 0; x < step.size(); x++){
+                    if(step.get(x).getTravelMode().equals("TRANSIT") ){
+                        String busRouteNumber = step.get(x).getTransitDetails().getLine().getShortName() ;
+                        if( !(listOfRouteNumbers.contains(busRouteNumber) ) ){
+                            listOfRouteNumbers.add(busRouteNumber);
                         }
                     }
                 }
-                busChoices = listOfRouteNumbers;
+            }
+        }
+        busChoices = listOfRouteNumbers;
         return busChoices;
     }
 
+/*
+    Returns the corresponding day of the week for a date input
+*/
     private String getWeekDay(String dateInput) {
         SimpleDateFormat simpleDateFmt = new SimpleDateFormat("dd/MM/yyyy" );
         Date newDate = null;
@@ -289,14 +268,9 @@ public class PlanMyJourneyActivity extends AppCompatActivity {
         txtArrivingAt = findViewById(R.id.txtArrivingAt);
         txtLeavingFrom = findViewById(R.id.txtLeavingFrom);
         edtTxtDate = findViewById(R.id.edtTxtDate);
-//        edtTxtFutureDeparture = findViewById(R.id.edtTxtFutureDeparture);
-//        edtTxtFutureDestination = findViewById(R.id.edtTxtFutureDestination);
         parentPlanMyJourney = findViewById(R.id.parentPlanMyJourney);
         btnFindOffPeak = findViewById(R.id.btnFindOffPeak);
         spinnerFtrDeparture = findViewById(R.id.spinnerFtrDeparture);
         spinnerFtrDestination = findViewById(R.id.spinnerFtrDestination);
     }
-
-
-
 }

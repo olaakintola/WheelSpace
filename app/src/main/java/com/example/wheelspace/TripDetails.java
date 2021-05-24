@@ -20,14 +20,6 @@ public class TripDetails {
     @Expose
     private String route_id;
 
-//    public TripDetails(String trip_id, String start_time, String start_date, String schedule_relationship, String route_id) {
-//        this.trip_id = trip_id;
-//        this.start_time = start_time;
-//        this.start_date = start_date;
-//        this.schedule_relationship = schedule_relationship;
-//        this.route_id = route_id;
-//    }
-
     public String getTrip_id() {
         return trip_id;
     }

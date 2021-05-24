@@ -8,10 +8,6 @@ public class ArrivalDetails {
     @Expose
     private int delay;
 
-//    public ArrivalDetails(int delay) {
-//        this.delay = delay;
-//    }
-
     public int getDelay() {
         return delay;
     }

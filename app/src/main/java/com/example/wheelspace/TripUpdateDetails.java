@@ -16,11 +16,6 @@ TripUpdateDetails {
     @Expose
     private List<StopSequenceDetails> stop_time_update = new ArrayList<>();
 
-//    public TripUpdateDetails(TripDetails tripDetails, List<StopSequenceDetails> stop_time_update) {
-//        this.tripDetails = tripDetails;
-//        this.stop_time_update = stop_time_update;
-//    }
-
     public TripDetails getTripDetails() {
         return tripDetails;
     }

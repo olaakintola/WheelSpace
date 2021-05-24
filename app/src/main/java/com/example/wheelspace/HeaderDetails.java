@@ -11,11 +11,6 @@ public class HeaderDetails {
     @Expose
     private Long timestamp;
 
-//    public HeaderDetails(String gtfs_realtime_version, Long timestamp) {
-//        this.gtfs_realtime_version = gtfs_realtime_version;
-//        this.timestamp = timestamp;
-//    }
-
     public String getGtfs_realtime_version() {
         return gtfs_realtime_version;
     }

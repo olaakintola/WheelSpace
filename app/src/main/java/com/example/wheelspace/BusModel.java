@@ -17,11 +17,6 @@ public class BusModel {
     @Expose
     private List<BusTrip> busEntities = new ArrayList<>();
 
-//    public BusModel(HeaderDetails headerDetails, List<BusTrip> busEntities) {
-//        this.headerDetails = headerDetails;
-//        this.busEntities = busEntities;
-//    }
-
     public HeaderDetails getHeaderDetails() {
         return headerDetails;
     }

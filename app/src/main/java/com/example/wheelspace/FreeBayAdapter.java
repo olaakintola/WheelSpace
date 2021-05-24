@@ -31,7 +31,6 @@ public class FreeBayAdapter extends RecyclerView.Adapter<FreeBayAdapter.BayViewH
     public FreeBayAdapter.BayViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext() ).inflate(R.layout.free_bay_bus_list, parent, false);
-//        return new BayViewHolder(view);
         return new FreeBayAdapter.BayViewHolder(view);
 
     }

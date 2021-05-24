@@ -5,8 +5,6 @@ import com.google.gson.annotations.SerializedName;
 
 public class UserPost {
 
-//    @SerializedName("prediction")
-//    @Expose
     private String prediction;
 
     @SerializedName("route")

@@ -53,12 +53,9 @@ public class RealtimeResultActivity extends AppCompatActivity {
         origin = intent.getStringExtra("originKey");
         goingTo = intent.getStringExtra("goingToKey");
         String localTime = intent.getStringExtra("localTimeKey");
-//        localTime = "17:55";
-
 
         String originId = stopNameToCodeMap.get(origin);
         String goingToId = stopNameToCodeMap.get(goingTo);
-
 
         listRecycler = findViewById(R.id.listRecycler);
         listRecycler.setHasFixedSize(true);
@@ -68,6 +65,8 @@ public class RealtimeResultActivity extends AppCompatActivity {
 
         listRecycler.setAdapter(busAdapter);
 
+/*        Functions handles whether incoming bus has a wheelchair bay availabe
+         comparing departure and destination stops with intermediary stops from firebase */
         wheelchairBayDbReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -81,7 +80,6 @@ public class RealtimeResultActivity extends AppCompatActivity {
                     String timeAtStop = null;
                     for( i= 0; i < intermediaryStopArray.length; i++){
                         firstStop = intermediaryStopArray[i].substring(0, 13).trim() ;
-//                        String stopId = stopString[0].substring(1, (stopString[0].length()-1 )).trim() ;
                         timeAtStop = intermediaryStopArray[i].substring(15, 21).trim() ;
 
                         String[] hoursAndMin = timeAtStop.split(":");
@@ -104,7 +102,6 @@ public class RealtimeResultActivity extends AppCompatActivity {
                                     String busAtStopTime = String.valueOf(totalDuration);
                                     String[] originSplit = origin.split(",");
                                     String displayStopName = originSplit[0].trim() + "  :  " + busAtStopTime + " min";
-//                                    wheelBayStatus.setIntermediarystops(intermediaryStopArray[i] );
                                     wheelBayStatus.setIntermediarystops( displayStopName );
                                     tripList.add(wheelBayStatus);
                                 }
@@ -122,6 +119,9 @@ public class RealtimeResultActivity extends AppCompatActivity {
         });
     }
 
+/*
+    Creates an HashMap of bus stop code and bus stop name
+*/
     private void busStopHashMap() {
             Log.d("TEST", "10");
             BufferedReader bufferedReader = null;
@@ -133,13 +133,11 @@ public class RealtimeResultActivity extends AppCompatActivity {
                 while( (lineFromFile = bufferedReader.readLine() ) != null){
                     String[] stopString = lineFromFile.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
                     String stopName = stopString[1].substring(1, (stopString[1].length()-1 )).trim() ;
-//                String stopId = stopString[0].substring(2, (stopString[0].length()-1 )).trim() ;
                     String stopId = stopString[0].substring(1, (stopString[0].length()-1 )).trim() ;
 
                     stopNameToCodeMap.put(stopName, stopId);
 
                     stopCodeToNameMap.put(stopId, stopName);
-//                dublinStops.add(stopId);
                 }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();

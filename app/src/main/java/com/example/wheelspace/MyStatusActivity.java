@@ -45,16 +45,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MyStatusActivity extends AppCompatActivity {
 
-    // explore app with room
-    // explore reading text file into room
-    // get the various data that user has selected and display it in snackbar
-    // machine learning variables
     private EditText edtTxtTimePicker;
     private TextView txtRoute, txtDepature, txtDestination, txtStatus;
     private Spinner spinnerRoute, spinnerDepature, spinnerDestination, spinnerBusDirection;
     private Button btnSend;
     private RadioGroup rgStatus;
-    //    private RadioButton rbOnBoard, rbGotOff;
     private RadioButton statusRadioBtn;
     private ConstraintLayout parent;
     TimePickerDialog timePickerDialog;
@@ -62,7 +57,6 @@ public class MyStatusActivity extends AppCompatActivity {
     int currentHour;
     int currentMinute;
     String amPm;
-    //    String destination;
     String route;
     String tripIdDuplicate = null;
     List<BusTrip> busArray = new ArrayList<>();
@@ -133,10 +127,6 @@ public class MyStatusActivity extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-//                String departingStop = spinnerDepature.getSelectedItem().toString();
-//                routeSelected = spinnerRoute.getSelectedItem().toString();
-//                String tripId = generateTripId(departingStop, routeSelected);
-//                Toast.makeText(MyStatusActivity.this, tripId + ":Trip ID", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -180,12 +170,10 @@ public class MyStatusActivity extends AppCompatActivity {
                 route = routeFirst;
                 String tripid = generateTripId(departure, routeFirst);
                 if (tripid == null) {
-//                    showRouteBusComboSnackBar();
                     showSnackBar();
                 }
 
                 tripIdDuplicate = tripid;
-//                tripIdDuplicate = tripid;
                 String time = edtTxtTimePicker.getText().toString();
                 String intermediarystops = generateIntermediaryStops(routeFirst,tripid, departure, destination);
                 Toast.makeText(MyStatusActivity.this, tripid + " :Trip ID", Toast.LENGTH_SHORT).show();
@@ -199,7 +187,6 @@ public class MyStatusActivity extends AppCompatActivity {
 
             } else {
                 // TODO: Should I generate tripId again so that I can now use it to go and delete the particular trip from Firebase
-//                DatabaseReference deleteWheelBayDBRef = FirebaseDatabase.getInstance().getReference("WheelchairBay Taken").child(whe);
                 deleteTrip(tripIdDuplicate);
             }
 
@@ -222,10 +209,6 @@ public class MyStatusActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(MyStatusActivity.this, "NO RECORD of Status To Delete", Toast.LENGTH_SHORT).show();
                 }
-//                for(DataSnapshot data: snapshot.getChildren()){
-//                    data.getRef().removeValue();
-//                }
-
             }
 
             @Override
@@ -235,6 +218,7 @@ public class MyStatusActivity extends AppCompatActivity {
         });
     }
 
+ /*   Generate list of intermediary stops between Departure and Destination stops inclusive*/
     private String generateIntermediaryStops(String routeFirst, String tripid, String departure, String destination) throws IOException {
 
         List<String> intermediaryStopList = new ArrayList<String>();
@@ -247,26 +231,9 @@ public class MyStatusActivity extends AppCompatActivity {
         BufferedReader lineReader = null;
         String fileLine;
         Log.d("TEST", "A");
-
-//        List<String> fileContainingRoute;
-//        List<String> returnedBusValues;
-//        fileContainingRoute = returnListRouteBusTimes(routeFirst);
-//        returnedBusValues = busValuesFromFile(fileContainingRoute);
-
-//        try {
-//            lineReader = new BufferedReader(new InputStreamReader(getAssets().open("xaa.txt"), "UTF-8"));
-////            lineReader = new BufferedReader(new InputStreamReader(getAssets().open("stop_times.txt"), "UTF-8"));
-//            Log.d("TEST", "B");
-//
-//            while ((fileLine = lineReader.readLine()) != null) {
-//        for(String eachValue: returnedBusValues){
         for(String eachValue: eachValueFinal){
-
                 fileLine = eachValue;
-
-
                 String[] stopTimesArray = fileLine.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
-//                Log.d("TEST", "24 - AFTER REGEX");
                 String tripIdFromArray = stopTimesArray[0].substring(1, (stopTimesArray[0].length() - 1)).trim();
                 String stopIdTrim = stopTimesArray[3].substring(1, (stopTimesArray[3].length() - 1)).trim();
 
@@ -287,12 +254,6 @@ public class MyStatusActivity extends AppCompatActivity {
                 }
 
             }
-
-//        } catch (UnsupportedEncodingException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
         String intermidiaryStops = changeStopListToString(intermediaryStopList);
         return intermidiaryStops;
     }
@@ -310,10 +271,6 @@ public class MyStatusActivity extends AppCompatActivity {
     private String changeStopListToString(List<String> intermediaryStopList) {
 
         String listToString = String.join(", ", intermediaryStopList);
-//        String listToString = "";
-//        for(String stop: intermediaryStopList){
-//            listToString += stop + ", ";
-//        }
         return listToString;
     }
 
@@ -342,7 +299,7 @@ public class MyStatusActivity extends AppCompatActivity {
     }
 
     /*
-        Validates that the text field (eg. time) is not left empty
+        Validates that the text field (eg. time) and spinners are not left empty
     */
     private boolean validateData() {
         if (edtTxtTimePicker.getText().toString().equals("")) {
@@ -354,9 +311,6 @@ public class MyStatusActivity extends AppCompatActivity {
         if (spinnerDepature.getSelectedItem().toString().equals("Choose Stop")) {
             return false;
         }
-//        if(tripIdDuplicate.equals("error")){
-//            return false;
-//        }
         return true;
     }
 
@@ -371,20 +325,15 @@ public class MyStatusActivity extends AppCompatActivity {
         spinnerRoute = findViewById(R.id.spinnerRoute);
         parent = findViewById(R.id.parent);
         rgStatus = findViewById(R.id.rgStatus);
-//        rbOnBoard = findViewById(R.id.rbOnBoard);
-//        rbGotOff = findViewById(R.id.rbGotOff);
         btnSend = findViewById(R.id.btnSend);
         spinnerBusDirection = findViewById(R.id.spinnerBusDirection);
     }
 
     /*
-        populates with all the active bus routes
+        populates spinner with all the active bus routes
     */
     private void populateSpinner() {
         Log.d("Test", "1");
-//        textJson = findViewById(R.id.textJson);
-//        spinnerBus = findViewById(R.id.spinnerBus);
-
         // Retrofit Builder
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(url)
@@ -396,10 +345,7 @@ public class MyStatusActivity extends AppCompatActivity {
         Call<BusModel> call = busAPICaller.getData();
         Log.d("TEST", "2");
 
-
-//        busStopUtility.loadBusStops(stopMaps, this, dublinStops, spinnerDestination, spinnerDepature);
         busStopUtility.loadBusStops(stopMaps, this, dublinStops);
-
 
         call.enqueue(new Callback<BusModel>() {
 
@@ -415,10 +361,6 @@ public class MyStatusActivity extends AppCompatActivity {
                 // GEt the data into textView
                 String busResponse = "";
 
-//                busResponse = "Version :" + response.body().getHeaderDetails().getGtfs_realtime_version() +
-//                        "\n Timestamp :" + response.body().getHeaderDetails().getTimestamp();
-//
-//                textJson.append(busResponse);
                 //use getarray to get the array part
                 dublinBusList.clear();
                 dublinBusList.add("Choose Route");
@@ -428,7 +370,6 @@ public class MyStatusActivity extends AppCompatActivity {
                     String busId = routeId.substring(0, 2);
                     if (busId.equals("60")) {
                         busResponse = "Route Id" + routeId.substring(3, 5);
-//                        textJson.append(busResponse);
                         String checkNumberInArray = routeId.substring(3, 6);
                         String checkDash = Character.toString(checkNumberInArray.charAt(1));
                         if (checkDash.equals("-")) {
@@ -450,10 +391,7 @@ public class MyStatusActivity extends AppCompatActivity {
                     }
                 }
 
-//        dublinStops.add(stopName);
                 dublinBusList.addAll(tempDublinBusList);
-
-//                loadBusDirection();
 
                 ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(MyStatusActivity.this,
                         android.R.layout.simple_spinner_dropdown_item, dublinBusList);
@@ -462,31 +400,21 @@ public class MyStatusActivity extends AppCompatActivity {
                 spinnerRoute.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                        if(position == 0){
-//                        }
-//                        loadBusDirection(position);
                         String itemValue = parent.getItemAtPosition(position).toString();
                         try {
                             setListForRoute(itemValue);
                             loadBusDirection(position, itemValue);
-//                            setListForRoute(itemValue);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                         Toast.makeText(MyStatusActivity.this, itemValue + " Selected!", Toast.LENGTH_SHORT).show();
-//                        routeSelected = itemValue;
                     }
 
                     @Override
                     public void onNothingSelected(AdapterView<?> parent) {
 
                     }
-
-
                 });
-//                String busroute = busArray.get(0).getTripUpdateDetails().getTripDetails().getRoute_id();
-                // we can know which trip id we need to store in firebase. we then store the destination in the firesbase also.
-//                loadBusDirection();
             }
 
             @Override
@@ -497,14 +425,14 @@ public class MyStatusActivity extends AppCompatActivity {
         });
     }
 
+/*    Displays the directions of buses by populating the Towards field in My Status Activity
+            */
     private void loadBusDirection(int position, String route) throws IOException {
         List<String> directiontList = new ArrayList<>();
         ArrayAdapter<String> directionAdapter;
         ArrayAdapter<String> busDirectionAdapter;
         List<String> busDirectiontList = new ArrayList<>();
-
         List<String> listOfDirection = new ArrayList<>();
-//        listOfDirection = generateBusDirection(route);
 
         directiontList.add("Select Route First");
         directionAdapter = new ArrayAdapter<>(MyStatusActivity.this, android.R.layout.simple_spinner_dropdown_item, directiontList);
@@ -524,7 +452,6 @@ public class MyStatusActivity extends AppCompatActivity {
             spinnerBusDirection.setAdapter(busDirectionAdapter);
         }
 
-//        spinnerDestination.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
         spinnerBusDirection.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -536,7 +463,6 @@ public class MyStatusActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 Toast.makeText(MyStatusActivity.this, itemValue + " Selected!", Toast.LENGTH_SHORT).show();
-
             }
 
             @Override
@@ -546,6 +472,8 @@ public class MyStatusActivity extends AppCompatActivity {
         });
     }
 
+/*
+    Displays the stops in Departure field of My Status Activity */
     private void generateDepartureStops(int position, String direction, String route) throws IOException {
 
         List<String> stopsOptions = new ArrayList<>();
@@ -584,13 +512,13 @@ public class MyStatusActivity extends AppCompatActivity {
         });
     }
 
+    /*
+    Displays the stops in Destination field of My Status Activity */
     private void generateDestinantionStops(int position, List<String> stopsOptions) {
 
         List<String> destinationBusStops = new ArrayList<>();
         ArrayAdapter<String> destinationAdapter;
         List<String> remainingStopsOnRoutes = new ArrayList<>();
-
-//        remainingStopsOnRoutes = returnRemainingStops(position, stopsOptions);
 
         if (position == 0) {
             destinationBusStops.add("Select Departure First");
@@ -620,18 +548,9 @@ public class MyStatusActivity extends AppCompatActivity {
         });
     }
 
-//    private List<String> returnRemainingStops(int position, List<String> stopsOptions) {
-//        List<String> stopFiltered = new ArrayList<>();
-//
-//        if(!(position == 0)){
-//            stopFiltered = stopsOptions
-//
-//        }else{
-//            stopFiltered.add("No Options Selected");
-//        }
-//        return stopFiltered;
-//    }
-
+/*
+    Returns all the bus stops on a Bus route in a particular direction
+*/
     private List<String> returnsStops(String route, String direction) throws IOException {
         List<String> stopList = new ArrayList<>();
 
@@ -643,21 +562,10 @@ public class MyStatusActivity extends AppCompatActivity {
         String nameOfStop = null;
         String stopId = null;
 
-//        List<String> fileContainingRoutes = new ArrayList<>();
-//        List<String> returnedBusList = new ArrayList<>();
-//        fileContainingRoutes = returnListRouteBusTimes(route);
-//        returnedBusList = busValuesFromFile(fileContainingRoutes);
-
-//        for(String eachValue: returnedBusList ){
         for(String eachValue: eachValueFinal ){
 
                 fileLine = eachValue;
 
-//        try {
-////            lineReader = new BufferedReader( new InputStreamReader( getAssets().open("stop_times.txt"), "UTF-8"));
-//            lineReader = new BufferedReader(new InputStreamReader(getAssets().open("xaa.txt"), "UTF-8"));
-//            int i = 0;
-//            while ((fileLine = lineReader.readLine()) != null) {
                 String[] stopTimesArray = fileLine.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
 
                 sixtyPosition = stopTimesArray[0].indexOf("60-");
@@ -688,24 +596,18 @@ public class MyStatusActivity extends AppCompatActivity {
                     }
                 }
             }
-//        } catch (FileNotFoundException e) {
-//            Log.e("MYAPP", "exception", e);
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            Log.e("NEWAPP", "IOEException", e);
-//            e.printStackTrace();
-//        }
 
         return stopList;
     }
 
+/*
+    Returns the list of Bus Direction by traversin the stop_times text file
+*/
     private List<String> generateBusDirection(String route) throws IOException {
         List<String> routeDirectionList = new ArrayList<>();
         List<String> seenStopIdBefore = new ArrayList<>();
 
         int sixtyPosition, startIndexOfSelectedRoute, endIndexOfSelectedRoute;
-//        String idStop = stopMaps.get(stopName);
-//        String idStop2 = idStop.trim();
         BufferedReader lineReader = null;
         String fileLine;
         String startOfSequence = "1";
@@ -715,30 +617,13 @@ public class MyStatusActivity extends AppCompatActivity {
         String firstRouteStop = null;
         String routeHeadSignFirstStop = null;
         String checkFirstRouteStop = null;
-//        String stopSequence = null;
         String routeStopStart = "1";
 
-
-//        List<String> textFileContainingRoute = new ArrayList<>();
-//        List<String> returnedBusValues = new ArrayList<>();
-//        textFileContainingRoute = returnListRouteBusTimes(route);
-//        returnedBusValues = busValuesFromFile(textFileContainingRoute);
-
-//        for(String eachValue: returnedBusValues){
          for(String eachValue: eachValueFinal){
 
                 fileLine = eachValue;
-//        try {
-//            lineReader = new BufferedReader(new InputStreamReader(getAssets().open("xaa.txt"), "UTF-8"));
-////            lineReader = new BufferedReader( new InputStreamReader( getAssets().open("stop_times.txt"), "UTF-8"));
-//            Log.d("TEST", "22");
-//            int i = 0;
-//            while ((fileLine = lineReader.readLine()) != null) {
 
-
-//                Log.d("TEST", "23 - WHILE LOOP");
                 String[] stopTimesArray = fileLine.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
-//                Log.d("TEST", "24 - AFTER REGEX");
                 String stopTrim = stopTimesArray[3].substring(1, (stopTimesArray[3].length() - 1)).trim();
                 Log.d("TEST", "60");
                 sixtyPosition = stopTimesArray[0].indexOf("60-");
@@ -750,13 +635,9 @@ public class MyStatusActivity extends AppCompatActivity {
                 if (routeFromArray.equals(route) && stopSequence.equals(startOfSequence)) {
 
                     Log.d("TEST", "61");
-//                    String stopSequence = stopTimesArray[4].substring(1,(stopTimesArray[4].length()-1 ) ).trim() ;
-//                                flag = false;
-
                     tempBusDirection = stopTimesArray[5].substring(1, (stopTimesArray[5].length() - 1)).trim();
                     if (!(routeDirectionList.isEmpty())) {
                         checkFirstRouteStop = stopTimesArray[3].substring(1, (stopTimesArray[3].length() - 1)).trim();
-//                        String stopSequence = stopTimesArray[4].substring(1, (stopTimesArray[4].length() - 1)).trim();
                         if (!(routeDirectionList.get(0).equals(tempBusDirection) ) && !(routeHeadSignFirstStop.equals(checkFirstRouteStop) ) && stopSequence.equals(routeStopStart) ) {
 
                             routeDirectionList.add(tempBusDirection);
@@ -776,27 +657,9 @@ public class MyStatusActivity extends AppCompatActivity {
                 }
 
             }
-//        } catch (FileNotFoundException e) {
-//            Log.e("MYAPP", "exception", e);
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            Log.e("NEWAPP", "IOEException", e);
-//            e.printStackTrace();
-//        }
         Log.d("TEST", "63 - return");
         return routeDirectionList;
     }
-
-
-/*
-    populates the destination and departure stops dropdown list
-*/
-
-
-/*
-    populates only the destination dropdown list
-*/
-
 
     /*
         generates unique identifier for each bus trip
@@ -809,31 +672,17 @@ public class MyStatusActivity extends AppCompatActivity {
         BufferedReader lineReader = null;
         String fileLine;
         Log.d("TEST", "21");
-//        try {
-//            lineReader = new BufferedReader(new InputStreamReader(getAssets().open("xaa.txt"), "UTF-8"));
-////            lineReader = new BufferedReader( new InputStreamReader( getAssets().open("stop_times.txt"), "UTF-8"));
 
-//            List<String> routeBusList = new ArrayList<>();
-//            List<String> BusValues = new ArrayList<>();
-//
-//            routeBusList = returnListRouteBusTimes(routeSelected);
-//            BusValues = busValuesFromFile(routeBusList);
+        Log.d("TEST", "22");
+        int i = 0;
+        int minimumMinute = 1000;
+        int minimumSeconds = 1000;
 
-            Log.d("TEST", "22");
-            int i = 0;
-            int minimumMinute = 1000;
-            int minimumSeconds = 1000;
-
-
-//            while ((fileLine = lineReader.readLine()) != null) {
-
-//            for(String lineFromFile: BusValues){
         for(String lineFromFile: eachValueFinal){
 
                  fileLine = lineFromFile;
 
                 String[] stopTimesArray = fileLine.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
-//                Log.d("TEST", "24 - AFTER REGEX");
                 String stopTrim = stopTimesArray[3].substring(1, (stopTimesArray[3].length() - 1)).trim();
                 if (idStop2.equals(stopTrim)) {
                     Log.d("TEST", "60");
@@ -847,9 +696,6 @@ public class MyStatusActivity extends AppCompatActivity {
                         String timeFromArray = stopTimesArray[2].substring(1, 5).trim();
                         String timePickedSubString = timePicked.substring(0, 4).trim();
                         if (timePickedSubString.equals(timeFromArray)) { // changing to 1, 5 instead of 0, 4
-//                            if(timeFromArray.equals(timePicked.substring(0,4)) ){ // changing to 1, 5 instead of 0, 4
-//                            if(stopTimesArray[2].contains(timePicked.substring(0,4)) ){ // changing to 1, 5 instead of 0, 4
-//                            String arrayTime = stopTimesArray[2].substring(1,6).trim();
                             String arrayTime = stopTimesArray[2].substring(1, 9).trim();
                             String comparePickedTime = timePicked.substring(0, 5);
                             String arrayTimeSplit[] = arrayTime.split(":");
@@ -857,8 +703,6 @@ public class MyStatusActivity extends AppCompatActivity {
                             int arrayTimeMinute = Integer.parseInt(arrayTimeSplit[1]);
                             int arrayTimeSeconds = Integer.parseInt(arrayTimeSplit[2]);
                             int compareTimePickedMinute = Integer.parseInt(comparePickedTimeSplit[1]);
-//                            int differenceInMinutes = arrayTimeMinute - compareTimePickedMinute;
-                            // will swap things over if bug persists
                             int differenceInMinutes = arrayTimeMinute - compareTimePickedMinute;
 
                             if(differenceInMinutes < 0){
@@ -872,27 +716,16 @@ public class MyStatusActivity extends AppCompatActivity {
                                     minimumSeconds = arrayTimeSeconds;
                                     i++;
                                 }
-//                                idForTrip = stopTimesArray[0].substring(1, (stopTimesArray[0].length()-1 )).trim() ;
-//                                minimumMinute = differenceInMinutes;
-//                                i++;
                             }
-//                            idForTrip = stopTimesArray[0].substring(1, (stopTimesArray[0].length()-1 )).trim() ;
                             Log.d("TEST", "62 - match");
                         }
                     }
                 }
             }
-//        } catch (FileNotFoundException e) {
-//            Log.e("MYAPP", "exception", e);
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            Log.e("NEWAPP", "IOEException", e);
-//            e.printStackTrace();
-//        }
-//        Log.d("TEST", "63 - return");
         return idForTrip;
     }
 
+/*    Creates an ArrayList of Bus Routes from text files*/
     private List<String> busValuesFromFile(List<String> busTimeFiles) throws IOException {
         List<String> values = new ArrayList<>();
 
@@ -909,18 +742,14 @@ public class MyStatusActivity extends AppCompatActivity {
     }
 
 /*
-    populates only the departure dropdown list
+   loop through the array and return a list of files that contains route
 */
-
         public List<String> returnListRouteBusTimes (String route) throws IOException {
             List<String> bustimes = new ArrayList<>();
 
             String[] fileArray = {"xaa.txt", "xab.txt", "xac.txt", "xad.txt", "xae.txt", "xaf.txt", "xag.txt", "xah.txt", "xai.txt", "xaj.txt", "xak.txt",
                     "xal.txt", "xam.txt", "xan.txt", "xao.txt", "xap.txt", "xaq.txt", "xar.txt", "xas.txt", "xat.txt"};
 
-//        loop through the array and return a list of files that contains route, then the
-//        route can work with the logic i implemented with old system
-//        List<String> listFromFile;
             String containsRoute = null;
             for (String fileName : fileArray) {
 
@@ -932,6 +761,9 @@ public class MyStatusActivity extends AppCompatActivity {
             return bustimes;
         }
 
+/*
+        Each file is opened to see if they contained the Bus Route entered by user
+*/
         private String readFileData (String fileName, String route) throws IOException {
             String results = null;
             BufferedReader lineReader;
@@ -940,7 +772,6 @@ public class MyStatusActivity extends AppCompatActivity {
             lineReader = new BufferedReader(new InputStreamReader(getAssets().open(fileName), "UTF-8"));
             while ((fileLine = lineReader.readLine()) != null) {
                 String[] stopTimesArray = fileLine.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
-//                if (stopTimesArray[0].contains(routeCombo)) {
                     if (stopTimesArray[0].matches("(.*)"+routeCombo+"(.*)" ) ) {
                         results = fileName;
                     break;
@@ -949,6 +780,9 @@ public class MyStatusActivity extends AppCompatActivity {
             return results;
         }
 
+/*
+        Populates the route field in My Status Activity
+*/
         private void setListForRoute(String route) throws IOException {
 
             List<String> fileContainingRoutes = new ArrayList<>();
@@ -957,9 +791,6 @@ public class MyStatusActivity extends AppCompatActivity {
                 fileContainingRoutes = returnListRouteBusTimes(route);
                 returnedBusList = busValuesFromFile(fileContainingRoutes);
             }
-//            fileContainingRoutes = returnListRouteBusTimes(route);
-//            returnedBusList = busValuesFromFile(fileContainingRoutes);
-
             eachValueFinal = returnedBusList;
         }
 

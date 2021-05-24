@@ -11,15 +11,6 @@ import retrofit2.http.POST;
 
 public interface ClassifierModelAPIService {
 
-//    @POST("/predict")
-//    @FormUrlEncoded
-//    Call<UserPost> getPrediction(@Field("route") String route,
-//                                 @Field("times") String times,
-//                                 @Field("days") String days);
-
-//    @POST("/predict")
-//    Call<UserPost> getPrediction(@Body UserPost userPost);
-
     @Headers("Cache-Control: no-cache")
     @POST("/predict")
     Call< UserPost> getPrediction(@Body List<UserPost> userPost);

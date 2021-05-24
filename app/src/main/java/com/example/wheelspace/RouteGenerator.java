@@ -10,7 +10,6 @@ public class RouteGenerator {
         ftrDeparture = ftrDeparture.replaceAll(" ","_");
         ftrDestination = ftrDestination.replaceAll(" ", "_");
 
-
         return routeList;
     }
 

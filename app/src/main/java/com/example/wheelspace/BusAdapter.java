@@ -34,7 +34,6 @@ public class BusAdapter extends RecyclerView.Adapter<BusAdapter.MyViewHolder> {
         WheelBayStatus wheelBayStatus = busList.get(position);
         holder.route_number.setText(wheelBayStatus.getRoute() );
         holder.bus_time.setText(wheelBayStatus.getIntermediarystops() );
-//        holder.availability_icon()
     }
 
     @Override
@@ -52,7 +51,6 @@ public class BusAdapter extends RecyclerView.Adapter<BusAdapter.MyViewHolder> {
 
             route_number = itemView.findViewById(R.id.route_number);
             bus_time = itemView.findViewById(R.id.bus_time);
-//            availability_icon = itemView.findViewById(R.id.availability_icon);
         }
     }
 }

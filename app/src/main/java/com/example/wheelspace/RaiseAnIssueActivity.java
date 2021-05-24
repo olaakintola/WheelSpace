@@ -62,21 +62,10 @@ public class RaiseAnIssueActivity extends AppCompatActivity {
             }
         });
 
-//        btnSearchIssue.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                String filterFeedback = edtTxtSearch.getText().toString();
-//                feedbackSearch(filterFeedback);
-//            }
-//        });
     }
 
-//    WheelBayStatus wheelBayStatus = dataSnapshot.getValue(WheelBayStatus.class);
-//    String intermediaryStops = wheelBayStatus.getIntermediarystops();
-//    String[] intermediaryStopArray = intermediaryStops.split(",");
-//    int i;
-
+/*    Returns the list of complaints containing bus routes entered into the search field
+    in Raise An Issue Activity*/
     @Override
     protected void onStart() {
         super.onStart();
@@ -91,14 +80,9 @@ public class RaiseAnIssueActivity extends AppCompatActivity {
                         for(DataSnapshot child: snapshot.getChildren() ){
                             Feedback feedback = child.getValue(Feedback.class);
                             String dateOfFeedback = feedback.getGeneratedDate();
-//                            String dateCheck = generateFeedbackSentDate();
                             if(dateCheck.equals(dateOfFeedback)){
                                 feedbackList.add(feedback );
                             }
-//                            feedbackList.add(child.getValue(Feedback.class) );
-
-
-                            
                         }
                         RaiseAnIssueAdapter raiseAnIssueAdapter = new RaiseAnIssueAdapter(feedbackList);
                         recyclerRaiseIssue.setAdapter(raiseAnIssueAdapter);
@@ -121,40 +105,17 @@ public class RaiseAnIssueActivity extends AppCompatActivity {
                 feedbackSearch(filterFeedback);
             }
         });
-
-
-//        FirebaseRecyclerOptions<Feedback> options = new FirebaseRecyclerOptions.Builder<Feedback>()
-//                .setQuery(feedbackDbReference, Feedback.class)
-//                .build();
-
-//        FirebaseRecyclerAdapter<Feedback, FeedbackViewHolder> feedbackRecyclerAdapter = new FirebaseRecyclerAdapter<Feedback, FeedbackViewHolder>(options) {
-//            @Override
-//            protected void onBindViewHolder(@NonNull FeedbackViewHolder holder, int position, @NonNull Feedback model) {
-//
-//                holder.initialiseFeedbackVariables(model.getRouteFeedback(), model.getIssueFeedback() );
-//            }
-//
-//            @NonNull
-//            @Override
-//            public FeedbackViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//                View view = LayoutInflater.from(parent.getContext() ).inflate(R.layout.feedback_list, parent, false);
-//
-//                return new FeedbackViewHolder(view);
-//            }
-//        };
-
-//        feedbackRecyclerAdapter.startListening();
-//        recyclerRaiseIssue.setAdapter(feedbackRecyclerAdapter);
-
     }
 
+/*
+    Returns a timestamp for current date
+*/
     private String generateFeedbackSentDate() {
         String localTime = null;
 
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+1:00") );
         Date currentLocalDate= calendar.getTime();
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss 'GMT'Z yyyy");
-//        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+1:00"));
         localTime  = dateFormat.format(currentLocalDate);
 
         String localDateDayCombo = localTime.substring(0,10);
@@ -164,6 +125,9 @@ public class RaiseAnIssueActivity extends AppCompatActivity {
         return localTime;
     }
 
+/*
+    Displays the returned list of complaints to the UI
+*/
     private void feedbackSearch(String filterFeedback) {
         ArrayList<Feedback> routeFilter = new ArrayList<>();
         for(Feedback feedback: feedbackList){
@@ -173,9 +137,6 @@ public class RaiseAnIssueActivity extends AppCompatActivity {
         }
         RaiseAnIssueAdapter raiseAnIssueAdapter = new RaiseAnIssueAdapter(routeFilter);
         recyclerRaiseIssue.setAdapter(raiseAnIssueAdapter);
-
-//        if(filterFeedback != null){
-//        );
     }
 
     private void initViews() {
@@ -185,22 +146,4 @@ public class RaiseAnIssueActivity extends AppCompatActivity {
         recyclerRaiseIssue = findViewById(R.id.recyclerRaiseIssue);
     }
 
-//    public class FeedbackViewHolder extends RecyclerView.ViewHolder{
-//
-//        View feedbackView;
-//
-//        public FeedbackViewHolder(@NonNull View itemView) {
-//            super(itemView);
-//            feedbackView = itemView;
-//        }
-//
-//        public void initialiseFeedbackVariables(String routeFeedback, String issueFeedback){
-//            TextView feedback_route = feedbackView.findViewById(R.id.feedback_route);
-//            TextView feedback_subject = feedbackView.findViewById(R.id.feedback_subject);
-//
-//            feedback_route.setText(routeFeedback);
-//            feedback_subject.setText(issueFeedback);
-//        }
-//
-//    }
 }

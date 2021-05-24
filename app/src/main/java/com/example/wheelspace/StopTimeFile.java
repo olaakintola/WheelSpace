@@ -100,37 +100,5 @@ public class StopTimeFile {
         return fileName;
     }
 
-    
-/*    public List<String> returnListRouteBusTimes( String route) throws IOException {
-        List<String> bustimes = new ArrayList<>();
-
-        String[] fileArray = {"xaa.txt", "xab.txt", "xac.txt", "xad.txt", "xae.txt", "xaf.txt", "xag.txt", "xah.txt", "xai.txt", "xaj.txt", "xak.txt",
-        "xal.txt", "xam.txt", "xan.txt", "xao.txt", "xap.txt", "xaq.txt", "xar.txt", "xas.txt", "xat.txt"};
-
-//        loop through the array and return a list of files that contains route, then the
-//        route can work with the logic i implemented with old system
-        List<String> listFromFile;
-        for(String fileName: fileArray){
-            listFromFile = readFileData(fileName, route );
-        }
-
-        return bustimes;
-    }
-
-    private List<String> readFileData(String fileName, String route) throws IOException {
-        List<String> results = new ArrayList<>();
-        BufferedReader lineReader;
-        String fileLine;
-        String routeCombo = ".60-"+route;
-        lineReader = new BufferedReader(new InputStreamReader(getAssets().open("xaa.txt"), "UTF-8"));
-        while ((fileLine = lineReader.readLine()) != null) {
-            String[] stopTimesArray = fileLine.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
-            if(stopTimesArray[0].contains(routeCombo) ){
-                results.add(fileLine);
-            }
-        }
-
-        return results;
-    }*/
 }
 
